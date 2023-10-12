@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发展史</title>
+</head>
+
+<body>
+    <!-- 浏览器内核、发展史 -->
+    <div>https://www.yuque.com/lingxing-ruase/ph1cyd/fgdan0cznatgpp5i</div>
+    <div>ECMA: European computer manufacture association 欧洲计算机制造联合会</div>
+    <div>评估、开发、认可、计算机标准</div>
+    <div>ECMA - 262 脚本语言的规范 也就是ECMAScript</div>
+
+    <div>语言类型：编译型 解释型</div>
+    <div>编译型：源代码编译成机器语言运行，比如JAVA、C</div>
+    <div>解释型：运行一句，解释一句，比如javascrpit、python</div>
+    <div>区别：</div>
+    <div>编译型语言比解释型语言更快</div>
+    <div>解释型语言可以在多平台上运行，而编译型语言需要依赖编译器</div>
+    <div>脚本语言</div>
+    <div>JavaScript客户端脚本</div>
+    <div>php服务端脚本</div>
+
+    <div>JavaScript由ECMAScript、BOM、DOM组成</div>
+    <div>ECMAScript ECMA - 262</div>
+    <div>DOM document Object Model W3C规范</div>
+    <div>BOM Browser Object Model 没有规范</div>
+
+    <div>javascript js引擎属于单线程，但是可以执行多个任务，模拟多线程</div>
+    <div>轮转时间片</div>
+    <div>有任务1和任务2</div>
+    <div>切分任务1，切分任务2</div>
+    <div>将任务片段随机排列，组成队列，送进js线程</div>
+    <div>js线程执行一个又一个任务片段</div>
+
+    <div>js是编程语言，Html/Css都是标记语言</div>
+    <div>编程语言要具备：变量、函数、数据结构、运算能力</div>
+
+    <div>js引入</div>
+    <script type="text/javascript" src="./helloWrold.js"></script>
+    <div>js写法</div>
+    <script type="text/javascript">
+        document.write('i an innerHtml')
+    </script>
+    <div>js引入，在标签内写代码不生效，src引入的代码还是生效</div>
+    <script type="text/javascript" src="./helloWrold.js">
+        document.write('i an innerHtml1')
+    </script>
+    <div>type写错，也是不生效的，因为没有告诉浏览器是脚本语言,但也不报错</div>
+    <script type="text/tpl" id="tpl">
+        document.write('i an innerHtml2')
+    </script>
+
+    <div>js变量</div>
+    <script type="text/javascript">
+        // var == variable
+        var a;  //变量声明
+        a = 3;  //变量赋值
+        var b = 2;  //变量声明并赋值
+        var x = 1,  //变量单一声明
+            y = 2;
+        var z = x + y; //先运算再赋值 
+    </script>
+    <div>js命名规范</div>
+    <div>1、不能以数字开头,可以以字母、$、_开头</div>
+    <div>2、可以包含字母、数字、$、_</div>
+    <div>3、不能是保留字或者关键字</div>
+    <div>https://www.w3school.com.cn/js/pro_js_keywords.asp</div>
+    <div>https://www.w3school.com.cn/js/pro_js_reservedwords.asp</div>
+    <div>4、注意语义化</div>
+    <div>5、用小驼峰命名方式，class类名用大驼峰命名</div>
+
+    <div>JS的值</div>
+    <div>原始值：Number String Boolean undefined null</div>
+    <div>引用值：Object Array function date RegExp</div>
+    <div>js声明值的时候不需要规定变量的类型，是弱类型语言</div>
+    <div>动态语言 -> 脚本语言 -> 解释型语言 -> 弱类型语言</div>
+    <div>静态语言 -> 编译型语言 -> 强类型语言</div>
+
+    <script type="text/javascript">
+        // 原始值
+        var a = 3;
+        var b = a;
+        a = 1;
+        var str = '1';
+        var flag = true;
+        // 引用值
+        var arr1 = [1, 2, 3]
+        var arr2 = arr1;
+        arr1.push(4);
+        arr1 = [1, 2]
+        var obj = { a: 1 }
+    </script>
+
+</body>
+
+</html>
