@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>错误</div>
+    <div>语法错误和通用错误</div>
+    <div>语法错误：代码不执行</div>
+    <script>
+        console.log(1);
+        // console.log(2)；
+        console.log(3);
+    </script>
+    <div>通用错误：错误之前的代码会执行</div>
+    <script>
+        console.log(1);
+        // console.log(a);
+        console.log(3);
+        var script1 = 111;
+    </script>
+    <div>不同的代码块之前是不影响的,但是不同代码块之间的变量可以共用</div>
+    <script>
+        console.log(script1); // 111
+    </script>
+
+
+    <div>运算符</div>
+    <div>+ - * / % ()</div>
+    <div>括号运算>普通运算>赋值</div>
+    <script>
+        var a = 1,
+            b = 2,
+            d = 3;
+        var c = (a + b) * d;
+        // 1、声明c
+        // 2、a加b乘以d
+        // 3、在赋值给c
+    </script>
+    <div>+</div>
+    <div>数字是计算，字符串是拼接</div>
+    <script>
+        var num = 1 + 2;
+        var str = 1 + 'str'; // 1str
+        var str = 'str' + 'str' + null; // strstrnull
+    </script>
+    <div>/</div>
+    <div>NaN: Not a Number </div>
+    <script>
+        var num = 10 / 4; // 2.5
+        var nan = 0 / 0; // NaN
+        var infinity = 1 / 0; // infinity
+        var _infinity = -1 / 0; // -infinity
+    </script>
+    <div>%</div>
+    <script>
+        var num = 6 % 4; // 2
+        var num1 = 4 % 6; // 4
+    </script>
+    <div>交换值</div>
+    <script>
+        var a = 1,
+            b = 2;
+        // 第一种
+        var c = a;
+        a = b;
+        b = c;
+        // 第二种
+        var a = a + b;
+        b = a - b;
+        a = a - b;
+    </script>
+    <div>++/--</div>
+    <script>
+        var a = 1;
+        a = a + 1; // == a++
+        console.log(a++); // 2
+        console.log(a); // 3
+        console.log(++a); // 4
+        console.log(a); // 4    
+        // 题目
+        var a = 5,
+            b;
+        // b = ++a + 1; // a = 6, b = 7
+        // b = a++ + 1; // a = 6, b = 6
+        // b = a-- + --a; // a = 3, b = 8 
+        // b = --a + --a; // a = 3, b = 7
+        // b = --a + a++; // a = 5, b = 8
+        console.log(a, b);    
+    </script>
+
+    <div>ASCII：https://www.runoob.com/w3cnote/ascii.html</div>
+    <script>
+        // > < == >= <= === !== 
+        // number - number 正常比较
+        console.log(1 > 2); // false
+        // number - string 字符串先转换为数字
+        console.log(1 > '2.5'); // false
+        // number - string 比较ASCII值
+        console.log(1 > 'a'); // false 49 > 97
+        console.log('a' > 'b'); // false
+        console.log(4.5 > 11); // false
+        console.log('4.5' > '11'); // true 4 > 1
+        console.log('1.1' > '11'); // false . > 1 46 > 49
+        // 没定义的变量
+        // console.log(n > m); // 报错 未定义
+
+        // ==
+        console.log(1 == '1'); // true
+        console.log(1 === '1'); // false
+        console.log(NaN == NaN); // false NaN与任何都不相等
+    </script>
+
+    <div>逻辑运算符：&&与 ||或 !非</div>
+    <div>假：undefined、null、NaN、0、""、false</div>
+    <script>
+        // && 两边同时满足，为真；有一边不满足的，为假；
+        var a = 1 && 2; // 2 
+        // 遇到真就往后走，当遇到假或走到最后，返回当前的值；
+
+        // || 只有有一边满足，为真；都不满足，为假
+        var b = 1 || 2; // 1
+        // 遇到假就往后走，当遇到真或走到最后，返回当前的值；
+        a = 0 && undefined && 1; // 0
+        b = 0 || undefined || 1 || null; // 1
+        console.log(a, b);
+
+        // !布尔值取反
+        a = 1;
+        console.log(!a); // false
+    </script>
+
+    <div>if、switch</div>
+    <div>使用场景：if适合有范围的值，switch使用有定值的</div>
+    <script>
+        var a = 8;
+        // else if 满足后就不往下执行
+        if (a >= 0 && a < 10) {
+            console.log('a属于0-10');
+        } else if (a >= 10 && a < 20) {
+            console.log('a属于10-20');
+        } else {
+            console.log('a超出范围');
+        }
+
+        switch (a) {
+            case 2:
+                console.log('a等于2');
+                break;
+            case 4:
+                console.log('a等于4');
+                break;
+            case 6:
+                console.log('a等于6');
+                break;
+            case 8:
+                console.log('a等于8');
+                break;
+            default:
+                console.log('a不属于2/4/6/8');
+        }
+    </script>
+
+    <div>行注释、块注释</div>
+    <script>
+        // 行注释
+
+        /*
+        * 块
+        * 注
+        * 释
+        */
+    </script>
+</body>
+
+</html>
