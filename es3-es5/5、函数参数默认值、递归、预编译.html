@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>函数参数初始化</div>
+    <script>
+        // es6 == es2015 在形参上赋值
+        function fn1(a = 1, b) {
+            console.log(a, b, '初始化');    // 1 2
+            // arguments[0] a 先寻找不是为undefined的参数
+        }
+        fn1(undefined, 2)
+
+        function fn2(a, b) {
+            a = arguments[0] || 1;
+            b = arguments[1] || 2;
+            console.log(a, b);
+        }
+        fn2();
+
+        function fn3(a, b) {
+            if (typeof (a) === 'undefined') {
+                a = 1;
+            } else {
+                a = arguments[0];
+            }
+
+            if (typeof (b) === 'undefined') {
+                b = 2;
+            } else {
+                b = arguments[1]
+            }
+            console.log(a, b);
+        }
+
+        fn3(3, 4);
+    </script>
+    <div>递归</div>
+    <div>1、找规律</div>
+    <div>2、找出口</div>
+    <div>接收一个n，返回n的阶乘，不能用for</div>
+    <script>
+        // 找规律
+        // n! = n * n - 1
+        function factorial(n) {
+            if (n == 1) {
+                return 1;
+            }
+            return n * factorial(--n);
+        }
+        console.log(factorial(5));
+
+        /*
+         * f(5) = 5 * f(4)
+         * f(4) = 4 * f(3)
+         * f(3) = 3 * f(2)
+         * f(2) = 2 * f(1)=1
+        */
+    </script>
+    <div>接收一个n，返回n位的斐波那契数列，不能用for</div>
+    <script>
+        // 找规律
+        // n - 1 + n - 2
+        function sequence(n) {
+            if (n == 1 || n == 2) {
+                return 1;
+            }
+            return sequence(n - 1) + sequence(n - 2);
+        }
+        console.log(sequence(6));
+        /*
+         * s(6) = s(5) + s(4) = 5 + 3
+         * s(5) = s(4) + s(3) = 3 + 2
+         * s(4) = s(3) + s(2) = 2 + 1
+         * s(3) = s(2) + s(1) = 1 + 1
+        */
+    </script>
+
+    <div>预编译</div>
+    <script>
+        // 1、先检查语法，语法错误代码都不执行
+        // 2、预编译的过程
+        // 3、解释一行，执行一行；通用错误的时候，只有报错以下的不执行
+    </script>
+    <div>暗示全局变量 imply global variable</div>
+    <script>
+        console.log(a, b);  // undefined undefined 变量提升
+        var a = 1;
+        var b = 2;
+        console.log(a, b);  // 1 2 赋值后的值
+        console.log(window.a, window.b);    // 1 2 a = window.a b = window.b
+
+        function fn4() {
+            var a = b = 1;
+        }
+        fn4();
+        console.log(a, b);  // undefined 1
+    </script>
+    <div>有var和没有var的区别</div>
+    <script>
+        console.log(a, b);  // 报错 undefined 变量提升
+        a = 1;   // 没有用var声明的变量，是不会提升的。 这里使用a = 1，上面的console.log(a)，会报通用错误；
+        var b = 2;
+    </script>
+
+    <div>AO：activation object 函数上下文</div>
+    <div>1、变量声明提升</div>
+    <div>2、形参值赋值给形参</div>
+    <div>3、函数声明提升</div>
+    <div>4、赋值</div>
+    <div>5、执行函数</div>
+    <script>
+        function fn5(a) {
+            console.log(a);     // function a(){}
+            var a = 1;
+            console.log(a);     // 1
+            function a() { }
+            console.log(a);     // 1
+            var b = function () { }
+            console.log(b);     // function(){}
+            function d() { }
+        }
+        fn5(2);
+
+        // AO = {
+        //     a: undefined -> 2 -> function a(){} -> 1,
+        //     b: undefined -> function (){},
+        //     d: function d(){}
+        // }
+
+        function fn6(a, b) {
+            console.log(a); // 7
+            c = 0;
+            var c;
+            a = 5;
+            b = 6;
+            console.log(b); // 6
+            function b() { }
+            function d() { }
+            console.log(b); // 6
+        }
+        fn6(7, 8)
+
+        // AO = {
+        //      c: undefined,
+        //      a：undefined -> 7,
+        //      b: undefined -> 8 -> function b(){},
+        //      d: function d(){}
+        // }
+    </script>
+
+    <div>GO：global object 全局上下文</div>
+    <div>1、变量声明提升</div>
+    <div>2、函数声明提升</div>
+    <div>3、执行赋值</div>
+    <script>
+        var a = 1;
+        function a() { }
+        console.log(a); // 1
+
+        console.log(q, w);  // function a(){} undefined
+        var q = 1;
+        function q() { }
+        var w = function () { }
+    </script>
+
+    <script>
+        var b = 3;
+        console.log(a); // function a(){}
+        function a(a) {
+            console.log(a); // function a(){}
+            var a = 2;
+            console.log(a); // 2
+            function a() { }
+            var b = 5;
+            console.log(b); // 5
+        }
+
+        a(1);
+
+        /*
+         *  GO = {
+         *      b: undefined -> 3,
+         *      a: function a(){}       
+         *  } 
+         *  AO = {
+         *      a: undefined -> 1 -> function a(){},
+         *      b: undefined -> 5
+         *  }
+         *
+        */
+
+        a = 1;
+        function fn7() {
+            console.log(a); // 1
+            a = 2;
+            console.log(a); // 2
+            a = 3;
+            console.log(a); // 3
+        }
+        fn7()
+        var a;
+    </script>
+
+    <script>
+        function fn8() {
+            return a;
+            m = 1;
+            function a() { }
+            var a = 2;
+        }
+        console.log(fn8());
+        console.log(m);     // m is not defined 只有在m = 1执行的时候，才会写入GO
+
+        /*
+         *  GO = {
+         *      
+         *  }
+         * 
+         *  AO = {
+         *      a: undefined -> function a(){}
+         *  }
+        */
+    </script>
+    <script>
+        a = 1;
+        function fn9(e) {
+            function e() { }
+            arguments[0] = 2;
+            console.log(e); // 2
+            if (a) {
+                var b = 3;
+            }
+            var c;
+            a = 4;
+            var a;
+            console.log(b); // undefined
+            f = 5;
+            console.log(c); // undefined
+            console.log(a); // 4
+        }
+        var a;
+        fn9(1);
+        /*
+         * GO = {
+         *      a: undefined => 1,
+         *      fn9: function
+         * }
+         * 
+         * AO = {
+         *      b: undefined,
+         *      c: undefined,
+         *      a: undefined,
+         *      3: 1 -> function e(){} -> 2
+         * }
+        */
+    </script>
+</body>
+
+</html>
