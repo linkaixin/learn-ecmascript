@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>循环：for、while、do while</div>
+    <div>for while是可以互相转换的</div>
+    <div>死循环：当判断条件一直为true</div>
+    <div>do while：无论判断条件如何，都要先执行一次</div>
+    <script>
+        for (var i = 0; i < 10; i++) {
+            console.log(i);
+        }
+
+        var i = 0;
+        for (; i < 10;) {
+            console.log(i++, 1);
+        }
+
+        var i = 0;
+        while (i < 10) {
+            console.log(i++, 2);
+        }
+
+        var i = 0;
+        do {
+            console.log(i, 'do while');
+            i++;
+        } while (0);
+    </script>
+    <div>结束循环：break continue</div>
+    <div>break：结束循环</div>
+    <div>continue：结束本次循环</div>
+    <script>
+        // 不使用break的情况下停止循环
+        var i = 1;
+        for (; i;) {
+            console.log(i, 3);
+            i++;
+            if (i == 11) {
+                i = 0;
+            }
+        }
+
+        // 输出0-100的和大于100时的数字
+        var sum = 0;
+        for (var i = 0; i <= 100; i++) {
+            console.log(i, sum);
+            sum += i;
+            if (sum > 100) {
+                break;
+            }
+        }
+
+        // 输出100以内能被7整除以及个位数为7以外的数字
+        for (var i = 0; i < 100; i++) {
+            if (i % 7 == 0 || i % 10 == 7) {
+                continue;
+            }
+            console.log(i, 4);
+        }
+
+        // 打印0-100 ()中只有一句，不能写比较 {}中不写i++,i--
+        var i = 101;
+        for (; i--;) {
+            console.log(i, 5);
+        }
+
+        // 10的N次方
+        var n = 5,
+            num = 1;
+        for (var i = 0; i < n; i++) {
+            num *= 10;
+            console.log(num, '10的N次方');
+        }
+
+        // n的阶乘
+        var n = 5,
+            num = 1;
+        for (var i = 1; i <= n; i++) {
+            num *= i;
+        }
+        console.log(num, 'n的阶乘');
+
+        // 输出100以内的质数
+        // 质数：只能被自身和1整除的数
+        for (var i = 2; i < 100; i++) {
+            var count = 0;
+            for (var j = 1; j <= i; j++) {
+                if (i % j == 0) {
+                    count++;
+                }
+            }
+            if (count == 2) {
+                console.log(i, '质数');
+            }
+            count = 0;
+        }
+    </script>
+    <div>typeof：返回值的类型</div>
+    <div>string、number、boolean、object、undefined、function</div>
+    <div>array为什么是objct：这里的object指的是Object，引用值类型</div>
+    <div>null为什么是object：因为一开始的时候null是作为空对象引用出现的</div>
+    <script>
+        console.log(typeof (asdasdasda), 'typeof');  // undefined
+        console.log(typeof ('str'), 'typeof');  // string
+        console.log(typeof (1), 'typeof');      // number
+        console.log(typeof (true), 'typeof');   // boolean
+        console.log(typeof ({}), 'typeof');     // object
+        console.log(typeof ([]), 'typeof');     // object
+        console.log(typeof (null), 'typeof');   // object
+        console.log(typeof (undefined), 'typeof');  // undefined
+        console.log(typeof (function () { }), 'typeof');    // function
+        console.log(typeof (1 - 1));        // number
+        console.log(typeof (1 - '1'));      // number
+        console.log(typeof (adasds));       // undefined
+        console.log(typeof (typeof (1)));   // string     
+    </script>
+    <div>显式/隐式类型转换</div>
+    <div>Number、parseInt、parseFloat、String、toString、+ -</div>
+    <div>Number</div>
+    <script>
+        var a = '1';
+        console.log(typeof (Number(a)) + '--' + Number(a));     // number--1
+        a = true;
+        console.log(typeof (Number(a)) + '--' + Number(a));     // number--1
+        a = false;
+        console.log(typeof (Number(a)) + '--' + Number(a));     // number--0
+        a = 'false';
+        console.log(typeof (Number(a)) + '--' + Number(a));     // number--NaN
+        a = null;
+        console.log(typeof (Number(a)) + '--' + Number(a));     // number--0
+        a = undefined;
+        console.log(typeof (Number(a)) + '--' + Number(a));     // number--NaN
+        a = NaN;
+        console.log(typeof (Number(a)) + '--' + Number(a))      // number--NaN
+        a = '1a';
+        console.log(typeof (Number(a)) + '--' + Number(a));     // number--NaN
+        a = '3.14';
+        console.log(typeof (Number(a)) + '--' + Number(a));     // number--3.14
+    </script>
+    <div>parseInt(string, radix);</div>
+    <div>string 是要转换为整数的字符串。</div>
+    <div>radix 是一个可选参数，表示要使用的进制数。如果未指定，则默认为10。</div>
+    <script>
+        var a = '1';
+        console.log(typeof (parseInt(a)) + '--' + parseInt(a)); // number--1
+        a = true;
+        console.log(typeof (parseInt(a)) + '--' + parseInt(a)); // number--NaN
+        a = false;
+        console.log(typeof (parseInt(a)) + '--' + parseInt(a)); // number--NaN
+        a = 'false';
+        console.log(typeof (parseInt(a)) + '--' + parseInt(a)); // number--NaN
+        a = null;
+        console.log(typeof (parseInt(a)) + '--' + parseInt(a)); // number--NaN
+        a = undefined;
+        console.log(typeof (parseInt(a)) + '--' + parseInt(a)); // number--NaN
+        a = NaN;
+        console.log(typeof (parseInt(a)) + '--' + parseInt(a)); // number--NaN
+        a = 'abc123';
+        console.log(typeof (parseInt(a)) + '--' + parseInt(a)); // number--NaN
+        a = '123abc';
+        console.log(typeof (parseInt(a)) + '--' + parseInt(a)); // number--123
+        a = '3.99';;
+        console.log(typeof (parseInt(a)) + '--' + parseInt(a)); // number--3
+    </script>
+    <script>
+        console.log(parseInt('10', 16)); // 16 以16机制为基础转换成10进制的数
+    </script>
+    <div>Number和parseInt的区别：</div>
+    <div>1、Number能转换true、false、null，parseInt不行；</div>
+    <div>2、Number能转换3.14等小数，parseInt只转换为整型</div>
+    <div>3、parseInt可以将'123abc'中的首次遇到的数字提取出来，Number不可以</div>
+
+    <div>parseFloat：将字符串转换为浮点数</div>
+    <script>
+        var a = '3.14abc';
+        console.log(typeof (parseFloat(a)) + '--' + parseFloat(a)); // number--3.14
+    </script>
+    <div>+ -</div>
+    <script>
+        a = '123';
+        console.log(typeof (+ a) + '--' + + a); // number--123
+        console.log(typeof (- a) + '--' + - a); // number---123
+        a = 'abc';
+        console.log(typeof (+ a) + '--' + + a); // number--NaN
+    </script>
+    <div>String：转为字符串类型</div>
+    <script>
+        var a = 123;
+        console.log(typeof (String(a)) + '--' + String(a)); // string--123
+        a = [1, 2, 3];
+        console.log(typeof (String(a)) + '--' + String(a)); // string--1, 2, 3
+        a = {};
+        console.log(typeof (String(a)) + '--' + String(a)); // string--[object Object]
+        a = undefined;
+        console.log(typeof (String(a)) + '--' + String(a));
+    </script>
+    <div>toString(radix)：将一个数字转换为指定进制的字符串</div>
+    <div>undefined、null都没有toString方法</div>
+    <script>
+        var a = 123;
+        console.log(typeof (a.toString()) + '--' + a.toString()); // string--123
+        // a = undefined;
+        // console.log(typeof (a.toString()) + '--' + a.toString());
+        a = 10;
+        console.log(typeof (a.toString()) + '--' + a.toString(2));  // string--1010
+    </script>
+
+    <div>隐式类型转换</div>
+    <script>
+        var a = '123';
+        console.log(++a, '隐式');   // 124
+        a = 'a' + 1;
+        console.log(a, '隐式');     // a1
+        a = '3' * 2;
+        console.log(a, '隐式');     // 6
+        a = '1' > 2;
+        console.log(a, '隐式');     // false
+        a = 'a' > 'b';
+        console.log(a, '隐式');     // false 
+        a = 2 > 1 > 3;
+        console.log(a, '隐式');     // false 2 > 1 = true = 1 > 3 false
+        a = 2 > 1 == 1;
+        console.log(a, '隐式');     // true 
+        var a1 = undefined > 0;
+        var a2 = undefined < 0;
+        var a3 = undefined == 0;
+        console.log(a1, a2, a3, '隐式');    // false false false
+        var b1 = null > 0;
+        var b2 = null < 0;
+        var b3 = null == 0;
+        console.log(b1, b2, b3, '隐式');    // false false false
+        a = undefined == null;
+        console.log(a, '隐式');     // true
+    </script>
+
+    <div>isNaN</div>
+    <div>原理：经过Number方法转换，再与NaN对比，返回布尔值</div>
+    <script>
+        var a = 1;
+        console.log(isNaN(a), 'isNaN'); // false
+        a = '123';
+        console.log(isNaN(a), 'isNaN'); // false
+        a = 'a';
+        console.log(isNaN(a), 'isNaN'); // true
+        a = null;
+        console.log(isNaN(a), 'isNaN'); // false Number(null) == 0
+        a = undefined;
+        console.log(isNaN(a), 'isNaN'); // false Number(undefined) == NaN
+    </script>
+
+    <div>作业：输入n，算出斐波那契数列的第n位的值</div>
+    <script>
+        var n = window.prompt('输入n');
+        n = +n;
+        if (isNaN(n)) {
+            console.log('请输入正确的数字');
+        } else {
+            if (n == 0 || n == 1) {
+                console.log(arr[n]);
+            } else {
+                var arr = [1, 1];
+
+                for (var i = 2; i < n; i++) {
+                    arr[i] = arr[i - 1] + arr[i - 2];
+                }
+                console.log(arr, arr[n - 1]);
+            }
+        }
+    </script>
+</body>
+
+</html>
