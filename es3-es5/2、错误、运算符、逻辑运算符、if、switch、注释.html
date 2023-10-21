@@ -13,19 +13,19 @@
     <div>语法错误：代码不执行</div>
     <script>
         console.log(1);
-        // console.log(2)；
+        console.log(2)；
         console.log(3);
     </script>
     <div>通用错误：错误之前的代码会执行</div>
     <script>
-        console.log(1);
-        // console.log(a);
-        console.log(3);
         var script1 = 111;
+        console.log(1);
+        console.log(a);
+        console.log(3);
     </script>
     <div>不同的代码块之前是不影响的,但是不同代码块之间的变量可以共用</div>
     <script>
-        console.log(script1); // 111
+        console.log(script1, 222); // 111
     </script>
 
 
@@ -60,6 +60,13 @@
     <script>
         var num = 6 % 4; // 2
         var num1 = 4 % 6; // 4
+
+        // 789的反序
+        var num = 789;
+        var a = num % 10;
+        var b = (num - a) / 10 % 10;
+        var c = (num - b * 10 - a) / 100;
+        console.log("" + a + b + c, '789的反序');
     </script>
     <div>交换值</div>
     <script>
@@ -70,7 +77,7 @@
         a = b;
         b = c;
         // 第二种
-        var a = a + b;
+        a = a + b;
         b = a - b;
         a = a - b;
     </script>
@@ -113,6 +120,24 @@
         console.log(1 == '1'); // true
         console.log(1 === '1'); // false
         console.log(NaN == NaN); // false NaN与任何都不相等
+
+        // 3个数中，最大的数
+        var a = 1,
+            b = 3,
+            c = 2;
+        if (a > b) {
+            if (a > c) {
+                console.log(a, '3个数中，最大的数');
+            } else {
+                console.log(c, '3个数中，最大的数');
+            }
+        } else {
+            if (b > c) {
+                console.log(b, '3个数中，最大的数');
+            } else {
+                console.log(c, '3个数中，最大的数');
+            }
+        }
     </script>
 
     <div>逻辑运算符：&&与 ||或 !非</div>
@@ -174,6 +199,43 @@
         * 注
         * 释
         */
+    </script>
+
+    <div>作业：输入星期几和上午下午，输出要做的事情</div>
+    <script>
+        var week = window.prompt('星期几'),
+            time = window.prompt('时间段'),
+            str = '';
+        if (time == '上午') {
+            switch (week) {
+                case '星期一':
+                    str = '星期一上午上班';
+                    break;
+                case '星期二':
+                    str = '星期二上午上班';
+                    break;
+                case '星期三':
+                    str = '星期三上午上班';
+                    break;
+                default:
+                    str = week + time + '打游戏';
+            }
+        } else {
+            switch (week) {
+                case '星期一':
+                    str = '星期一下午上班';
+                    break;
+                case '星期二':
+                    str = '星期二下午上班';
+                    break;
+                case '星期三':
+                    str = '星期三下午上班';
+                    break;
+                default:
+                    str = week + time + '打游戏';
+            }
+        }
+        document.write(str);
     </script>
 </body>
 
