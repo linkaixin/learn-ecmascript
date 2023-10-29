@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>函数也是对象的一种，也有属性</div>
+    <div>fn.name、fn.length、fn.prototype</div>
+    <div>对象有一些属性外部无法访问的，也就是js引擎的固有属性（隐式属性）</div>
+    <div>[[scope]]</div>
+    <div>1、在函数创建时，生成的一个隐式属性</div>
+    <div>2、函数存储作用域、作用域链的容器，也就是存储AO/GO</div>
+    <div>AO：函数执行期上下文</div>
+    <div>GO：全局执行期上下文</div>
+    <div>AO是在函数定义时新生成，在函数执行结束时销毁的即使容器</div>
+    <div>所谓作用域链是AO/GO形成的链式关系</div>
+
+
+    <div>闭包</div>
+    <script>
+        function a() {
+            function b() {
+                console.log(a);
+            }
+            var a = 1;
+            return b;
+        }
+        var c = a();
+        c();
+    </script>
+</body>
+
+</html>
