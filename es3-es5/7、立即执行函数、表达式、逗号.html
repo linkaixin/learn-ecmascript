@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>立即执行函数 IIFE：immediately invoked function expression</div>
+    <div>页面开始自动执行，执行完自动释放</div>
+    <script>
+        (function () {
+            console.log('立即执行函数1')
+        }());
+
+        (function () {
+            console.log('立即执行函数2')
+        })();
+
+        // 立即执行函数传参
+        (function (a, b) {
+            console.log(a + b);
+        })(1, 2);
+
+        var num = (function () {
+            return 1;
+        })()
+        console.log(num);
+    </script>
+
+    <div>表达式()</div>
+    <div>被括号包裹的都是表达式,表达式忽略函数名</div>
+    <script>
+        (1);
+        (function () {
+            console.log('表达式');
+        })();
+        var fn1 = function test() {
+            console.log('表达式');
+        }()
+
+            // 报错 只有表达式后才能被执行符号()执行
+            // function fn2(){
+            //     console.log('函数声明');
+            // }()
+
+            // 函数声明转为表达式 + - ! || &&
+            + function fn3() {
+                console.log('函数声明转为表达式');
+            }()
+        // console.log(fn3); // fn3 is not defined
+
+        // 不执行也不报错 如果不传参数就报语法错误，传了会先解析为表达式
+        function fn4() {
+
+        } (6);
+    </script>
+    <div>面试题</div>
+    <script>
+        var a = 10;
+        if (function b() { }) {
+            a += typeof (b);
+        }
+        console.log(a); // 10undefined
+    </script>
+
+    <div>面试题</div>
+    <script>
+        /* 
+         * 预期：输出0 - 9
+         * 结果：10 10 10 10 10 10 10 10 10 10
+         * 原因：
+         * 1. arr[i]是函数声明，不执行。
+         * 2. return arr的时候i的值是10。
+         * 2. return arr;产生闭包，所以输出i是fn5函数的i的值全部都是10。
+        */
+        function fn5() {
+            var arr = [];
+            for (var i = 0; i < 10; i++) {
+                arr[i] = function () {
+                    document.write(i + '');
+                }
+            }
+            return arr;
+        }
+
+        var arr = fn5();
+        for (let j = 0; j < arr.length; j++) {
+            arr[j]();
+        }
+
+        // 使用立即执行函数，将i的值使用实参传给形参。这时候的j的值每次都不一样，输出AO也不是function fn6(){}的i
+        function fn6() {
+            var arr = [];
+            for (var i = 0; i < 10; i++) {
+                (function (j) {
+                    arr[j] = function () {
+                        document.write(j + '');
+                    }
+                }(i))
+            }
+            return arr;
+        }
+
+        var arr = fn6();
+        for (let j = 0; j < arr.length; j++) {
+            arr[j]();
+        }
+
+        // 简便的方法
+        function fn7() {
+            for (let i = 0; i < 10; i++) {
+                (function () {
+                    document.write(i + '');
+                })()
+            }
+        }
+        fn7();
+    </script>
+
+    <div>面试题</div>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+    <li>5</li>
+    <script>
+        /*
+         * 预期：点击li，打印出li的下标
+         * 结果：5
+         * 原因：
+         * 1. 输出i的值，还是挂着var i的值为5。
+         * 2. 这里的函数没有执行，还是一个闭包问题。
+        */
+        var oLi = document.querySelectorAll('li');
+        for (var i = 0; i < oLi.length; i++) {
+            oLi[i].onclick = function () {
+                console.log(i);
+            }
+        }
+
+        // 解决
+        var oLi = document.querySelectorAll('li');
+        for (var i = 0; i < oLi.length; i++) {
+            (function (j) {
+                oLi[j].onclick = function () {
+                    console.log(j);
+                }
+            }(i))
+        }
+    </script>
+
+    <div>, 是一个运算符，返回逗号后面的值</div>
+    <script>
+        var num = (1, 2, 3, 4, 5);
+        console.log(num); // 5
+
+        var fn8 = (
+            (
+                function test1() {
+                    return 1;
+                },
+                function test2() {
+                    return '2';
+                }
+            )
+        )()
+        console.log(fn8); // 2
+    </script>
+</body>
+
+</html>
