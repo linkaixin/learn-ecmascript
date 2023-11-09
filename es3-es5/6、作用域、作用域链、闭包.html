@@ -32,6 +32,41 @@
         var c = a();
         c();
     </script>
+    <script>
+        function fn1() {
+            var num = 100;
+            function add() {
+                num = num + 1;
+                console.log(num);
+            }
+            function minus() {
+                num = num - 1;
+                console.log(num);
+            }
+            return [add, minus];
+        }
+        var arr = fn1();
+        arr[0]();
+        arr[1]();
+
+        function fn2(num) {
+            var num = num || 10;
+            var obj = {
+                add: function () {
+                    num = num + 1;
+                    console.log(num);
+                },
+                minus: function () {
+                    num = num - 1;
+                    console.log(num);
+                }
+            }
+            return obj;
+        }
+        var obj = fn2(50);
+        obj.add();
+        obj.minus();
+    </script>
 </body>
 
 </html>
