@@ -67,6 +67,45 @@
         obj.add();
         obj.minus();
     </script>
+
+    <div>作业：使用闭包来实现学生签到、学生离开、人数到齐功能</div>
+    <script>
+        function studentSign() {
+            let action = {
+                student: [],
+                studentNum: 6,
+                join: function (name) {
+                    this.student.push(name);
+                    console.log(`${name}已签到`);
+                    this.count()
+                },
+                leave: function (name) {
+                    if (this.student.includes(name)) {
+                        this.student.splice(this.student.indexOf(name), 1);
+                        console.log(`${name}已离开`)
+                    } else {
+                        console.log(`${name}还未签到`)
+                    }
+                },
+                count: function () {
+                    let len = this.student.length;
+                    if (len == this.studentNum) {
+                        console.log(`人数到齐`);
+                    }
+                }
+            }
+            return action;
+        }
+        let action = studentSign();
+        action.join('张三');
+        action.join('李四');
+        action.join('王五');
+        action.join('赵六');
+        action.join('钱七');
+        action.join('孙八');
+        action.leave('孙八');
+        action.leave('钱七');
+    </script>
 </body>
 
 </html>
