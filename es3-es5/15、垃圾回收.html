@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>1. 找出不再使用变量</div>
+    <div>2. 释放其占用内存</div>
+    <div>3. 固定时间间隔运行</div>
+    <div>js的垃圾回收机制是标记清除：mark and sweep</div>
+    <div>1. 标记阶段：垃圾回收器会从根对象开始，遍历所有的对象，并标记所有可以访问到的对象。</div>
+    <div>2. 清除阶段：在标记阶段之后，垃圾回收器会遍历堆中的所有对象，清除那些未标记的对象，并回收它们所占用的内存空间。</div>
+    <script>
+        function fn() {
+            var a = 1;  //进入环境
+        }
+        fn(); //离开环境
+        var b = 2; //进入环境
+        var c = 3; //进入环境
+        function fn1() { }
+    </script>
+</body>
+
+</html>
