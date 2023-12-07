@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>链式调用</div>
+    <script>
+        var obj = {
+            say1: function () {
+                console.log(1);
+                return this;
+            },
+            say2: function () {
+                console.log(2);
+                return this;
+            },
+            say3: function () {
+                console.log(3);
+                return this;
+            }
+        }
+        obj.say1().say2().say3();//1 2 3
+    </script>
+    <div>枚举 遍历对象</div>
+    <div>for in</div>
+    <script>
+        var arr = [1, 2, 3, 4, 5];
+        for (const i in arr) {
+            console.log(arr[i]);
+        }
+
+        var obj = {
+            name: 'zhangsan',
+            age: 18
+        }
+        for (const key in obj) {
+            console.log(key + ':' + obj[key]);
+        }
+        // 只要是自己自定义的属性，无论是在原型上还是在构造函数内部都会被循环输出
+        function Cart(opt) {
+            this.name = 'BWM'
+            this.color = 'Black'
+        }
+
+        Cart.prototype.displacment = '2.0'
+        Object.prototype.width = '2.5'
+        var cart = new Cart()
+        for (const key in cart) {
+            console.log(key + ':' + cart[key]);
+        }
+    </script>
+    <div>hasOwnProperty：判断是否在构造函数内部</div>
+    <script>
+        // 只要是自己自定义的属性，无论是在原型上还是在构造函数内部都会被循环输出
+        function Cart(opt) {
+            this.name = 'BWM'
+            this.color = 'Black'
+        }
+
+        Cart.prototype.displacment = '2.0'
+        Object.prototype.width = '2.5'
+        var cart = new Cart()
+        for (const key in cart) {
+            if (cart.hasOwnProperty(key)) {
+                console.log(key + ':' + cart[key]);
+            }
+        }
+    </script>
+    <div>instanceof：判断A原型中是否有B原型</div>
+    <script>
+        function Cart() { }
+        var cart = new Cart()
+        console.log(cart instanceof Cart); // true
+        console.log(Cart instanceof Object);
+        console.log([] instanceof Object);
+        console.log([] instanceof Array);
+        console.log({} instanceof Object);
+    </script>
+    <div>Object.prototype.toString.call()：判断数据类型</div>
+    <script>
+        console.log(Object.prototype.toString.call(123)); // [object Number]
+        console.log(Object.prototype.toString.call('123')); // [object String]
+        console.log(Object.prototype.toString.call(true)); // [object Boolean]
+        console.log(Object.prototype.toString.call(undefined)); // [object Undefined]
+        console.log(Object.prototype.toString.call(null)); // [object Null]
+        console.log(Object.prototype.toString.call({})); // [object Object]
+        console.log(Object.prototype.toString.call([])); // [object Array]
+        console.log(Object.prototype.toString.call(function () { })); // [object Function]
+        console.log(Object.prototype.toString.call(new Date())); // [object Date]
+        console.log(Object.prototype.toString.call(new RegExp())); // [object RegExp]
+        console.log(Object.prototype.toString.call(new Error())); // [object Error]
+    </script>
+    <div>构造函数的GO AO</div>
+    <script>
+        function A() {
+            this.name = '123'
+        }
+
+        var a = new A();
+        /*
+         *  
+         * GO = {
+         *  A:function,
+         *  a:{
+         *       __proto__: A.prototype,
+         *      name:'123' 
+         *  }
+         * }
+         * 
+         * AO = {
+         *  this:window -> {
+         *      __proto__: A.prototype,
+         *      name:'123'
+         *  }
+         * }
+         * 
+        */
+    </script>
+    <div>this指向</div>
+    <div>1. 全局this指向window</div>
+    <div>2. 预编译的this指向window</div>
+    <div>3. call/apply改变this的指向</div>
+    <div>4. 构造函数的this指向实例化对象</div>
+
+    <div>arguments.callee返回正在被执行函数的本身 arguments.caller返回当前被调用函数的函数引用</div>
+    <script>
+        function ab(a, b) {
+            console.log(arguments.callee);
+            console.log(arguments.callee.length);
+            // 相当于 ab也是函数的本身
+            console.log(ab.length);
+        }
+        ab();
+
+        // 用处：立即执行函数没有函数名，找不到函数本身
+        function sum(n) {
+            if (n <= 1) {
+                return 1;
+            }
+            return n + sum(n - 1)
+        }
+        console.log(sum(10));
+        // 转为立即执行函数
+        var sum = (function (n) {
+            if (n <= 1) {
+                return 1;
+            }
+            return n + arguments.callee(n - 1)
+        }(10));
+        console.log(sum);
+
+        // caller返回当前被调用函数的函数引用
+        function a() {
+            b();
+        }
+        function b() {
+            console.log(b.caller);
+        }
+        a();
+    </script>
+
+    <div>笔试题</div>
+    <script>
+        function foo() {
+            bar.apply(null, arguments);
+            // bar() == bar.call() == bar.call(arguments)
+        }
+
+        function bar() {
+            console.log(arguments);
+        }
+        foo(1, 2, 3, 4, 5)
+    </script>
+    <div>typeof返回值：string/number/boolean/function/undefined/object(null)</div>
+    <script>
+        // 手写isNaN
+        function myIsNaN(number) {
+            let res = Number(number) + '';
+            if (res == 'NaN') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        console.log(myIsNaN('abs'));
+    </script>
+    <script>
+        var a = 10;
+        function test() {
+            a = 0;
+            console.log(a);
+            console.log(this.a);
+            var a;
+            console.log(a);
+        }
+        test();
+        new test();
+    </script>
+</body>
+
+</html>
