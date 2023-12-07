@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../utils/utils.js"></script>
+</head>
+
+<body>
+    <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <div>ES5发布的数组扩展方法</div>
+    <script>
+        var arr = [{
+            name: '张小一'
+        }, {
+            name: '张小二'
+        }, {
+            name: '张小三'
+        },];
+        // forEach的第二位参数是改变this指向，默认指向window，如果传入了第二个参数，则指向第二个参数
+        arr.forEach(function (ele, i, arr) {
+            console.log(this);
+            this[i].innerHTML = ele.name;
+        }, document.getElementsByTagName('li'))
+    </script>
+    <div>重写forEach，使其能够支持ES3</div>
+    <script>
+        Array.prototype.myForEach = function (callback) {
+            var arr = this,
+                len = arr.length,
+                arg2 = arguments[1] || window;
+            for (let i = 0; i < len; i++) {
+                callback.apply(arg2, [arr[i], i, arr]);
+            }
+        }
+        arr.myForEach(function (ele, i, arr) {
+            console.log(this);
+            this[i].innerHTML = ele.name;
+        }, document.getElementsByTagName('li'))
+    </script>
+    <div>filter过滤</div>
+    <div>根据返回的true或false，生成一个新的数组</div>
+    <script>
+        var arr = [{
+            name: 'HTML',
+            isfree: 1,
+        }, {
+            name: 'JS',
+            isfree: 0,
+        }, {
+            name: 'CSS',
+            isfree: 1,
+        },];
+        var newArr = arr.filter(function (ele, i, arr) {
+            console.log(this, ele, i, arr);
+            return ele.isfree == 1
+        }, 2)
+        console.log(newArr, arr);
+    </script>
+    <div>重写filter</div>
+    <script>
+        Array.prototype.myFilter = function (callback) {
+            var arr = this,
+                len = arr.length,
+                arg2 = arguments[1] || window,
+                newArr = [];
+            for (let i = 0; i < len; i++) {
+                var ele = utils.deepClone(arr[i]);
+                if (callback.apply(arg2, [ele, i, arr])) {
+                    newArr.push(ele);
+                }
+            }
+            return newArr;
+        }
+        var newArr = arr.myFilter(function (ele, i, arr) {
+            console.log(this, ele, i, arr);
+            return ele.isfree == 1
+        }, 2)
+        newArr[0]['a'] = 'aaa'
+        console.log(newArr, arr);
+    </script>
+    <div>map映射</div>
+    <script>
+        var arr = [{
+            name: 'HTML',
+            isfree: 1,
+        }, {
+            name: 'JS',
+            isfree: 0,
+        }, {
+            name: 'CSS',
+            isfree: 1,
+        },];
+
+        var newArr = arr.map(function (ele, i, arr) {
+            ele.name += '学习'
+            console.log(this, ele, i, arr);
+            return ele
+        }, 3)
+        console.log(newArr, arr);
+    </script>
+    <div>重写map</div>
+    <script>
+        var arr = [{
+            name: 'HTML',
+            isfree: 1,
+        }, {
+            name: 'JS',
+            isfree: 0,
+        }, {
+            name: 'CSS',
+            isfree: 1,
+        },];
+
+        Array.prototype.myMap = function (callback) {
+            var arr = this,
+                len = arr.length,
+                arg2 = arguments[1] || window,
+                newArr = [];
+
+            for (let i = 0; i < len; i++) {
+                const element = utils.deepClone(arr[i]);
+                newArr.push(callback.apply(arg2, [element, i, arr]))
+            }
+            return newArr
+        }
+
+        var newArr = arr.myMap(function (ele, i, arr) {
+            ele.name += '学习'
+            console.log(this, ele, i, arr);
+            return ele
+        }, 3)
+        console.log(newArr, arr);
+    </script>
+
+    <div>every和some</div>
+    <script>
+        var arr = [{
+            isfree: 1,
+        }, {
+            isfree: 0,
+        }, {
+            isfree: 1,
+        }, {
+            isfree: 1,
+        },]
+
+        // 1. 只要有一个不满足条件就停止循环
+        var res = arr.every(function (ele, i, arr) {
+            console.log(ele, i, arr, this);
+            return ele.isfree == 1;
+        }, 4)
+        console.log(res);
+
+        // 1. 只要有一个满足条件就停止循环
+        res = arr.some(function (ele, i, arr) {
+            console.log(ele, i, arr, this);
+            return ele.isfree == 0;
+        }, 5)
+        console.log(res);
+    </script>
+    <div>重写every和some</div>
+    <script>
+        Array.prototype.myEvery = function (callback) {
+            var arr = this,
+                len = arr.length,
+                arg2 = arguments[1] || window;
+            for (let i = 0; i < len; i++) {
+                const element = utils.deepClone(arr[i]);
+                if (!callback.apply(arg2, [element, i, arr])) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        Array.prototype.mySome = function (callback) {
+            var arr = this,
+                len = arr.length,
+                arg2 = arguments[1] || window;
+            for (let i = 0; i < len; i++) {
+                const element = utils.deepClone(arr[i]);
+                if (callback.apply(arg2, [element, i, arr])) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        var arr = [{
+            isfree: 1,
+        }, {
+            isfree: 0,
+        }, {
+            isfree: 1,
+        }, {
+            isfree: 1,
+        },]
+        var res = arr.myEvery(function (ele, i, arr) {
+            console.log(ele, i, arr, this);
+            return ele.isfree == 1;
+        }, 4)
+        console.log(res);
+
+        res = arr.mySome(function (ele, i, arr) {
+            console.log(ele, i, arr, this);
+            return ele.isfree == 0;
+        }, 5)
+        console.log(res);
+    </script>
+    <div>reduce和reduceRight</div>
+    <script>
+        var arr = [{
+            name: 'HTML',
+            isfree: 1,
+        }, {
+            name: 'JS',
+            isfree: 0,
+        }, {
+            name: 'CSS',
+            isfree: 1,
+        },];
+
+        var newArr = arr.reduce(function (prev, ele, i, arr) {
+            console.log(prev, ele, i, arr);
+            prev.push(ele.name)
+            return prev;
+        }, [])
+        console.log(newArr);
+
+        var reserveNewArr = arr.reduceRight(function (prev, ele, i, arr) {
+            console.log(prev, ele, i, arr);
+            prev.push(ele.name)
+            return prev;
+        }, [])
+        console.log(reserveNewArr);
+    </script>
+    <div>重写reduce</div>
+    <script>
+        Array.prototype.myReduce = function (fn, initVal) {
+            var arr = this,
+                len = arr.length,
+                newArr = initVal;
+            for (let i = 0; i < len; i++) {
+                const element = arr[i];
+                newArr = fn(newArr, element, i, arr);
+            }
+            return newArr;
+        }
+
+        Array.prototype.myReduceRight = function (fn, initVal) {
+            var arr = this.reverse(),
+                len = arr.length,
+                newArr = initVal;
+            for (let i = 0; i < len; i++) {
+                const element = arr[i];
+                newArr = fn(newArr, element, i, arr);
+            }
+            return newArr;
+        }
+
+        var arr = [{
+            name: 'HTML',
+            isfree: 1,
+        }, {
+            name: 'JS',
+            isfree: 0,
+        }, {
+            name: 'CSS',
+            isfree: 1,
+        },];
+
+        var newArr = arr.myReduce(function (prev, ele, i, arr) {
+            console.log(prev, ele, i, arr);
+            prev.push(ele.name)
+            return prev;
+        }, [])
+        console.log(newArr);
+
+        var reserveNewArr = arr.myReduceRight(function (prev, ele, i, arr) {
+            console.log(prev, ele, i, arr);
+            prev.push(ele.name)
+            return prev;
+        }, [])
+        console.log(reserveNewArr);
+    </script>
+
+    <div>搜索</div>
+    <input type="text" placeholder="搜索名称" id="search">
+    <ul id="searchList">
+        <span>-暂无数据-</span>
+    </ul>
+    <script>
+        var arr = [{
+            name: '张小一'
+        }, {
+            name: '张小二'
+        }, {
+            name: '张小三'
+        }];
+
+        var oInput = document.getElementById('search'),
+            oList = document.getElementById('searchList');
+
+        var init = function () {
+            bindEvent()
+        }
+
+        var bindEvent = function () {
+            oInput.addEventListener('input', searchInput, false)
+        }
+
+        function searchInput() {
+            var searchName = oInput.value;
+            if (searchName.trim() !== '') {
+                renderList(searchResult(searchName))
+            } else {
+                renderList([])
+            }
+        }
+
+        function searchResult(searchName) {
+            var res = [];
+            res = arr.reduce(function (prev, ele) {
+                if (ele.name.indexOf(searchName) != -1) {
+                    prev.push(ele)
+                }
+                return prev;
+            }, [])
+            return res;
+        }
+
+        function renderList(list) {
+            var li = '';
+            list.forEach(function (ele, i, arr) {
+                li += `<li>${ele.name}</li>`
+            });
+            if (list.length == 0) {
+                oList.innerHTML = `<span>-暂无数据-</span>`;
+            } else {
+                oList.innerHTML = li;
+            }
+        }
+        init()
+
+    </script>
+</body>
+
+</html>
