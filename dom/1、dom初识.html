@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>DOM：Document Object Model 文档对象模型</div>
+    <div>宿主对象：由浏览器提供一系列方法</div>
+    <div>JavaScript下有三种对象</div>
+    <div>1. 本地对象：Native Object</div>
+    <div>Object、Function、Array、String、Number、Boolean、
+        Error、Date、RegExp
+    </div>
+    <div>2. 内置对象：Built-in Object</div>
+    <div>Global、Math</div>
+    <div>Global是一类对象的统称，例如：isNaN() parserInt decodeURI encodeURI;</div>
+    <div>Global的属性有：Infinity NaN undefined</div>
+    <div>本地对象和内置对象都是ECMA的内部对象，是由ECMA提供，与浏览器没有关系</div>
+    <div>3. 宿主对象：Host Object</div>
+    <div>执行JS脚本的环境提供的对象，也就是浏览器对象，由于浏览器之间的实现方式不一样，所以会出现兼容性问题</div>
+    <div>浏览器对象包含Window(BOM)和document(DOM)</div>
+    <div>DOM其实是在Window下面的，但是DOM有W3C规范，而BOM没有</div>
+    <div>DOM：通过浏览器提供的这一套方法表示或者操作HTML和XML</div>
+    <div>XML -> XHTML -> HTML</div>
+    <person>
+        <name>张三</name>
+        <age>20</age>
+        <sex>男</sex>
+    </person>
+    <script>
+        var person = document.getElementsByTagName("person")[0];
+        console.log(person);
+    </script>
+    <div>js是没办法操作CSS，能改变样式只是因为改变了DOM上面的style这个属性</div>
+    <div class="number">123</div>
+    <div class="number">456</div>
+    <div class="number">789</div>
+    <script>
+        var numbers = document.getElementsByClassName("number");
+        for (var i = 0; i < numbers.length; i++) {
+            numbers[i].onclick = function () {
+                console.log(i);
+            }
+        }
+    </script>
+
+</body>
+
+</html>
