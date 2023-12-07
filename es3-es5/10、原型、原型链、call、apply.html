@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>原型：prototype</div>
+    <div>是一个对象，也是function下的一个属性</div>
+    <script>
+        function Person() { }
+        console.log(Person.prototype);
+    </script>
+    <div>prototype是构造函数构造出的实例的公共祖先</div>
+    <div>所以被该构造函数构造出的实例都能继承原型上的属性和方法</div>
+    <div>写在构造函数中的基本都是需要配置的属性，而方法和不需要配置的属性都写在原型上</div>
+    <script>
+        function Person(name, age) {
+            this.name = name;
+            this.age = age;
+        }
+        Person.prototype.sayHi = function () {
+            console.log('hi----', this.name);
+        }
+        var p1 = new Person('张三', 18);
+        var p2 = new Person('李四', 19);
+        p1.sayHi()
+        p2.sayHi()
+    </script>
+    <div>实例只能查看原型上的属性，没办法增删改</div>
+    <script>
+        function A() { }
+        A.prototype.test = 1;
+        var a = new A();
+        console.log(a.test);
+        a.test = 2;
+        console.log(A.prototype);
+        delete a.test;
+        console.log(A.prototype);
+        a.test1 = 3;
+        console.log(A.prototype);
+    </script>
+    <div>构造器：constructor</div>
+    <div>原型上的constructor构造器指向构造函数本身</div>
+    <div>构造器的指向是可以更改的</div>
+    <script>
+        function B() { }
+        function C() { }
+        B.prototype = {
+            constructor: C,
+        }
+        console.log(B.prototype.constructor);
+    </script>
+    <div>原型属于实例化对象，不属于构造函数</div>
+    <div>__proto__是存在于隐式的this中</div>
+    <script>
+        function Cart() {
+            // 在new Cart()隐式声明了一个this
+            this = {
+                __proto__: Cart.prototype,
+            }
+        }
+        Cart.prototype.name = 'benz'
+        var cart = new Cart();
+        console.log(cart.name);
+    </script>
+    <div>__proto__是可以更改的</div>
+    <script>
+        function A() { }
+        A.prototype.name = '张三';
+        var p1 = {
+            name: '李四'
+        }
+        var a = new A();
+        console.log(a.__proto__, a.name);
+        a.__proto__ = p1;
+        console.log(a.__proto__, a.name);
+    </script>
+    <div>修改与重写prototype</div>
+    <script>
+        Cart.prototype.name = 'benz'
+        function Cart() { }
+        var cart = new Cart();
+        // Cart.prototype = {
+        //     name: 'BMW',
+        // }
+        Cart.prototype.name = 'BMW'
+        console.log(cart.name);
+    </script>
+
+    <div>prototype和__proto__</div>
+    <script>
+        function A() { }
+        var a = new A();
+        // 实例化对象a下面的__proto__就是A.prototype
+        console.log(A.prototype);
+        console.log(a.__proto__);
+        console.log(a.__proto__ === A.prototype); // true
+    </script>
+
+    <div>原型链：链条式的继承关系</div>
+    <div>原型链的顶端是Object.prototype</div>
+    <div>Object.prototype中有一个toString方法</div>
+    <script>
+        P.prototype.tSkill = 'JAVA';
+        function P() { }
+        var p = new P();
+
+        T.prototype = p;
+        function T() {
+            this.mKill = 'JS';
+            this.a = {
+                name: '1'
+            }
+            this.studentNum = 500;
+        }
+        var t = new T();
+
+        S.prototype = t;
+        function S() {
+            this.pSkill = 'HTML';
+        }
+        var s = new S();
+        console.log(s);
+        // 引用值是可以改变，还会改变原型链中的值
+        s.a.name = '2222222';
+        console.log(s, t);
+        // 基础类型不可改变，但是会在本身的实例中赋值且创建一个
+        s.studentNum++;
+        console.log(s, t);
+    </script>
+
+    <div>实例先找本身，再找原型链上</div>
+    <script>
+        function Cart() {
+            this.name = 'BMW';
+        }
+        Cart.prototype = {
+            name: 'Benz',
+            intro: function () {
+                console.log(this.name);
+            }
+        }
+        var cart = new Cart();
+        cart.intro();
+        Cart.prototype.intro();
+        cart.__proto__.intro();
+        console.log(cart.__proto__ === Cart.prototype); // true
+    </script>
+    <div>构造函数继承其他构造函数的原型，新增属性的时候不应该会影响到被继承的构造函数原型</div>
+    <div>这里与上面的引用值的变化不一样，此处是在原型上新增属性，不影响被继承的构造函数原型</div>
+    <script>
+        function Teacher() {
+            this.name = 'Mr. Li';
+            this.tSkill = 'JAVA';
+        }
+        Teacher.prototype = {
+            pSkill: 'JS/JQ'
+        }
+
+        var t = new Teacher();
+        console.log(t);
+
+        function Student() {
+            this.name = 'Mr. Wang';
+        }
+        Student.prototype = Teacher.prototype;
+        Student.prototype.age = 18;
+        var s = new Student();
+        console.log(s);
+    </script>
+    <script>
+        function inherit(Target, Origin) {
+            function Buffer() { }
+            Buffer.prototype = Origin.prototype;
+            Target.prototype = new Buffer();
+            Target.prototype.constructor = Target;
+            Target.prototype.super_class = Origin;
+        }
+
+        function Teacher() {
+            this.name = 'Mr. Li';
+            this.tSkill = 'JAVA';
+        }
+        Teacher.prototype = {
+            pSkill: 'JS/JQ',
+        }
+
+        var t = new Teacher();
+        console.log(t);
+
+        function Student() {
+            this.name = 'Mr. Wang';
+        }
+
+        inherit(Student, Teacher)
+
+        Student.prototype.age = 18;
+        var s = new Student();
+        console.log(s);
+    </script>
+    <div>使用闭包模块化封装圣杯模式</div>
+    <script>
+        var inherit = (function () {
+            function Buffer() { }
+            return function (Target, Origin) {
+                Buffer.prototype = Origin.prototype;
+                Target.prototype = new Buffer();
+                Target.prototype.constructor = Target;
+                Target.prototype.super_class = Origin;
+            }
+        })()
+
+        function Teacher() {
+            this.name = 'Mr. Li';
+            this.tSkill = 'JAVA';
+        }
+        Teacher.prototype = {
+            pSkill: 'JS/JQ',
+        }
+
+        var t = new Teacher();
+        console.log(t);
+
+        function Student() {
+            this.name = 'Mr. Wang';
+        }
+
+        inherit(Student, Teacher)
+
+        Student.prototype.age = 18;
+        var s = new Student();
+        console.log(s);
+    </script>
+
+
+    <div>Object.create：创建一个以某个对象为原型的对象</div>
+    <div>当传值为null的时候，是没有原型的对象，所以并不是所有对象的顶端都是Object.prototype</div>
+    <script>
+        // 创建空对象
+        var obj1 = Object.create(null);
+        obj1.num = 1;
+        var obj2 = Object.create(obj1);
+        console.log(obj2);
+    </script>
+    <div>undefined和null是没有toString方法，原因是因为他们没有包装类和原型</div>
+
+    <div>call/apply：改变this指向</div>
+    <script>
+        function Person(name, age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        var newPerson = {}
+        Person.call(newPerson, '张三', 18);
+        Person.apply(newPerson, ['李四', 20]);
+        console.log(newPerson);
+
+        function ComputedAddSub() {
+            this.add = function (a, b) {
+                console.log(a + b);
+            }
+            this.sub = function (a, b) {
+                console.log(a - b);
+            }
+        }
+        function ComputedMulDiv() {
+            ComputedAddSub.call(this);
+            this.mul = function (a, b) {
+                console.log(a * b);
+            }
+            this.div = function (a, b) {
+                console.log(a / b);
+            }
+        }
+        var computed = new ComputedMulDiv();
+        computed.add(1, 2)
+        computed.sub(1, 2)
+        computed.mul(1, 2)
+        computed.div(1, 2)
+    </script>
+
+    <div>写一个插件：实现两位数的加减乘除</div>
+    <script>
+            ; (function () {
+                function Computed(num1, num2) {
+                    this.num1 = num1;
+                    this.num2 = num2;
+                }
+
+                Computed.prototype = {
+                    add: function () {
+                        return this.num1 + this.num2;
+                    },
+                    sub: function () {
+                        return this.num1 - this.num2;
+                    },
+                    mul: function () {
+                        return this.num1 * this.num2;
+                    },
+                    div: function () {
+                        return this.num1 / this.num2;
+                    }
+                }
+
+                window.Computed = Computed;
+            })()
+
+        var c = new Computed(1, 2);
+        console.log(c.add());
+        console.log(c.sub());
+        console.log(c.mul());
+        console.log(c.div());
+    </script>
+    <div>判断字节长度</div>
+    <script>
+        function getByteLen(val) {
+            var len = val.length;
+            var byteLen = len;
+            for (var i = 0; i < len; i++) {
+                var pos = val.charCodeAt(i);
+                if (pos > 255) {
+                    byteLen++;
+                }
+            }
+            return byteLen;
+        }
+
+        console.log(getByteLen('你好，世界！hello world!'));
+    </script>
+
+    <script>
+        function Cart(opt) {
+            this.cartName = opt.cartName;
+            this.color = opt.color;
+            this.displacement = opt.displacement;
+        }
+
+        function Person(opt) {
+            this.name = opt.name;
+            this.age = opt.age;
+            Cart.call(this, opt);
+        }
+        Person.prototype.buy = function () {
+            console.log(this.name + '买' + this.age + '岁购买了' + this.cartName + '，颜色是' + this.color + '，排量是' + this.displacement + '的车');
+        }
+
+        var p1 = new Person({
+            name: '小明',
+            age: '18',
+            cartName: '宝马',
+            color: '红色',
+            displacement: '2.0'
+        })
+        p1.buy();
+    </script>
+</body>
+
+</html>
