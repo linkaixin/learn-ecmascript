@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>构造函数原理</div>
+    <div>new 的作用是改变this的指向</div>
+    <div>在构造函数运行的时候，在构造函数内部创造一个this={}</div>
+    <div>在构造函数结束的时候，隐式的return this</div>
+    <script>
+        function Cart(color) {
+            // this = {}
+            this.color = color;
+            // return this
+        }
+        let cart = new Cart('red');
+        console.log(cart.color);
+
+        // 一样效果
+        function Cart1(color) {
+            let me = {}
+            me.color = color;
+            return me;
+        }
+        let cart1 = Cart1('yellow');
+        console.log(cart1.color);
+
+        // 修改构造函数中的隐式return
+        // 返回引用值就能改变构造函数隐式类型返回的值
+        function Cart2(color) {
+            // this = {}
+            this.color = color;
+            return '123'
+            return 123
+            return {}
+            return []
+        }
+        let cart3 = new Cart2('red');
+        console.log(cart3); // {'red'}
+        console.log(cart3); // {'red'}
+        console.log(cart3); // {}
+        console.log(cart3); // []
+    </script>
+
+    <div>包装类</div>
+    <div>new Number、new String、new Boolean</div>
+    <script>
+        var a = 1;
+        var b = new Number(1);
+        b.name = 'b'
+        console.log(b);
+        console.log(b.name);
+        b.log = function () {
+            console.log(`输出b的名称--${b.name}`);
+        }
+        b.log();
+        var c = a + b;
+        console.log(c);
+
+        // undefined和null是不能添加任何属性的
+        // undefined.len = 1;  // Cannot set properties of undefined (setting 'len')
+        // null.len = 1;   // Cannot set properties of null (setting 'len')
+    </script>
+    <div>原始值是没有属性与方法的，所以不能添加与保存属性</div>
+    <script>
+        var aa = 3;
+        aa.len = 3;
+        console.log(aa.len); // undefined
+        console.log(aa.length); // undefined
+
+        var bb = '123';
+        bb.len = 3;
+        console.log(bb.len); // undefined
+        console.log(bb.length); // 3    new String(123).length = 3
+    </script>
+
+    <div>UNICODE码 涵盖ASCII码</div>
+    <div>0-255 为1字节 255后为2字节</div>
+    <script>
+        var str = 'a'
+        console.log(str.charCodeAt());
+        str = '我'
+        console.log(str.charCodeAt());
+    </script>
+    <div>笔试题</div>
+    <script>
+        var str = 'languiji';
+        str += 10;  // languiji10
+        var type = typeof (str);    // string
+        if (type.length === 6) {    // true
+            type.txt = 'string'     // new String(type).txt = 'string'
+            // delete new String(type).txt
+        }
+        console.log(type.txt);  // undefined
+    </script>
+    <script>
+        // 如何更改为可以输出type.txt
+        var str = 'languiji';
+        str += 10;  // languiji10
+        var type = new String(typeof (str));    // string
+        if (type.length === 6) {    // true
+            type.txt = 'string'
+        }
+        console.log(type.txt);  // string
+    </script>
+    <script>
+        function Test(a, b, c) {
+            var d = 1;
+            this.a = a;
+            this.b = b;
+            this.c = c;
+
+            function f() {
+                d++;
+                console.log(d);
+            }
+
+            this.f = f;
+        }
+
+        var test1 = new Test();
+        test1.f();  // 2
+        test1.f();  // 3
+        var test2 = new Test();
+        test2.f();  // 2
+    </script>
+</body>
+
+</html>
