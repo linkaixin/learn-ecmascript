@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>错误类型</div>
+    <div>1. 语法错误SyntaxError</div>
+    <div>一行代码都不执行</div>
+    <script>
+        // 命名不合规范
+        // var 1 = 1;
+        // 关键字不能赋值
+        // var var = 1;
+        // 语法错误
+        // var a = 1:
+    </script>
+    <div>2. 引用错误ReferenceError</div>
+    <div>错误之前的代码都执行 错误之后的都不执行</div>
+    <script>
+        // 变量或函数未被声明
+        console.log(a);
+        console.log(test());
+    </script>
+    <script>
+        // 给无法赋值的对象赋值
+        var a = 1 = 2;
+    </script>
+    <div>3. 范围错误RangeError</div>
+    <script>
+        // 给数组的长度赋值为负数
+        var arr = [1, 2, 3];
+        arr.length = -1;
+    </script>
+    <script>
+        // 对象参数超出可行范围
+        var a = 66.66;
+        console.log(a.toFixed(-1));
+    </script>
+    <div>4. 类型错误TypeError</div>
+    <script>
+        // 调用不存在的方法
+        // 123();
+        var obj = {}
+        obj.say();
+    </script>
+    <script>
+        // 实例化原始值
+        var str = new 'abc';
+    </script>
+    <div>5. URI错误URIError</div>
+    <script>
+        var str = decodeURI('%dasadawdaw')
+    </script>
+    <div>6. eval函数错误EvalError</div>
+    <div>7. 人为抛出错误</div>
+    <script>
+        console.log(new Error('错误信息'));
+        console.log(new SyntaxError('语法错误'));
+        console.log(new ReferenceError('引用错误'));
+        console.log(new RangeError('范围信息'));
+        console.log(new TypeError('类型错误'));
+        console.log(new URIError('URI错误'));
+    </script>
+    <div>try catch finally throw</div>
+    <script>
+        try {
+            if (1) {
+                throw '我随便抛出的'
+            }
+            // 可能会报错的代码
+            console.log('正常执行1');
+            console.log(aaaa);
+            console.log('正常执行2');
+        } catch (error) {
+            // 出现抛出的错误
+            console.log(error);
+            console.log(error.name + ':' + error.message);
+        } finally {
+            // 不影响执行的代码
+            console.log('正常执行3');
+        }
+    </script>
+
+    <div>ES5的严格模式</div>
+    <div>ECMAScript历史</div>
+    <div>1. 1997年发布ECMA1.0</div>
+    <div>2. 1998年发布ECMA2.0</div>
+    <div>3. 1999年发布ECMA3.0，也就是JS通行标准</div>
+    <div>4. 2007年的时候想发布4.0，但是4.0中改的一些内容过于激进，雅虎谷歌等浏览器巨头就抵制不让发布，除了mozilla公司是支持的。</div>
+    <div>5. 2008年4.0确认终止，但是还是要升级的，所以将4.0中一部分容易升级的，版本为3.1，其余的更名为Harmony</div>
+    <div>6. 2009年发布ECMA5.0，将Harmony中一部分可以接受的更名为JS.NEXT，其余的一部分改名为JS.NEXT.NEXT</div>
+    <div>7. 2011年发布ECMA5.1，是ISO国际标准；</div>
+    <div>8. 2013年将JS.NEXT更名为ES6，JS.NEXT.NEXT更名为7。同时发布ES6的草案；</div>
+    <div>9. 2015年ES6正式发布，又称ECMAScript2015 </div>
+    <div>10. ES5推出的严格模式，使用"use strict"来开启</div>
+
+    <div>在严格模式下不能使用with</div>
+    <script>
+        var a = 1;
+        var obj = {
+            a: 2
+        }
+        function fn() {
+            var a = 3;
+            with (obj) {
+                console.log(a);
+            }
+        }
+        fn()
+    </script>
+    <div>在严格模式下不能使用caller callee</div>
+    <script>
+        function fn1() {
+            console.log(arguments.callee);
+            fn2()
+        }
+        fn1();
+        function fn2() {
+            console.log(fn2.caller);
+        }
+    </script>
+    <div>在严格模式下变量必须声明</div>
+    <script>
+        "use strict";
+        f = 1;
+    </script>
+    <div>在严格模式下非构造函数中的this是undefined</div>
+    <script>
+        "use strict";
+        function fnThis() {
+            console.log(this);
+        }
+        fnThis()
+    </script>
+    <div>在严格模式下函数参数不能相同,但是对象中参数可以重复</div>
+    <script>
+        "use strict";
+        function fn1(a, a) {
+            console.log(a);
+        }
+        fn1(1)
+    </script>
+    <script>
+        "use strict";
+        var obj = {
+            a: 1,
+            a: 2
+        }
+        console.log(obj.a); // 2
+    </script>
+    <div>在严格模式下eval有独立的作用域</div>
+    <script>
+        "use strict";
+        eval('var gg = 1;console.log(gg)');
+        console.log(gg);    // gg is not defined
+    </script>
+</body>
+
+</html>
