@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轮播图案例</title>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+
+<body>
+    <div class="slider-waper">
+        <ul class="slider-content-img">
+            <li class="slider-item active">
+                <a href="">
+                    <img src="./img/1.jpg" alt="" />
+                </a>
+            </li>
+            <li class="slider-item">
+                <a href="">
+                    <img src="./img/2.jpg" alt="" />
+                </a>
+            </li>
+            <li class="slider-item">
+                <a href="">
+                    <img src="./img/3.jpg" alt="" />
+                </a>
+            </li>
+            <li class="slider-item">
+                <a href="">
+                    <img src="./img/4.jpg" alt="" />
+                </a>
+            </li>
+            <li class="slider-item">
+                <a href="">
+                    <img src="./img/5.jpg" alt="" />
+                </a>
+            </li>
+            <li class="slider-item">
+                <a href="">
+                    <img src="./img/6.jpg" alt="" />
+                </a>
+            </li>
+        </ul>
+        <ul class="slider-thumb-content">
+            <li class="slider-thumb-item cur">
+                <a href="javascript:;">
+                    <img src="./img/1.jpg" alt="" />
+                </a>
+            </li>
+            <li class="slider-thumb-item">
+                <a href="javascript:;">
+                    <img src="./img/2.jpg" alt="" />
+                </a>
+            </li>
+            <li class="slider-thumb-item">
+                <a href="javascript:;">
+                    <img src="./img/3.jpg" alt="" />
+                </a>
+            </li>
+            <li class="slider-thumb-item">
+                <a href="javascript:;">
+                    <img src="./img/4.jpg" alt="" />
+                </a>
+            </li>
+            <li class="slider-thumb-item">
+                <a href="javascript:;">
+                    <img src="./img/5.jpg" alt="" />
+                </a>
+            </li>
+            <li class="slider-thumb-item">
+                <a href="javascript:;">
+                    <img src="./img/6.jpg" alt="" />
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- <script src="./js/index.js"></script> -->
+    <script src="./js/plug.js"></script>
+    <script>
+        var slider = new Slider({
+            sliderItem: 'slider-item',
+            sliderThumbContent: 'slider-thumb-content',
+            sliderThumbItem: 'slider-thumb-item',
+        })
+    </script>
+</body>
+
+</html>
