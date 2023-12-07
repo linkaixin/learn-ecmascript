@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>对象</div>
+    <div>声明对象的方法</div>
+    <div>1.对象字面量</div>
+    <div>2.构造函数</div>
+    <script>
+        var obj1 = {
+            name: '张三',
+            age: 20,
+        }
+
+        var obj2 = new Object();
+        obj2.name = '张三';
+        obj2.age = 20;
+    </script>
+    <div>对象的增删改查</div>
+    <script>
+        var obj1 = {
+            name: '张三',
+            age: 20,
+            weight: 120,
+            somke: function () {
+                this.weight--;
+                console.log('由于somke体重将为' + this.weight + '斤');
+            },
+            eat: function () {
+                this.weight++;
+                console.log('由于eat体重将为' + this.weight + '斤');
+            }
+        }
+
+        // 增加
+        obj1.sex = '男';
+        obj1.drink = function () {
+            console.log('drink water');
+        }
+
+        // 修改
+        obj1.name = '李四';
+        obj1.drink = function () {
+            console.log('drink beer');
+        }
+
+        // 查看
+        console.log(obj1.name);
+        console.log(obj1['age']);
+        console.log(obj1.drink);
+        obj1.drink();
+
+        // 删除
+        delete obj1.sex;
+        delete obj1.drink;
+    </script>
+
+    <div>构造函数</div>
+    <div>写法</div>
+    <div>使用大驼峰</div>
+    <div>作用</div>
+    <div>1.创建互不相关的对象</div>
+    <div>2.封装方法</div>
+    <script>
+        function Teacher(opt) {
+            this.name = opt.name;
+            this.age = opt.age;
+            this.class = opt.class;
+            this.say = function () {
+                console.log('大家好，我是' + this.name + '老师，我正在教' + this.class);
+            }
+        }
+
+        var obj1 = new Teacher({
+            name: '张三',
+            age: 20,
+            class: '前端开发',
+        })
+        console.log(obj1.name);
+        obj1.say();
+
+        var obj2 = new Teacher({
+            name: '李四',
+            age: 22,
+            class: 'PHP开发'
+        })
+        console.log(obj2.name);
+        obj2.say();
+    </script>
+</body>
+
+</html>
