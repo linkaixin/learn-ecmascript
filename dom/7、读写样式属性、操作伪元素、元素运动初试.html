@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../utils/utils.js"></script>
+</head>
+<style type="text/css">
+    #box2 {
+        width: 100px;
+        height: 100px;
+        border: 1px solid red;
+    }
+
+    .active {
+        border-radius: 50%;
+    }
+
+    .pseudo {
+        width: 100px;
+        height: 100px;
+        background-color: pink;
+    }
+
+    .pseudo::after {
+        content: "";
+        display: block;
+        width: 20px;
+        height: 20px;
+        background-color: red;
+    }
+
+    .pseudo.active::after {
+        background-color: black;
+    }
+</style>
+
+<body>
+    <div>js是不能够操作层叠样式表的，只能通过修改元素节点的style属性添加样式</div>
+    <div>1. style属性是可读可写的</div>
+    <div>2. 使用小驼峰的写法</div>
+    <div>3. style的值是字符串</div>
+    <div>4. 符合属性使用拆解赋值</div>
+    <div>5. 保留字前面要加css</div>
+    <div>6. 添加css最好使用添加的类的方式</div>
+    <div id="box1"></div>
+    <script>
+        var box1 = document.getElementById('box1');
+        box1.style.width = '100px';
+        box1.style.height = '100px'
+        box1.style.backgroundColor = 'pink';
+        box1.style.borderWidth = '1px';
+        box1.style.borderStyle = 'solid';
+        box1.style.borderColor = '#000';
+        box1.style.cssFloat = 'left';
+        box1.className += ' active';
+        console.log(box1.style);    // 设置的集合
+    </script>
+    <div>window.getComputedStyle(目标节点, 伪元素名称（没有填写null）) 获取元素节点样式值的默认值和设置值，值会换算成绝对值（em、rem会换算成px，#000会换算成rgba(0,0,0,1)）
+    </div>
+    <div>IE8及以下不支持window.getComputedStyle</div>
+    <div>IE8及以下支持ele.currentStyle</div>
+    <div id="box2"></div>
+    <script>
+        var box2 = document.getElementById('box2');
+        console.log(window.getComputedStyle(box2, null));
+        console.log(utils.getStyles(box2, 'border'));
+        console.log(box2.style.height);
+    </script>
+
+    <div>伪元素的读取与修改</div>
+    <div class="pseudo"></div>
+    <script>
+        var pseudo = document.getElementsByClassName('pseudo')[0];
+        console.log(window.getComputedStyle(pseudo, ':after').width);
+        console.log(utils.getStyles(pseudo, 'width', ':after'));
+        // 修改
+        pseudo.className += ' active';
+    </script>
+</body>
+
+</html>

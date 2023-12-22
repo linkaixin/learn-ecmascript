@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>keydown键盘按下、keyup键盘抬起、keypress键盘按下</div>
+    <div>顺序：keydown -> keypress -> keyup</div>
+    <div>keydown和keypress的区别</div>
+    <div>1. keypress有charCode(ASCII值)</div>
+    <div>2. keypress只能触发功能按键，keydown触发所有按键</div>
+    <script>
+        document.onkeydown = function () {
+            console.log('keydown');
+        }
+        document.onkeypress = function (e) {
+            var str = String.fromCharCode(e.charCode);
+            console.log('keypress', e, str);
+        }
+        document.onkeyup = function (e) {
+            console.log('keyup', e);
+        }
+    </script>
+</body>
+
+</html>

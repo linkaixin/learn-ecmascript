@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>日期对象 Date()</div>
+    <div>Date.prototype</div>
+    <script>
+        var date = new Date();
+        console.log(date);  // Tue Dec 12 2023 11:32:39 GMT+0800 (中国标准时间)
+        console.log(Date());    // Tue Dec 12 2023 11:32:39 GMT+0800 (中国标准时间)
+        console.log(date.toString());   // Tue Dec 12 2023 11:32:39 GMT+0800 (中国标准时间)
+    </script>
+
+    <div>getDate()</div>
+    <div>返回一个月的第几天 1-31</div>
+    <script>
+        console.log(new Date().getDate());  // 12
+    </script>
+
+    <div>getDay()</div>
+    <div>返回一周的第几天 0-6 0是星期天</div>
+    <script>
+        Date.prototype.getWeekDay = function (lang) {
+            var day = this.getDay(),
+                chineseArr = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+                englishArr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+                arr = [];
+            arr = lang == 'english' ? englishArr : chineseArr;
+
+            switch (day) {
+                case 0:
+                    return arr[0];
+                    break;
+                case 1:
+                    return arr[1];
+                    break;
+                case 2:
+                    return arr[2];
+                    break;
+                case 3:
+                    return arr[3];
+                    break;
+                case 4:
+                    return arr[4];
+                    break;
+                case 5:
+                    return arr[5];
+                    break;
+                case 6:
+                    return arr[6];
+                    break;
+            }
+        }
+
+        console.log(new Date().getDay());  // 2
+        console.log(new Date().getWeekDay());   // 星期二
+    </script>
+
+    <div>getMonth()</div>
+    <div>获取月份 0-11 需要+1</div>
+    <script>
+        console.log(new Date().getMonth() + 1); // 12
+    </script>
+
+    <div>getYear()、getFullYear()</div>
+    <div>获取年份</div>
+    <div>getYear由于千年虫的问题已经废弃了</div>
+    <script>
+        console.log(new Date().getYear());  // 123
+        console.log(new Date().getFullYear());  // 2023
+    </script>
+
+    <div>getHours()、getMinutes()、getSeconds()、getMilliseconds()</div>
+    <div>获取时分秒的方法是记录实例化new的那个时刻，后面输出的date都是一样的，所以想要实时的输出就要重新new</div>
+    <script>
+        var date = new Date();
+        console.log(date.getHours());
+        console.log(date.getMinutes());
+        console.log(date.getSeconds());
+        console.log(date.getMilliseconds());
+    </script>
+
+    <div>getTime() 获取时间戳</div>
+    <div>js的时间戳是毫秒的</div>
+    <script>
+        var time = new Date().getTime();    // 获取时间戳
+        console.log(time);
+        console.log(new Date(time));    // 时间戳转换标准日期
+    </script>
+
+    <div>setTime() 转换时间戳</div>
+    <script>
+        var date = new Date();
+        date.setTime(1622819200000);
+        console.log(date);
+    </script>
+
+    <div>转换成标准日期</div>
+    <script>
+        console.log(new Date(2023, 11, 12, 14, 5, 22)); // Tue Dec 12 2023 14:05:22 GMT+0800 (中国标准时间)
+        console.log(new Date('2023-12-12 14:06:23'));   // Tue Dec 12 2023 14:06:23 GMT+0800 (中国标准时间)
+        console.log(new Date('2023/12/12 14:06:23'));   // Tue Dec 12 2023 14:06:23 GMT+0800 (中国标准时间)
+    </script>
+
+
+    <div>计时器</div>
+    <div>1. setInterval</div>
+    <div>隔特定的是毫秒数执行内部函数，返回值为setInterval的唯一标识</div>
+    <script>
+        // setInterval(function () {
+        //     console.log(1);
+        // }, 1000)
+        // function test() {
+        //     console.log(1);
+        // }
+        // setInterval(test, 1000)
+        // setInterval('test()', 1000)
+
+        // var time = 1000;
+        // setInterval('console.log(1)', time)
+    </script>
+    <script>
+        var timer = setInterval(function () { }, 1000)
+        console.log(timer); // 3
+        timer = setInterval(function () { }, 1000)
+        console.log(timer); //4
+    </script>
+    <script>
+        // var time1 = new Date().getTime();
+        // setInterval(function () {
+        //     var time2 = new Date().getTime();
+        //     console.log(time2 - time1);
+        //     time1 = time2;
+        // }, 1000)
+    </script>
+    <div>2. clearInterval</div>
+    <div>清除setInterval计时器</div>
+    <script>
+        var num = 0;
+        var timer = setInterval(function () {
+            num++;
+            if (num > 4) {
+                clearInterval(timer)
+            }
+        }, 1000)
+    </script>
+    <div>3. setTimeout 延时器</div>
+    <div>延迟特定的毫秒后执行内部函数</div>
+    <script>
+        setTimeout(function () {
+            console.log(1);
+        }, 1000);
+
+        function test() {
+            console.log(2);
+        }
+        setTimeout(test, 1000);
+        setTimeout('test()', 1000);
+
+        var time = 1000;
+        setTimeout('console.log(4)', time);
+    </script>
+    <div>4. clearTimeout</div>
+    <div>清除setTimeout延时器</div>
+    <script>
+        var timer = setTimeout(function () { }, 1000)
+        console.log(timer, 1);
+        clearTimeout(timer);
+        console.log(timer, 1);
+    </script>
+
+    <div>取整数学函数</div>
+    <div>1. Math.round() 四舍五入除了-5.5</div>
+    <script>
+        console.log(Math.round(5.4));   // 5
+        console.log(Math.round(-5.4));  // -5
+        console.log(Math.round(5.6));   // 6
+        console.log(Math.round(-5.6));  // -6
+        console.log(Math.round(5.5));   // 6
+        console.log(Math.round(-5.5));  // -5
+    </script>
+    <div>2. Math.ceil 向上取整</div>
+    <script>
+        console.log(Math.ceil(5.4));   // 6
+        console.log(Math.ceil(-5.4));  // -5
+        console.log(Math.ceil(5.6));   // 6
+        console.log(Math.ceil(-5.6));  // -5
+        console.log(Math.ceil(5.5));   // 6
+        console.log(Math.ceil(-5.5));  // -5
+    </script>
+    <div>3. Math.floor 向下取整</div>
+    <script>
+        console.log(Math.floor(5.4));   // 5
+        console.log(Math.floor(-5.4));  // -6
+        console.log(Math.floor(5.6));   // 5
+        console.log(Math.floor(-5.6));  // -6
+        console.log(Math.floor(5.5));   // 5
+        console.log(Math.floor(-5.5));  // -6
+    </script>
+
+    <div>作业</div>
+    <div>1. 在原型上，写一个数字时钟</div>
+    <div>时间：<span id="time"></span></div>
+    <script>
+        Date.prototype.ComplementZero = function (time) {
+            return time < 10 && time > 0 ? "0" + time : time;
+        }
+        Date.prototype.clock = function (ele) {
+            var _this = this;
+            setInterval(function () {
+                var date = new Date(),
+                    year = date.getFullYear(),
+                    month = _this.ComplementZero(date.getMonth() + 1),
+                    day = _this.ComplementZero(date.getDay()),
+                    hour = _this.ComplementZero(date.getHours()),
+                    minute = _this.ComplementZero(date.getMinutes()),
+                    second = _this.ComplementZero(date.getSeconds());
+                ele.innerHTML = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+            }, 1000)
+        }
+        var time = document.getElementById('time');
+        new Date().clock(time);
+    </script>
+
+    <div>2. 在原型上写一个倒计时</div>
+    <div>时间：<span id="countdown"></span></div>
+    <script>
+        Date.prototype.Countdown = function (ele, endTime) {
+            var _this = this;
+            var timer = setInterval(function () {
+                var end = new Date(endTime).getTime(),
+                    now = new Date().getTime(),
+                    diff = Math.floor((end - now) / 1000),
+                    day = _this.ComplementZero(Math.floor(diff / 60 / 60 / 24)),
+                    hour = _this.ComplementZero(Math.floor(diff / 60 / 60 % 24)),
+                    minute = _this.ComplementZero(Math.floor(diff / 60 % 60)),
+                    second = _this.ComplementZero(diff % 60);
+                if (diff <= 0) {
+                    clearInterval(timer)
+                    diff = 0;
+                    ele.innerHTML = '倒计时结束！下班！';
+                }
+                ele.innerHTML = day + '天' + hour + '时' + minute + '分' + second + '秒';
+            }, 1000);
+        }
+        var countdown = document.getElementById('countdown');
+        new Date().Countdown(countdown, '2023-12-13 18:30:00')
+    </script>
+</body>
+
+</html>

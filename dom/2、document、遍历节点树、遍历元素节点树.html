@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>document是一个Object,下面包含的是整个html</div>
+    <div id="box"></div>
+    <script>
+        console.log(document);
+    </script>
+    <div>在IE8以下的浏览器中，id是不分大小写的，而且name也会作为ID匹配，所以ID不能大小写乱用</div>
+    <div>getElementById：获取特定ID的元素，获取一个，因为ID是唯一的</div>
+    <script>
+        var box = document.getElementById("box");
+    </script>
+    <ul>
+        <li>123</li>
+        <li>456</li>
+    </ul>
+    <div>getElementsByTagName</div>
+    <div>选出标签名的一组数据，IE8以下也支持</div>
+    <script>
+        var oLi = document.getElementsByTagName("li");
+        console.log(oLi, oLi[0]);
+    </script>
+    <div class="box">123</div>
+    <div class="box">456</div>
+    <div>getElementsByClassName：选出类名的一组数据，IE8以下不支持</div>
+    <script>
+        var boxes = document.getElementsByClassName('box');
+        console.log(boxes, boxes[0]);
+    </script>
+    <div>getElementsByName：获取带name属性的一组数据</div>
+    <input type="text" name="username" id="">
+    <script>
+        var username = document.getElementsByName("username");
+        console.log(username, username[0]);
+    </script>
+
+    <div>querySelector：选择满足条件的首个元素，返回的也是直接元素，选择器的写法与CSS相同</div>
+    <section>123</section>
+    <section>456</section>
+    <section class="section">789</section>
+    <section class="section">000</section>
+    <section id="section">111</section>
+    <script>
+        var sections = document.querySelector('section');
+        console.log(sections);
+        sections = document.querySelector('.section');
+        console.log(sections);
+        sections = document.querySelector('#section');
+        console.log(sections);
+    </script>
+    <div>querySelectorAll：选择满足条件的一组元素</div>
+    <script>
+        var sections = document.querySelectorAll('section');
+        console.log(sections, sections[0]);
+        sections = document.querySelectorAll('.section');
+        console.log(sections, sections[0]);
+        sections = document.querySelectorAll('#section');
+        console.log(sections, sections[0]);
+    </script>
+    <div>querySelector和querySelectorAll的缺点：</div>
+    <div>1. 耗费性能</div>
+    <div>2. 不实时</div>
+    <script>
+        var sections = document.querySelectorAll('.section');
+        console.log(sections);  // [section.section,section.section]
+        sections[0].remove()
+        console.log(sections);  // [section.section,section.section]
+    </script>
+
+    <div>遍历节点树</div>
+    <div>节点是包含元素的，所以就存在元素节点 == DOM元素</div>
+    <div>parentNode</div>
+    <ul>
+        <li>
+            <div>li下的div</div>
+            <a href="" class="parentNodeDemoA">li下的a</a>
+        </li>
+    </ul>
+    <script>
+        var oLiA = document.getElementsByClassName('parentNodeDemoA')[0];
+        console.log(oLiA, oLiA.parentNode);
+        console.log(oLiA.parentNode.parentNode);
+        console.log(oLiA.parentNode.parentNode.parentNode);
+        console.log(oLiA.parentNode.parentNode.parentNode.parentNode);
+        console.log(oLiA.parentNode.parentNode.parentNode.parentNode.parentNode);
+        console.log(oLiA.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode);
+    </script>
+    <ul>
+        <li class="childNodesDemoLi" id="li">
+            <!-- 注释 -->
+            <a href="">链接</a>
+            <p>段落</p>
+            <h1>标题</h1>
+        </li>
+    </ul>
+    <div>childNodes 子节点</div>
+    <div>1. 元素节点 == 1</div>
+    <div>2. 属性节点 == 2</div>
+    <div>3. 文本节点 == 3</div>
+    <div>4. 注释节点 == 8</div>
+    <div>5. document == 9</div>
+    <div>6. DocumenFragment == 11</div>
+    <script>
+        var oLi = document.getElementsByClassName('childNodesDemoLi')[0];
+        console.log(oLi);
+        console.log(oLi.childNodes.length); // 9
+        console.log(oLi.childNodes);    // [text, comment, text, a, text, p, text, h1, text]
+    </script>
+    <div>节点的属性</div>
+    <div>nodeName 节点名称 只读属性</div>
+    <script>
+        var oLi = document.getElementsByClassName('childNodesDemoLi')[0];
+        console.log(oLi.childNodes[0].nodeName);   // #test
+        console.log(oLi.childNodes[1].nodeName);   // #comment
+        console.log(oLi.childNodes[3].nodeName);   // A
+        console.log(oLi.childNodes[5].nodeName);   // P
+        console.log(oLi.childNodes[7].nodeName);   // H1
+        console.log(document.nodeName); // #document
+    </script>
+    <div>nodeValue 节点的值 可写属性 元素节点、document没有nodeValue</div>
+    <script>
+        var oLi = document.getElementsByClassName('childNodesDemoLi')[0];
+        console.log(oLi.childNodes[0].nodeValue);   //  
+        console.log(oLi.childNodes[1].nodeValue);   // 注释
+        console.log(oLi.childNodes[3].nodeValue);   // null
+        console.log(oLi.childNodes[5].nodeValue);   // null
+        console.log(oLi.childNodes[7].nodeValue);   // null
+        console.log(document.nodeValue); // null
+    </script>
+    <div>nodeType 节点类型的值 只读属性</div>
+    <script>
+        var oLi = document.getElementsByClassName('childNodesDemoLi')[0];
+        console.log(oLi.childNodes[0].nodeType);   // 3
+        console.log(oLi.childNodes[1].nodeType);   // 8
+        console.log(oLi.childNodes[3].nodeType);   // 1
+        console.log(oLi.childNodes[5].nodeType);   // 1
+        console.log(oLi.childNodes[7].nodeType);   // 1
+        console.log(document.nodeType); // 9
+    </script>
+    <div>getAttributeNode</div>
+    <script>
+        var oLi = document.getElementsByClassName('childNodesDemoLi')[0];
+        console.log(oLi.getAttribute('id'));    // li
+        console.log(oLi.getAttributeNode('id'));    // id="li"
+        console.log(oLi.getAttributeNode('id').nodeValue); // li
+        console.log(oLi.getAttributeNode('id').value); // li
+        console.log(oLi.attributes[1])  // id="li"
+        console.log(oLi.attributes[1].value)    // li
+    </script>
+    <div>封装childNodes</div>
+    <script>
+        var oLi = document.getElementsByClassName('childNodesDemoLi')[0];
+        console.log(oLi.childNodes);    // NodeList(9) [text, comment, text, a, text, p, text, h1, text]
+        function elemChildren(node) {
+            var temp = {
+                'length': 0,
+                'splice': Array.prototype.splice,
+                'push': Array.prototype.push
+            },
+                children = node.childNodes,
+                len = children.length;
+            for (let i = 0; i < len; i++) {
+                const element = children[i];
+                if (element.nodeType === 1) {
+                    // temp[temp.length++] = element;
+                    temp.push(element);
+                }
+            }
+            return temp
+        }
+        console.log(elemChildren(oLi)); // [[a, p, h1]
+    </script>
+    <div>hasChildNodes：判断是否有子节点</div>
+    <script>
+        var oLi = document.getElementsByClassName('childNodesDemoLi')[0];
+        console.log(oLi.hasChildNodes()); // true
+    </script>
+
+    <ul>
+        <li class="childDemoLi">
+            <a href="">链接</a>
+        </li>
+    </ul>
+    <div>firstChild、lastChild、previousSibling、nextSibling</div>
+    <script>
+        var oA = document.getElementsByClassName('childDemoLi')[0];
+        console.log(oA.firstChild);    // text
+        console.log(oA.lastChild);     // text
+        console.log(oA.previousSibling);    // text
+        console.log(oA.nextSibling);    // text
+    </script>
+
+    <div>遍历元素节点树</div>
+    <ul>
+        <li>
+            <a href="">链接</a>
+            <p class="parentElementDemoP">段落</p>
+        </li>
+    </ul>
+    <div>parentElement</div>
+    <script>
+        var oParentElementDemoP = document.getElementsByClassName('parentElementDemoP')[0];
+        console.log(oParentElementDemoP);
+        console.log(oParentElementDemoP.parentElement);
+        console.log(oParentElementDemoP.parentElement.parentElement);
+        console.log(oParentElementDemoP.parentElement.parentElement.parentElement);
+        console.log(oParentElementDemoP.parentElement.parentElement.parentElement.parentElement);
+        console.log(oParentElementDemoP.parentElement.parentElement.parentElement);
+        console.log(oParentElementDemoP.parentElement.parentElement.parentElement.parentElement.parentElement); // null document不是元素节点
+    </script>
+    <div>children、childElementCount、firstElementChild、lastElementChild、nextElementSibling、previousElementSibling</div>
+    <div>childElementCount、firstElementChild、lastElementChild、nextElementSibling、previousElementSibling IE9及以下都不支持</div>
+    <div>child IE7及以下不支持</div>
+    <ul>
+        <li class="childrenDemoLi">
+            <a href="">链接</a>
+            <p>段落</p>
+            <div>块</div>
+        </li>
+    </ul>
+    <script>
+        var oChildrenDemoLi = document.getElementsByClassName('childrenDemoLi')[0];
+        console.log(oChildrenDemoLi.children);  // HTMLCollection(2) [a, p]
+        console.log(oChildrenDemoLi.childElementCount); // 2 == oChildrenDemoLi.children.length
+        console.log(oChildrenDemoLi.firstElementChild); // a
+        console.log(oChildrenDemoLi.lastElementChild);  // div
+        console.log(oChildrenDemoLi.firstElementChild.nextElementSibling);  // p
+        console.log(oChildrenDemoLi.lastElementChild.previousElementSibling);   // p
+    </script>
+
+    <div>作业</div>
+    <div>1. 找出第N层的元素</div>
+    <div id="workLookNode">
+        <p>段落</p>
+        <a href="">链接</a>
+        <h1>标题</h1>
+    </div>
+    <script>
+        Element.prototype.lookNode = function (index) {
+            var childNodes = this.childNodes,
+                len = childNodes.length,
+                item,
+                temp = {
+                    'length': 0,
+                    'push': Array.prototype.push,
+                    'splice': Array.prototype.splice
+                };
+            if (index && typeof (index) != 'number' || index < 0) {
+                return undefined;
+            }
+            for (var i = 0; i < len; i++) {
+                item = childNodes[i];
+                if (item.nodeType == 1) {
+                    temp.push(item);
+                }
+            }
+
+            return typeof (index) == 'number' ? temp[index] : temp;
+        }
+        var lookNodeDemo = document.getElementById('workLookNode');
+    </script>
+
+    <div>2. 在原型上找到一个元素的第n级父元素</div>
+    <div class="workLookParentDemo">
+        <ul>
+            <li>
+                <div>
+                    <p>
+                        <a href="" id="workLookParentDemo">链接</a>
+                    </p>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <script>
+        Element.prototype.lookParent = function (n) {
+            var ele = this;
+
+            if (n && typeof (n) != 'number' || n < 0) {
+                return this.parentNode;
+            }
+
+            while (n) {
+                ele = ele.parentNode;
+                n--;
+            }
+
+            return ele;
+        }
+        var workLookParentDemo = document.getElementById('workLookParentDemo');
+    </script>
+
+    <div>3. hasChildren</div>
+    <div id="hasChildrenDemo">
+    </div>
+    <script>
+        Element.prototype.hasChildren = function () {
+            var childNodes = this.childNodes,
+                len = childNodes.length,
+                item;
+
+            for (let i = 0; i < len; i++) {
+                item = childNodes[i];
+                if (item.nodeType === 1) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        var hasChildrenDemo = document.getElementById('hasChildrenDemo');
+        console.log(hasChildrenDemo.hasChildNodes());
+        console.log(hasChildrenDemo.hasChildren());
+    </script>
+
+    <div>4. 寻找兄弟元素 正数向下寻找 负数向上寻找 0返回自身</div>
+    <div>
+        <div>1</div>
+        <h1>2</h1>
+        <h2>3</h2>
+        <em>4</em>
+        <p>5</p>
+        <a href="" id="lookSiblingDemo">6</a>
+        <h3>7</h3>
+        <div>8</div>
+    </div>
+    <script>
+        Element.prototype.lookSibling = function (n) {
+            var ele = this;
+
+            if (n && typeof (n) != 'number') {
+                return undefined;
+            }
+
+            while (n) {
+                if (n < 0) {
+                    ele = ele.previousSibling;
+                    while (ele && ele.nodeType !== 1) {
+                        ele = ele.previousSibling;
+                        console.log(ele, 11);
+                    }
+                    n++;
+                } else if (n > 0) {
+                    ele = ele.nextSibling;
+                    while (ele && ele.nodeType !== 1) {
+                        ele = ele.nextSibling;
+                        console.log(ele, 11);
+                    }
+                    n--;
+                }
+            }
+
+            return ele;
+        }
+        var lookSiblingDemo = document.getElementById('lookSiblingDemo');
+    </script>
+
+    <div>5. 打印DIV下的所有子节点</div>
+    <div id="allChildrenDemo">
+        <div>11
+            <ul>
+                <li>22</li>
+                <li>
+                    <div>
+                        33
+                        <ul>
+                            44
+                            <li>55</li>
+                            <li>66</li>
+                            <li>
+                                77
+                                <ul>
+                                    <li>
+                                        <h1>88</h1>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <p>99</p>
+        <em>1010</em>
+        <strong>111111</strong>
+        <div>
+            <p>12121212</p>
+            <ul>
+                <li>1313131</li>
+                <li>1515151
+                    <h2>161616</h2>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        Element.prototype.allChildrenNodes = function (temp) {
+            var ele = this,
+                temp = temp || {
+                    'length': 0,
+                    'push': Array.prototype.push,
+                    'splice': Array.prototype.splice
+                },
+                item;
+
+            if (ele.hasChildren()) {
+                var children = ele.childNodes,
+                    len = children.length;
+                for (let i = 0; i < len; i++) {
+                    item = children[i];
+                    if (item.nodeType === 1) {
+                        temp.push(item)
+                        if (item.hasChildren()) {
+                            item.allChildrenNodes(temp);
+                        }
+                    }
+                }
+            }
+            return temp;
+        }
+
+        var getFullChildren = function (node, count) {
+            var child = node.childNodes,
+                len = child.length,
+                item,
+                count = count || 0;
+
+            if (node && node.nodeType === 1) {
+                count++;
+                console.log(node, count);
+            }
+
+            for (let i = 0; i < len; i++) {
+                item = child[i];
+                if (item.nodeType === 1) {
+                    getFullChildren(item, count);
+                }
+            }
+        }
+
+        var allChildrenDemo = document.getElementById('allChildrenDemo');
+    </script>
+
+    <div>6. 逆序</div>
+    <div id="reserveDemo">
+        <p>1111</p>
+        <div>2222</div>
+        <a href="">333</a>
+        <em>4444</em>
+    </div>
+    <script>
+        function reserveDom(node) {
+            var children = node.childNodes,
+                len = children.length;
+
+            // for (let i = len - 1; i >= 0; i--) {
+            //     item = children[i];
+            //     if (item.nodeType === 1) {
+            //         node.appendChild(item);
+            //     }
+            // }
+
+            while (len--) {
+                node.appendChild(children[len]);
+            }
+
+        }
+        var reverseDemo = document.getElementById('reserveDemo');
+        reserveDom(reverseDemo);
+    </script>
+</body>
+
+</html>

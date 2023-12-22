@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../utils/utils.js"></script>
+</head>
+
+<body>
+    <div>绑定事件 = 绑定事件的处理函数 = 绑定事件的反馈</div>
+    <div>事件 + 事件反馈 = 前端交互</div>
+
+    <div>行内事件绑定</div>
+    <div onclick="console.log(1)">1</div>
+    <div>事件句柄绑定函数：div是事件源，onclick是事件句柄</div>
+    <div>缺点：同个事件绑定会覆盖</div>
+    <div id="box1">2</div>
+    <script>
+        var box1 = document.getElementById('box1');
+        box1.onclick = function () {
+            console.log('click1');
+        }
+
+        box1.onclick = function () {
+            console.log('click2');
+        }
+    </script>
+
+    <div>ele.addEventListener('事件', fn, false冒泡/true捕获(优先)) 绑定/注册事件处理函数</div>
+    <div>IE9以下不支持</div>
+    <div>可以注册多个相同事件不覆盖，但是不能使用同一个函数引用</div>
+    <div id="box2">3</div>
+    <script>
+        var box2 = document.getElementById('box2');
+        box2.addEventListener('click', function () {
+            console.log('click1');
+        }, false)
+
+        box2.addEventListener('click', function () {
+            console.log('click2');
+        }, false)
+
+        box2.addEventListener('click', test, false)
+        box2.addEventListener('click', test, false)
+
+        function test() {
+            console.log(1);
+        }
+    </script>
+    <div class="wrap" style="width: 300px;height: 300px;background-color: pink;">
+        <div class="parent" style="width: 200px;height: 200px;background-color: antiquewhite;">
+            <div class="son" style="width: 100px;height: 100px;background-color: brown;"></div>
+        </div>
+    </div>
+    <script>
+        var wrap = document.querySelector('.wrap'),
+            parent = document.querySelector('.parent'),
+            son = document.querySelector('.son');
+        wrap.addEventListener('click', function () {
+            console.log('bubblewrap');
+        }, false)
+        parent.addEventListener('click', function () {
+            console.log('bubbleparent');
+        }, false)
+        son.addEventListener('click', function () {
+            console.log('bubbleson');
+        }, false)
+
+        wrap.addEventListener('click', function () {
+            console.log('wrap');
+        }, true)
+        parent.addEventListener('click', function () {
+            console.log('parent');
+        }, true)
+        son.addEventListener('click', function () {
+            console.log('son');
+        }, true)
+    </script>
+
+    <div>ele.attachEvent('句柄事件', fn)</div>
+    <div>IE8及以下支持</div>
+    <div>可以注册多个相同事件不覆盖，使用同一个函数引用也不覆盖，绑定几次输出几次</div>
+    <div id="box3">3</div>
+    <script>
+        var box3 = document.getElementById('box3');
+        box3.attachEvent('onclick', function () {
+            console.log(1);
+        })
+        box3.attachEvent('onclick', function () {
+            console.log(2);
+        })
+    </script>
+
+    <div>笔试题</div>
+    <ul>
+        <li class="wordLi">1</li>
+        <li class="wordLi">2</li>
+        <li class="wordLi">3</li>
+        <li class="wordLi">4</li>
+        <li class="wordLi">5</li>
+    </ul>
+    <script>
+        var oLi = document.getElementsByClassName('wordLi'),
+            len = oLi.length,
+            item;
+
+        for (var i = 0; i < len; i++) {
+            (function (i) {
+                item = oLi[i]
+                item.addEventListener('click', function () {
+                    console.log(i);
+                }, false)
+            })(i)
+        }
+    </script>
+
+    <div>this指向</div>
+    <div id="box4">4</div>
+    <script>
+        var box4 = document.getElementById('box4');
+        box4.onclick = function () {
+            console.log(this);  // box4
+        }
+
+        box4.addEventListener('click', function () {
+            console.log(this);  // box4
+        }, false)
+
+        box4.attachEvent('onclick', function () {
+            console.log(this);  // window
+        })
+    </script>
+
+    <div>封装事件绑定函数的兼容性</div>
+    <div id="box5">5</div>
+    <script>
+        var box5 = document.getElementById('box5');
+        utils.addEvent(box5, 'click', function () {
+            console.log(1);
+        })
+    </script>
+
+    <div>解除事件绑定</div>
+    <div id="box6">6</div>
+    <script>
+        var box6 = document.getElementById('box6');
+        box6.onclick = function () {
+            console.log('点击了');
+            this.onclick = null
+        }
+    </script>
+    <script>
+        var box6 = document.getElementById('box6');
+        box6.addEventListener('click', function () {
+            console.log('点击了');
+            this.removeEventListener('click', arguments.callee, false)
+        }, false)
+    </script>
+    <script>
+        var box6 = document.getElementById('box6');
+        box6.attachEvent('onclick', function () {
+            console.log('点击了');
+        })
+        box6.detachEvent('onclick', function () {
+            console.log('点击了');
+        })
+    </script>
+
+    <div>事件流：描述从页面中接收事件的顺序（冒泡和捕获）</div>
+    <div>IE提出的事件冒泡流（Event Bubbling）</div>
+    <div>Netscape提出的事件捕获流（Event Capturing）</div>
+    <div>事件流：事件捕获阶段、处于目标阶段、事件冒泡阶段</div>
+
+    <div>事件冒泡 子元素触发事件，事件向上传递，如果父级有相同的事件就会触发</div>
+    <div class="bubbleWrap" style="width: 300px;height: 300px;background-color: pink;">
+        <div class="bubbleParent" style="width: 200px;height: 200px;background-color: antiquewhite;">
+            <div class="bubbleSon" style="width: 100px;height: 100px;background-color: brown;"></div>
+        </div>
+    </div>
+    <script>
+        var wrap = document.querySelector('.bubbleWrap'),
+            parent = document.querySelector('.bubbleParent'),
+            son = document.querySelector('.bubbleSon');
+        utils.addEvent(wrap, 'click', function () {
+            console.log('warp');
+        })
+        utils.addEvent(parent, 'click', function () {
+            console.log('parent');
+        })
+        utils.addEvent(son, 'click', function () {
+            console.log('son');
+        })
+    </script>
+    <div>
+        focus、blur、change、submit、reset、select是没有冒泡现象的
+    </div>
+    <div>阻止冒泡</div>
+    <div>w3c：e.stopPropagation()</div>
+    <div>存在Event.prototype上</div>
+    <div>IE：e.cancelBubble</div>
+    <div>存在在事件上</div>
+    <script>
+        var wrap1 = document.querySelector('.bubbleWrap'),
+            parent1 = document.querySelector('.bubbleParent'),
+            son1 = document.querySelector('.bubbleSon');
+        utils.addEvent(wrap1, 'click', function () {
+            console.log('warp1');
+        })
+        utils.addEvent(parent1, 'click', function () {
+            console.log('parent1');
+        })
+        utils.addEvent(son1, 'click', function (e) {
+            console.log('son1');
+            // e.cancelBubble = true;
+            e.stopPropagation();
+        })
+    </script>
+
+    <div>事件对象 event</div>
+    <div>IE中是window.event</div>
+    <div>其他浏览器中是e</div>
+    <div>兼容性事件对象</div>
+    <div id="box7"></div>
+    <script>
+        var box7 = document.getElementById('box7');
+        box7.onclick = function (e) {
+            var e = e || window.event;
+        }
+    </script>
+
+    <div>事件源对象 target || srcElement</div>
+    <div>火狐中只有target</div>
+    <div>IE中只有srcElement</div>
+    <div>兼容性事件源对象</div>
+    <script>
+        box7.onclick = function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+        }
+    </script>
+
+    <div>事件源对象下标 Array.prototype.indexOf.call(array, target)</div>
+    <ul id="indexDemo">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
+    <script>
+        var indexDemo = document.getElementById('indexDemo');
+        indexDemo.onclick = function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var index = Array.prototype.indexOf.call(indexDemo.children, target);
+            console.log(index);
+        }
+    </script>
+
+    <div>事件委托/事件代理 将子元素需要绑定的对象绑定在父元素上</div>
+    <ul id="delegation">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+    </ul>
+    <script>
+        var delegation = document.getElementById('delegation');
+        delegation.onclick = function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            console.log(target.innerHTML);
+        }
+    </script>
+
+
+    <div>阻止默认事件</div>
+    <div>w3c：e.preventDefault() IE9及以下不支持</div>
+    <div>IE9及以下：e.returnValue = false</div>
+    <div>句柄：return false</div>
+    <script>
+        document.oncontextmenu = function (e) {
+            var e = e || window.event;
+            console.log(1);
+            // return false;
+            // e.preventDefault();
+            e.returnValue = false;
+        }
+    </script>
+    <div>阻止文字提交</div>
+    <a href="http://www.baidu.com" style="display: block;width: 100px;height: 100px;background-color: pink;">
+        <div class="linkText">点击</div>
+    </a>
+    <script>
+        var linkText = document.querySelector('.linkText');
+        utils.addEvent(linkText, 'click', function (e) {
+            var e = e || window.event;
+            utils.preventDefault()
+            console.log('我点击了');
+        })
+    </script>
+    <div>a链接的跳转阻止方式还有</div>
+    <a href="javascript:void(0);">阻止跳转</a>
+    <a href="javascript:;">阻止跳转</a>
+
+    <script>
+        window.onload = function () {
+            init();
+        }
+
+        var init = function () {
+            initTodo();
+        }
+
+        var initTodo = (function () {
+            console.log(77777777);
+        })
+    </script>
+</body>
+
+</html>

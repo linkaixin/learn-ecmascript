@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../utils/utils.js"></script>
+    <style>
+        .input {
+            color: #999;
+        }
+
+        .input.has-value {
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text" id="content" value="请输入关键字" class="input"
+        onfocus="if(this.value==='请输入关键字'){this.value = '';this.className='input has-value'}"
+        onblur="if(this.value.trim() === ''){this.value = '请输入关键字';this.className='input'}">
+    <div>change 获取input的值。失去焦点时触发，若获取焦点与失去焦点的时候值一样，那则失去焦点时不触发</div>
+    <script>
+        var content = document.getElementById('content');
+        content.onchange = function () {
+            console.log(this.value);
+        }
+    </script>
+    <div>input 获取input的值。输入框值改变的时候触发,IE9及以下不支持</div>
+    <script>
+        content.oninput = function () {
+            console.log(this.value, 111);
+        }
+    </script>
+    <div>propertychange 获取input的值。输入框值改变的时候触发,只支持IE6-IE11</div>
+    <script>
+        content.onpropertychange = function () {
+            console.log(this.value, 222);
+        }
+    </script>
+    <div>focus获取焦点、blur失去焦点</div>
+    <script>
+        // content.onfocus = function () {
+        //     this.className = 'input';
+        // }
+
+        // content.onblur = function () {
+        //     this.className = '';
+        // }
+    </script>
+    <div id="j_data" style="display: none;">
+        ["1","2","3","4","5"]
+    </div>
+    <input type="text" id="keword" />
+    <script>
+        window.onload = function () {
+            init();
+        }
+
+        var init = function () {
+            keySearch(1, 2);
+        }
+
+        var keySearch = (function () {
+            var keyword = document.getElementById('keword'),
+                data = JSON.parse(document.getElementById('j_data').innerHTML),
+                len = data.length,
+                count = 0,
+                t = null;
+
+            utils.addEvent(keyword, 'focus', function () {
+                clearInterval(t);
+                this.style.color = '#ccc';
+            })
+
+            utils.addEvent(keyword, 'blur', function () {
+                keywordShow();
+            })
+
+            utils.addEvent(keyword, 'input', function () {
+                inputText()
+            })
+
+            utils.addEvent(keyword, 'propertychange', function () {
+                inputText()
+            })
+
+            function inputText() {
+                var textLen = data[count].length;
+                if (t && keyword.value > textLen) {
+                    keyword.value = keyword.value.slice(textLen)
+                    clearInterval(t);
+                    t = null
+                }
+                keyword.style.color = '#000';
+            }
+
+            function autoScroll() {
+                autoKeyword()
+                keyword.style.color = '#989898';
+                t = setInterval(function () {
+                    autoKeyword();
+                }, 1000)
+            }
+
+            function autoKeyword() {
+                keyword.value = data[count];
+                count = count >= len - 1 ? 0 : count + 1;
+            }
+
+            function keywordShow() {
+                if (keyword.value.trim() == '') {
+                    autoScroll();
+                    keyword.style.color = '#989898';
+                } else {
+                    keyword.style.color = '#000';
+                }
+            }
+
+            return function (a, b) {
+                autoScroll();
+            }
+        })()
+    </script>
+</body>
+
+</html>

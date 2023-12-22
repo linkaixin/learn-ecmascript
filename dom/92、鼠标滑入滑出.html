@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../utils/utils.js"></script>
+</head>
+<style>
+    body {
+        margin: 0;
+    }
+
+    ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .warp {
+        width: 1140px;
+        height: 140px;
+    }
+
+    .warp .list {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        height: 100%;
+    }
+
+    .warp .list-item {
+        position: relative;
+        width: 200px;
+        height: 100%;
+        padding: 10px;
+        border: 1px solid #989898;
+        box-sizing: border-box;
+    }
+
+    .warp .list-item.active {
+        width: 300px;
+    }
+
+    .warp .list-item.active .img {
+        top: 20px;
+        width: 120px;
+        height: 100px;
+    }
+
+    .warp .list-item .title {
+        width: 160px;
+        font-size: 14px;
+        line-height: 21px;
+        color: #424242;
+        /* 超出两行省略加... */
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+    }
+
+    .warp .list-item .title:hover {
+        color: red;
+    }
+
+    .warp .list-item .img {
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+        width: 80px;
+        height: 60px;
+    }
+</style>
+
+<body>
+    <div>onmouseover鼠标滑入、onmouseout鼠标滑出</div>
+    <div>缺点</div>
+    <div>1. 子元素存在冒泡事件，可以通过阻止冒泡来解决</div>
+    <div>2. 父级元素绑定事件，在子元素上也会触发</div>
+    <div id="box1" style="width: 200px;height: 200px;background-color: pink;">
+        <div id="box2" style="width: 100px;height: 100px;background-color: orange"></div>
+    </div>
+    <script>
+        var box1 = document.getElementById('box1'),
+            box2 = document.getElementById('box2');
+
+        box1.onmouseover = function () {
+            box1.style.backgroundColor = 'red';
+            console.log('1-enter');
+        }
+
+        box1.onmouseout = function () {
+            box1.style.backgroundColor = 'pink';
+            console.log('1-leave');
+        }
+
+        box2.onmouseover = function (e) {
+            utils.cancelBubble(e); //阻止冒泡
+            box2.style.backgroundColor = 'blue';
+            console.log('2-enter');
+        }
+
+        box2.onmouseout = function (e) {
+            utils.cancelBubble(e); //阻止冒泡
+            box2.style.backgroundColor = 'orange';
+            console.log('2-leave');
+        }
+    </script>
+
+    <div>onmouseenter鼠标滑入、onmouseleave鼠标划出</div>
+    <div>只对被绑定的事件对象起作用</div>
+    <div>缺点</div>
+    <div>1. 存在类似冒泡，而且无法通过阻止冒泡解决</div>
+    <div id="box3" style="width: 200px;height: 200px;background-color: pink;">
+        <div id="box4" style="width: 100px;height: 100px;background-color: orange"></div>
+    </div>
+    <script>
+        var box3 = document.getElementById('box3'),
+            box4 = document.getElementById('box4');
+
+        box3.onmouseenter = function () {
+            box3.style.backgroundColor = 'red';
+            console.log('3-enter');
+        }
+
+        box3.onmouseleave = function () {
+            box3.style.backgroundColor = 'pink';
+            console.log('3-leave');
+        }
+
+        box4.onmouseenter = function (e) {
+            utils.cancelBubble(e); //阻止冒泡
+            box4.style.backgroundColor = 'blue';
+            console.log('4-enter');
+        }
+
+        box4.onmouseleave = function (e) {
+            utils.cancelBubble(e); //阻止冒泡
+            box4.style.backgroundColor = 'orange';
+            console.log('4-leave');
+        }
+    </script>
+
+    <div class="warp">
+        <ul class="list" id="J_list">
+            <li class="list-item active">
+                <a href="javascript:;" class="title">
+                    《想要成为影之实力强者》不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！
+                </a>
+                <div class="img">
+                    <a href="javascript:;">
+                        <img src="../img/1.jpg" alt="">
+                    </a>
+                </div>
+            </li>
+            <li class="list-item">
+                <a href="javascript:;" class="title">
+                    《想要成为影之实力强者》不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！
+                </a>
+                <div class="img">
+                    <a href="javascript:;">
+                        <img src="../img/2.jpg" alt="">
+                    </a>
+                </div>
+            </li>
+            <li class="list-item">
+                <a href="javascript:;" class="title">
+                    《想要成为影之实力强者》不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！
+                </a>
+                <div class="img">
+                    <a href="javascript:;">
+                        <img src="../img/3.jpg" alt="">
+                    </a>
+                </div>
+            </li>
+            <li class="list-item">
+                <a href="javascript:;" class="title">
+                    《想要成为影之实力强者》不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！
+                </a>
+                <div class="img">
+                    <a href="javascript:;">
+                        <img src="../img/4.jpg" alt="">
+                    </a>
+                </div>
+            </li>
+            <li class="list-item">
+                <a href="javascript:;" class="title">
+                    《想要成为影之实力强者》不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！不愧是暗影大人！
+                </a>
+                <div class="img">
+                    <img src="../img/5.jpg" alt="">
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        window.onload = function () {
+            init();
+        }
+
+        var init = function () {
+            accordion();
+        }
+
+        var accordion = (function () {
+            var oList = document.getElementById('J_list'),
+                oListItems = document.getElementsByClassName('list-item'),
+                len = oListItems.length,
+                item;
+
+            utils.addEvent(oList, 'mouseover', function () {
+                utils.addEvent(oList, 'mousemove', slide)
+            })
+
+            utils.addEvent(oList, 'mouseout', function () {
+                utils.removeEvent(oList, 'mousemove', slide)
+            })
+
+            function slide(e) {
+                var e = e || window.event,
+                    target = e.target || e.srcElement,
+                    parent,
+                    index;
+                if (target.tagName != 'UL') {
+                    parent = lookParent(target);
+                    index = Array.prototype.indexOf.call(oListItems, parent)
+
+                    for (let i = 0; i < len; i++) {
+                        item = oListItems[i];
+                        item.className = 'list-item';
+                    }
+
+                    oListItems[index].className += ' active';
+                }
+            }
+
+            function lookParent(target) {
+                while (target.tagName.toLowerCase() !== 'li') {
+                    target = target.parentNode;
+                }
+                return target;
+            }
+        });
+    </script>
+
+
+    <script>
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../utils/utils.js"></script>
+</head>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    #box4 {
+        width: 100px;
+        height: 100px;
+        padding: 20px;
+        border: 1px solid pink;
+    }
+</style>
+
+<body>
+    <div style="width: 5000px;height: 5000px;border: 1px solid #000;"></div>
+    <div>查看滚动条的距离</div>
+    <div>常规：window.pageXOffset/pageYOffset</div>
+    <div>IE9/IE8及以下：</div>
+    <div>document.body.scrollLeft/scrollTop</div>
+    <div>document.documentElement.scrollLeft/scrollTop</div>
+    <div>不常见：window.scrollX/scrollY</div>
+    <script>
+        console.log(utils.getScrollOffset());
+    </script>
+
+    <div>怪异模式、标准模式</div>
+    <div>有
+        <!DOCTYPE html>写就是标准模式，反之就是怪异模式
+    </div>
+    <div>通过document.compatMode来判断，标准模式CSS1Compat，怪异模式是BackCompat</div>
+    <script>
+        console.log(document.compatMode);
+    </script>
+
+    <div>浏览器的可视区域尺寸（窗口高度）</div>
+    <div>常规：window.innerWidth/innerHeight</div>
+    <div>IE9/IE8及以下：</div>
+    <div>标准模式：document.documentElement.clintWidth/clintHeight</div>
+    <div>怪异模式：document.body.clintWidth/clintHeight</div>
+    <script>
+        console.log(utils.getViewportSize());
+    </script>
+
+
+    <div>HTML文档的宽高（不包含滚动条的高度或宽度）</div>
+    <div>document.body.scrollWidth/scrollHeight</div>
+    <div>document.documentElement.scrollWidth/scrollHeight 这个会计算margin和padding</div>
+    <script>
+        console.log(utils.getScorllSize());
+    </script>
+
+    <div>获取元素的信息</div>
+    <div>getBoundingClientRect</div>
+    <div>offsetleft/offsetTop 获取到有定位的父元素的距离position</div>
+    <div>offsetParent：获取有定位的父级元素</div>
+
+    <div style="left: 100px;top: 100px; width: 300px;height: 300px;background-color: bisque;overflow: hidden;">
+        <div id="soon" style="width: 100px;height: 100px;margin: 100px; background-color: pink;"></div>
+    </div>
+    <script>
+        var soon = document.getElementById('soon');
+        console.log(soon.getBoundingClientRect());
+        console.log(soon.offsetLeft, soon.offsetTop);
+        console.log(soon.offsetParent);
+    </script>
+    <div>自定义封装获取目标元素到浏览器的距离</div>
+    <div id="box1"
+        style="position: absolute;left: 100px;top: 100px;background-color: brown;width: 400px;height: 400px;">
+        <div id="box2"
+            style="position: absolute;left: 100px;top: 100px;background-color: pink;width: 200px;height: 200px;">
+            <div id="box3" style="width: 100px;height: 100px;margin: 50px;background-color: #fff;"></div>
+        </div>
+    </div>
+    <script>
+        var box3 = document.getElementById('box3');
+        console.log(utils.getElementPosition(box3));
+    </script>
+
+    <div>获取元素的物理宽高</div>
+    <div>offsetWidth/offsetHeight</div>
+    <div>缺点：会将padding算入实际宽高，如果使用box-size:border-box，会直接不计算边框，当然也不计算padding</div>
+    <div id="box4"></div>
+    <script>
+        var box4 = document.getElementById('box4');
+        console.log(box4.offsetWidth, box4.offsetHeight, 111);
+    </script>
+
+    <div>操作滚动条</div>
+    <div>window.scroll(x, y)/window.scrollTo(x, y) 滚动到x,y</div>
+    <div>window.scrollBy(x, y) 每次滚动的距离</div>
+
+    <div>作业</div>
+    <div>1. 做一个按钮让页面滚动，滚动到底部或者点击停止滚动，在做一个按钮返回顶部</div>
+    <div id="scroll"
+        style="position: fixed; right: 100px; bottom: 40px;width: 80px;height: 80px;line-height: 80px; border-radius: 50%;background-color: pink;text-align: center;">
+        开始滚动</div>
+    <div id="returnTop"
+        style="position: fixed; right: 200px; bottom: 40px;width: 80px;height: 80px;line-height: 80px;border-radius: 50%;background-color: antiquewhite;text-align: center;">
+        返回顶部</div>
+
+    <script>
+        ; (function (doc, utils) {
+            var scroll = doc.getElementById('scroll'),
+                returnTopBtn = doc.getElementById('returnTop'),
+                htmlHeight = utils.getScorllSize().height + 16, // chrome滚动条高度
+                scrollHeight = 0;
+
+            var init = function () {
+                bindevents()
+            }
+
+            var bindevents = function () {
+                scroll.addEventListener('click', autoScroll, false)
+                returnTopBtn.addEventListener('click', returnTop, false)
+            }
+
+            function autoScroll() {
+                var timer = setInterval(() => {
+                    window.scrollBy(0, 1);
+                    scrollText('start')
+                    scrollHeight = utils.getScrollOffset().top + utils.getViewportSize().height;
+                    console.log(scrollHeight, htmlHeight);
+                    if (scrollHeight >= htmlHeight) {
+                        clearInterval(timer);
+                        scrollText()
+                    }
+                }, 1);
+            }
+
+            function scrollText(status) {
+                if (status == 'start') {
+                    scroll.innerHTML = '滚动中...';
+                    scroll.style.backgroundColor = 'red';
+                } else {
+                    scroll.innerHTML = '开始滚动';
+                    scroll.style.backgroundColor = 'pink';
+                }
+            }
+
+            function returnTop() {
+                window.scroll(0, 0);
+            }
+
+            init()
+        })(document, utils)
+    </script>
+</body>
+
+</html>

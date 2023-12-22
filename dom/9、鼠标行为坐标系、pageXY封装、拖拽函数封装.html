@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../utils/utils.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div>鼠标行为坐标系</div>
+    <div id="box1">1</div>
+    <script>
+        var box1 = document.getElementById('box1');
+        utils.addEvent(window, 'click', function (e) {
+            // console.log(utils.pagePos(e).Y, e.pageY);
+        })
+    </script>
+    <div>clientX/Y 鼠标位置相对于当前可视区域的坐标（不包含滚动条的距离）</div>
+    <div>pageX/Y 鼠标位置相对于当前文档的坐标（包含滚动条的距离） IE9以下不支持</div>
+    <div>screenX/Y 鼠标位置相对于屏幕的坐标</div>
+    <div>x/y 同clientX/Y 但是FF不支持</div>
+    <div>layerX/Y 同pageX/Y 但是IE11以下不支持</div>
+    <div>offsetX/Y 鼠标位置相对于块元素的坐标 包含边框，但是safari不包含</div>
+
+    <div>封装pageX/Y的兼容性</div>
+
+    <div>鼠标点击、鼠标抬起、鼠标移动</div>
+    <div id="box2" style="width: 100px;height: 100px;background-color: pink;position: absolute;"></div>
+    <div id="box3" style="width: 100px;height: 100px;background-color: orange;position: absolute;display: none;"></div>
+    <script>
+        var box2 = document.getElementById('box2');
+        var menu = document.getElementById('box3');
+
+        // 封装拖拽函数
+        Element.prototype.dragClick = (function (menu, fn) {
+            eleDrap(this);
+
+            function eleDrap(ele) {
+                var x,
+                    y,
+                    width,
+                    height,
+                    clientWidth,
+                    clientHeight,
+                    sTime,
+                    eTime,
+                    doubleSTime,
+                    doubleETime,
+                    doubleCount = 0,
+                    t = null,
+                    oPos = [],
+                    buttonCode,
+                    menuWidth = pars eInt(utils.getStyles(menu, 'width')),
+                        menuHeight = parseInt(utils.getStyles(menu, 'height'));
+
+                utils.addEvent(ele, 'mousedown', function (e) {
+                    var e = e || window.event,
+                        left = utils.getStyles(ele, 'left'),
+                        top = utils.getStyles(ele, 'top'),
+                        X = utils.pagePos(e).X,
+                        Y = utils.pagePos(e).Y,
+                        buttonCode = e.button;
+
+                    if (buttonCode == 0) {
+                        // 左键拖拽事件
+                        sTime = new Date().getTime();
+                        oPos = [left, top];
+
+                        x = X - parseInt(left);
+                        y = Y - parseInt(top);
+
+                        width = parseInt(utils.getStyles(ele, 'width'));
+                        height = parseInt(utils.getStyles(ele, 'height'));
+                        clientWidth = utils.getViewportSize().width;
+                        clientHeight = utils.getViewportSize().height;
+
+                        menu.style.display = 'none';
+
+                        utils.addEvent(document, 'mousemove', mouseMove);
+                        utils.addEvent(document, 'mouseup', mouseUp);
+                        // 阻止冒泡和默认事件
+                        utils.cancelBubble(e);
+                        utils.preventDefault(e);
+                    } else if (buttonCode == 2) {
+                        // 右键菜单事件
+                        var menuLeft = X,
+                            menuTop = Y;
+
+                        // 判断边界
+                        if (menuWidth + X >= clientWidth) {
+                            menuLeft = X - menuWidth;
+                        }
+
+                        if (menuHeight + Y >= clientHeight) {
+                            menuTop = Y - menuHeight;
+                        }
+
+                        menu.style.display = 'block';
+                        menu.style.left = menuLeft + 'px';
+                        menu.style.top = menuTop + 'px';
+                    }
+                })
+
+                // 阻止右键的默认事件
+                utils.addEvent(document, 'contextmenu', function (e) {
+                    var e = e || window.event;
+                    utils.preventDefault(e)
+                })
+
+                // 关闭右键菜单
+                utils.addEvent(document, 'click', function () {
+                    menu.style.display = 'none';
+                })
+
+                // 阻止菜单的冒泡事件
+                utils.addEvent(menu, 'click', function (e) {
+                    var e = e || window.event;
+                    utils.cancelBubble(e);
+                })
+
+
+                function mouseMove(e) {
+                    var e = e || window.event,
+                        left,
+                        top;
+
+                    // 边界检测
+                    ele.style.left = Math.min(clientWidth - width, Math.max(0, utils.pagePos(e).X - x)) + 'px';
+                    ele.style.top = Math.min(clientHeight - height, Math.max(0, utils.pagePos(e).Y - y)) + 'px';
+
+                }
+
+                function mouseUp() {
+                    utils.removeEvent(document, 'mousemove', mouseMove);
+                    utils.removeEvent(document, 'mouseup', mouseUp);
+
+                    eTime = new Date().getTime();
+                    if (eTime - sTime < 100) {
+                        ele.style.left = oPos[0];
+                        ele.style.top = oPos[1];
+
+                        // 双击事件 
+                        doubleCount++;
+
+                        if (doubleCount == 1) {
+                            doubleSTime = new Date().getTime();
+                        }
+
+                        if (doubleCount == 2) {
+                            doubleETime = new Date().getTime();
+                        }
+
+                        if (doubleSTime && doubleETime && doubleETime - doubleSTime < 300) {
+                            fn();
+                        }
+
+                        t = setTimeout(function () {
+                            doubleCount = 0;
+                            doubleSTime = 0;
+                            doubleETime = 0;
+                            clearTimeout(t);
+                        }, 500)
+                    }
+                }
+            }
+        })
+
+        box2.dragClick(menu, function () {
+            window.open('https://www.baidu.com', '_blank');
+        })
+
+    </script>
+</body>
+
+</html>

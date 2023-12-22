@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>todoList</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+    <div class="waper">
+        <div class="header">
+            <h2>todoList</h2>
+        </div>
+        <div class="input-box">
+            <input type="text" class="input-text" placeholder="请输入任务" />
+            <button class="btn" id="J-add">增加项目</button>
+        </div>
+        <div class="contain">
+            <ul class="list" id="J-list">
+            </ul>
+        </div>
+    </div>
+    <script src="../../utils/utils.js"></script>
+    <script src="js/index.js"></script>
+    <script>
+        var todoList = new TodoList({
+            addBtn: document.getElementsByClassName('header')[0],
+            add: document.getElementById('J-add'),
+            inputBox: document.getElementsByClassName('input-box')[0],
+            inputText: document.getElementsByClassName('input-text')[0],
+            list: document.getElementById('J-list')
+        });
+    </script>
+</body>
+
+</html>

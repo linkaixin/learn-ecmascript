@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    .top,
+    .bottom {
+        height: 100px;
+        background-color: #000;
+    }
+
+    .warp {
+        position: relative;
+        display: block;
+        clear: both;
+        padding: 0 100px;
+        overflow: hidden;
+    }
+
+    .warp .left,
+    .warp .right,
+    .warp .content {
+        position: relative;
+        float: left;
+        margin-bottom: -2000px;
+        padding-bottom: 2000px;
+    }
+
+    .warp .left {
+        width: 100px;
+        background-color: aqua;
+        left: -100px;
+    }
+
+    .warp .content {
+        width: 100%;
+        background-color: pink;
+        margin-left: -100px;
+    }
+
+    .warp .right {
+        width: 100px;
+        background-color: blueviolet;
+        left: 100px;
+        margin-left: -100px;
+    }
+</style>
+
+<body>
+    <div class="top"></div>
+    <div class="warp">
+        <div class="left">123</div>
+        <div class="content">456<br />456</div>
+        <div class="right">789</div>
+    </div>
+    <div class="bottom"></div>
+</body>
+
+</html>

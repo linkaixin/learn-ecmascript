@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>创建节点</div>
+    <div>只存在在Document.prototype下</div>
+    <div>1. 创建元素节点createElement</div>
+    <script>
+        var div = document.createElement('div');
+        div.innerHTML = 'hello world';
+        document.body.appendChild(div);
+    </script>
+
+    <div>2. 创建文本节点createTextNode</div>
+    <script>
+        var text = document.createTextNode('hello world');
+        document.body.appendChild(text);
+    </script>
+
+    <div>3. 创建注释节点createComment</div>
+    <script>
+        var common = document.createComment('common');
+        document.body.appendChild(common);
+    </script>
+
+    <div>appendChild动态添加 和剪切节点</div>
+    <div>存在Node.prototype下</div>
+    <a href="">链接</a>
+    <script>
+        var a = document.getElementsByTagName('a')[0];
+        var div = document.createElement('div');
+        div.innerHTML = '<p>段落</p>';
+        document.body.appendChild(div);
+        div.appendChild(a);
+    </script>
+
+    <div>c.insertBefore(a, b) 在父节点C下，将a节点插入b节点之前</div>
+    <div>在Node.prototype下</div>
+    <div class="insertBeforeDemo">
+        <h1>标题</h1>
+        <section>内容</section>
+    </div>
+    <script>
+        var div = document.getElementsByClassName('insertBeforeDemo')[0];
+        var section = document.getElementsByTagName('section')[0];
+        var author = document.createElement('div');
+        author.innerHTML = '作者';
+        div.insertBefore(author, section);
+    </script>
+
+    <div>parent.replaceChild(new, old) 在父节点parent下，用new节点替换old节点</div>
+    <div>在Node.prototype下</div>
+    <div id="replaceChildDemo">
+        <h1>h1</h1>
+    </div>
+    <script>
+        var replaceChild = document.getElementById('replaceChildDemo');
+        var h1 = replaceChild.getElementsByTagName('h1')[0];
+        var h2 = document.createElement('h2');
+        h2.innerHTML = 'h2';
+        replaceChild.replaceChild(h2, h1)
+    </script>
+
+    <div>parentNode.removeChild(childNode) 删除DOM树上的节点</div>
+    <div>在Node.prototype下</div>
+    <div>删除的是内存中的节点，而不是删除内存中的DOM对象</div>
+    <div>从元素到元素节点</div>
+    <div>1. 先选择一个元素'div</div>
+    <div>2. 通过对应的构造函数实例化new HTMLDivElement()出DOM对象，存到内存当中</div>
+    <div>3. 通过appendChild()将DOM对象放到DOM树上变成了div节点</div>
+    <div>4. removeChild只是删除掉DOM树上的div节点</div>
+    <div class="removeChildDemo">
+        <h1>标题</h1>
+        <section>内容</section>
+    </div>
+    <script>
+        var div = document.getElementsByClassName('removeChildDemo')[0];
+        var h1 = div.getElementsByTagName('h1')[0];
+        console.log(div.removeChild(h1));
+    </script>
+
+    <div>targetNode.remove() 删除对应的DOM节点及DOM对象</div>
+    <div>在Element.prototype下</div>
+    <div class="removeDemo">啊啊啊啊</div>
+    <script>
+        var removeDemo = document.getElementsByClassName('removeDemo')[0];
+        console.log(removeDemo.remove());   // undefined
+    </script>
+
+    <div>innerHTML</div>
+    <div>在Element.prototype、HTMLElement.prototype下</div>
+    <div id="innerHTMLDemo">
+        <p>段落</p>
+    </div>
+    <script>
+        var innerHTMLDemo = document.getElementById('innerHTMLDemo');
+        innerHTMLDemo.innerHTML = '啊啊啊';
+        innerHTMLDemo.innerHTML += '123';
+        innerHTMLDemo.innerHTML = '<a href="">超链接</a>';
+    </script>
+
+    <div>innerText</div>
+    <div>在HTMLElement.prototype下</div>
+    <div>innerText在老版本的火狐不支持 使用textContent，但是IE老版本不支持textContent</div>
+    <div id="innerTextDemo">
+        <p>段落</p>
+        <a href="">链接</a>
+    </div>
+    <script>
+        var innerTextDemo = document.getElementById('innerTextDemo');
+        console.log(innerTextDemo.innerText);
+        innerTextDemo.innerText = '啊啊啊';
+        innerTextDemo.innerText += '啊啊啊456';
+        innerTextDemo.innerText = '<a href="javascript:;">我是新增的a链接</a>'; // 因为尖括号没有转换成字符实体，所以不会被解析
+    </script>
+
+    <div>getAttribute、setAttribute获取和设置DOM节点属性</div>
+    <div id="attributeDemo">attributeDemo</div>
+    <script>
+        var attributeDemo = document.getElementById('attributeDemo');
+        attributeDemo.setAttribute('class', 'attributeClass'); // 设置class属性
+        console.log(attributeDemo.getAttribute('id'));;
+    </script>
+
+    <div>data-*自定义标签</div>
+    <div>使用dataset或getAttribute获取自定义标签中的值</div>
+    <div>dataset不支持IE9以下的</div>
+    <div class="dataDemo" data-name="cxy" data-age="16">个人信息</div>
+    <script>
+        var dataDemo = document.getElementsByClassName('dataDemo')[0];
+        console.log(dataDemo.dataset.name); // 获取data-name属性
+        console.log(dataDemo.dataset.age); // 获取data-age属性
+        console.log(dataDemo.getAttribute('data-name'));
+        console.log(dataDemo.getAttribute('data-age'));
+    </script>
+
+    <div>createDocumentFragment 创建文档碎片</div>
+    <div>文档碎片存在内存中，所以往上面添加节点，不会引起回流</div>
+    <ul id="list"></ul>
+    <script>
+        // 在ul中创建1000个li
+        // var list = document.getElementById('list');
+        // for (let i = 0; i < 1000; i++) {
+        //     var li = document.createElement('li');
+        //     li.innerHTML = `${i + 1}. 这是第${i}个li`
+        //     list.appendChild(li);   // 每一个就会引起一次回流，非常的消耗性能
+        // }
+    </script>
+    <script>
+        var list = document.getElementById('list');
+        var oFrag = document.createDocumentFragment(); // 创建文档碎片
+        for (let i = 0; i < 1000; i++) {
+            var li = document.createElement('li');
+            li.innerHTML = `${i + 1}. 这是第${i}个li`
+            oFrag.appendChild(li);   // 把li添加到文档碎片
+        }
+
+        list.appendChild(oFrag);   // 把文档碎片添加到ul中
+    </script>
+</body>
+
+</html>

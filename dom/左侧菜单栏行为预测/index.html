@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+    <div>左侧菜单栏行为预测</div>
+    <div class="menu-wrap">
+        <ul class="menu-list">
+            <li class="menu-list-item">
+                <a href="javascript:;">1</a>
+            </li>
+            <li class="menu-list-item">
+                <a href="javascript:;">2</a>
+            </li>
+            <li class="menu-list-item">
+                <a href="javascript:;">3</a>
+            </li>
+            <li class="menu-list-item">
+                <a href="javascript:;">4</a>
+            </li>
+            <li class="menu-list-item">
+                <a href="javascript:;">5</a>
+            </li>
+        </ul>
+        <ul class="sub-list">
+            <li class="sub-list-item">子菜单1</li>
+            <li class="sub-list-item">子菜单2</li>
+            <li class="sub-list-item">子菜单3</li>
+            <li class="sub-list-item">子菜单4</li>
+            <li class="sub-list-item">子菜单5</li>
+        </ul>
+    </div>
+
+    <script src="../../utils/utils.js"></script>
+    <!-- <script src="js/index.js"></script> -->
+    <script src="js/modelIndex.js"></script>
+    <script>
+        var leftMenu = new LeftMenu({
+            menu: document.getElementsByClassName('menu-wrap')[0],
+            menuList: document.getElementsByClassName('menu-list')[0],
+            menuListItems: document.getElementsByClassName('menu-list-item'),
+            subList: document.getElementsByClassName('sub-list')[0],
+            subListItems: document.getElementsByClassName('sub-list-item')
+        }).init();
+    </script>
+</body>
+
+</html>

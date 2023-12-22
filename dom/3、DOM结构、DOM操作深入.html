@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>document上的方法存在Document.prototype上</div>
+    <div>document的__proto__是HTMLDocument.prototype</div>
+    <div>HTMLDocument的__proto__是Document.prototype</div>
+    <div>XMLDocument的__proto__也是继承Document.prototype</div>
+    <script>
+        console.log(HTMLDocument.__proto__);
+        console.log(XMLDocument.__proto__);
+        console.log(HTMLDocument.__proto__ === XMLDocument.__proto__);  // true
+    </script>
+
+    <div>
+        Text、comment节点继承于CharacterData;
+    </div>
+    <div class="text">123</div>
+    <script>
+        Text.prototype.a = 'aa';
+        CharacterData.prototype.b = 'bb';
+        var text = document.getElementsByClassName('text')[0].childNodes[0];
+        console.log(text, text.a, text.b);
+    </script>
+
+    <div>Element、HTMLElement、HTMLDivElemet、HTMLBodyElement</div>
+    <div class="div1">123</div>
+    <p class="p1">456</p>
+    <script>
+        Element.prototype.a = 'aa';
+        HTMLElement.prototype.b = 'bb';
+        HTMLDivElement.prototype.c = 'cc';
+        var div1 = document.getElementsByClassName('div1')[0];
+        var p1 = document.getElementsByClassName('p1')[0];
+        console.log(div1.a, div1.b, div1.c);    // aa bb cc
+        console.log(p1.a, p1.b, p1.c);  // aa bb undefined
+    </script>
+
+    <div>Node</div>
+    <script>
+        console.log(HTMLDocument.__proto__); // Document.prototype
+        console.log(HTMLDocument.__proto__.__proto__); // Node.prototype
+        console.log(HTMLDocument.__proto__.__proto__.__proto__); // EventTarget.prototype
+        console.log(HTMLDocument.__proto__.__proto__.__proto__.__proto__); // Function.prototype
+        console.log(HTMLDocument.__proto__.__proto__.__proto__.__proto__.__proto__); // Object.prototype
+        console.log(HTMLDocument.__proto__.__proto__.__proto__.__proto__.__proto__.__proto__);  // null
+    </script>
+
+    <div>DOM操作深入</div>
+    <div>1. getElementById</div>
+    <div>只在Document.prototype下</div>
+    <div>Element.prototype下没有</div>
+    <div id="div1"></div>
+    <script>
+        var div1 = document.getElementById('div1');
+    </script>
+
+    <div>2. getElementsByName</div>
+    <div>只在Document.prototype下</div>
+    <div>Element.prototype下没有</div>
+    <input type="text" name="username">
+    <script>
+        var username = document.getElementsByName('username');
+        console.log(username, 11);
+    </script>
+
+
+    <div>3. getElementById、getElementsByClassName、querySelector、querySelectorAll</div>
+    <div>在Document.prototype、Element.prototype都有</div>
+    <ul>
+        <li id="li">
+            <div class="div">li下的div</div>
+        </li>
+    </ul>
+    <script>
+        var li = document.getElementById('li');
+        var div = li.getElementsByTagName('div')[0];
+        console.log(div);
+        div = li.getElementsByClassName('div')[0];
+        console.log(div);
+        div = li.querySelector('div');
+        console.log(div);
+        div = li.querySelectorAll('div')[0];
+        console.log(div);
+    </script>
+
+    <div>*</div>
+    <script>
+        var all = document.getElementsByTagName('*');
+        console.log(all);
+    </script>
+
+    <div>body、head、title</div>
+    <div>title直接获取的话是获取里面的内容</div>
+    <script>
+        var body = document.getElementsByTagName('body')[0];
+        var head = document.getElementsByTagName('head')[0];
+        var title = document.getElementsByTagName('title')[0];
+        console.log(body, head, title);
+        body = document.body;
+        head = document.head;
+        title = document.title;
+        console.log(body, head, title);
+    </script>
+
+    <div>获取HTML文档</div>
+    <script>
+        var html = document.documentElement;
+        console.log(html);
+        html = document.getElementsByTagName('html')[0];
+        console.log(html);
+    </script>
+</body>
+
+</html>
