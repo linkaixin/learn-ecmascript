@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>百度JSONP搜索案例</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="search-box">
+            <input type="text" name="" id="wd">
+        </div>
+        <ul class="list" id="list">
+
+        </ul>
+    </div>
+
+    <script type="tpl/html" id="tpl">
+        <li class="list-item">
+            <a href="https://www.baidu.com/s?wd={{wd}}" target="_blank">{{wdele}}</a>
+        </li>
+    </script>
+
+    <script src="../../utils/utils.js"></script>
+    <script src="../../utils/ajax.js"></script>
+    <script src="js/index.js"></script>
+</body>
+
+</html>

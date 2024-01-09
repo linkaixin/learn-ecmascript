@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>设置基础域名跨域</div>
+    <script>
+        var ajaxDomain = (function () {
+            function createIframe(frameId, frameUrl) {
+                var frame = document.createElement('iframe');
+                frame.src = frameUrl;
+                frame.id = frameId;
+                frame.style.display = 'none';
+
+                return frame;
+            }
+
+            return function (opt) {
+                document.domain = opt.basicDomain;
+                var frame = createIframe(opt.frameId, opt.frameUrl);
+                frame.onload = function () {
+                    var $$ = document.getElementById(opt.frameId).contentWindow.$;
+                    $$.ajax({
+                        url: opt.url,
+                        type: opt.type,
+                        data: opt.data,
+                        success: opt.success,
+                        error: opt.error
+                    })
+                }
+                document.body.appendChild(frame);
+            }
+        }())
+
+        // demo
+        ajaxDomain({
+            basicDomain: 'jsplusplus.com',
+            // 与跨域地址同源的页面
+            frameUrl: 'http://test.jsplusplus.com/index.html',
+            // 跨域的地址
+            url: 'http://test.jsplusplus.com/get_course.php',
+            type: 'POST',
+            data: {
+                status: 1
+            },
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (err) {
+                console.log(0);
+            }
+        })
+    </script>
+    <div>JSONP</div>
+    <div>不支持post请求</div>
+    <script src="./js/index.txt"></script>
+    <script>
+        console.log(a);
+    </script>
+    <button id="btn">获取资源</button>
+    <!-- <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.js"></script> -->
+    <script src="../utils/ajax.js"></script>
+    <script>
+        var btn = document.getElementById('btn');
+        btn.onclick = function () {
+            // var jsonp = document.createElement('script');
+            // jsonp.src = './js/jsonp.js?cb=test';
+            // jsonp.id = 'jsonpScript';
+            // document.body.appendChild(jsonp);
+            // document.body.removeChild(jsonp);
+            $.ajax({
+                url: './js/jsonp.js',
+                type: 'get',
+                dataType: 'JSONP',
+                jsonp: 'cb',
+                jsonpCallback: 'test',
+                data: {
+                    status: 1
+                },
+                success: function (data) {
+                    console.log(data);
+                }
+            })
+        }
+
+        function test(str) {
+            console.log(str, 111);
+        }
+    </script>
+    <!-- 假设这是不同源的 -->
+    <!-- <script src="./js/jsonp.js?cb=test2" id="jsonpScript"></script> -->
+    <script>
+    </script>
+</body>
+
+</html>

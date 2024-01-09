@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>客户端 Client</div>
+    <div>用户使用的应用程序</div>
+    <div>服务端 Server</div>
+    <div>存放网页、客户端程序、数据处理查询、数据库的载体</div>
+    <div>服务端口：一个端口，连接的入口或出口；</div>
+    <div>后台：数据管理的集合；</div>
+    <div>服务器：一台大型的电脑</div>
+
+    <div>浏览器输入网址后的流程</div>
+    <div>1. 输入网址，按下回车后进行DNS解析，将网址解析成ip地址。</div>
+    <div>因为网址比数字ip地址好记忆，而且一个ip地址可以对应多个网址</div>
+    <div>URI、URL、URN</div>
+    <div>URI：Uniform Resource Identifier 统一资源标识符，用来唯一的标识一个资源</div>
+    <div>URL：Uniform Resource Locator，统一资源定位符，用地址定义一个资源</div>
+    <div>1. 资源标识</div>
+    <div>2. 定位资源的功能</div>
+    <div>3. 指明了获取资源所采用的协议</div>
+    <div>https://image.baidu.com/search/index?tn=baiduimage&ps=1</div>
+    <div>协议名称：http:// 或 https://</div>
+    <div>主机名称：image.baidu.com</div>
+    <div>端口号：http默认端口是80 https默认端口是443 MySql默认端口是3306</div>
+    <div>路径：search/</div>
+    <div>文件：index</div>
+    <div>查询所需要的字符串：?tn=baiduimage&ps=1</div>
+    <div>URN：Uniform Resource Name 统一资源命名，用名称定位一个资源</div>
+    <div>image.baidu.com/search/index?tn=baiduimage&ps=1</div>
+    <div>联系和区别：URL和URN是URI的子集</div>
+    <div>因为网址比数字ip地址好记忆，而且一个ip地址可以对应多个网址</div>
+    <div>2. ip地址与服务端进行连接需要进行TCP/IP三次握手，建立起TCP连接，发起HTTP请求资源</div>
+    <div>3. 浏览器获得服务端返回的HTML代码并解析，再解析的过程中遇到资源，例如src、link。浏览器就会请求下载这些静态资源渲染页面</div>
+    <div>4. 浏览器与客户端经过四次挥手中断连接请求</div>
+
+    <div>DNS Domain Name Server 域名服务器</div>
+    <div>作用：域名与对应的Ip转换的服务器</div>
+    <div>特征：DNS中保存了一张域名与对应的Ip地址的表。一个域名对应一个IP地址，一个IP地址可以对应多个域名</div>
+    <div>gTLD：generic Top-Level DNS Server 顶级域名服务器</div>
+    <div>为所有.com、.net ……后缀做域名解析的服务器，也是分布在世界各地</div>
+
+    <div>DNS解析过程</div>
+    <div>www.jsplusplus.com.</div>
+    <div>1. 先查询DNS本地服务器，是否有这个域名的IP地址，如果缓存中存在就直接返回</div>
+    <div>2. DNS本地服务器不存在，就寻找根服务器是否存在这个域名的IP地址，根服务器会让去寻找.com域服务器</div>
+    <div>3. .com域服务器中是否有这个域名的IP地址，没有的话就会返回运营商的域服务器地址。</div>
+    <div>4. 到该运营商的域服务器中去寻找该域名的IP地址，返回到本地的DNS服务器，存入DNS服务器缓存</div>
+
+    <div>IP Internet Protocol Address 互联网协议地址、IP地址</div>
+    <div>分配给用户上网使用的互联网协议，用户用IP协议地址获取服务</div>
+    <div>分类：IPv4、IPv6、其他</div>
+    <div>IPv4：192.168.0.1 长度32、4个字节、十进制表示</div>
+    <div>IPv6：2001:0db8:85a3:0000:0000:8a2e:0370:7334 长度128、16个字节、16进制表示</div>
+    <div>IPv6的优势：</div>
+    <div>1. IPv6地址空间更大；</div>
+    <div>2. 路由表更小；</div>
+    <div>3. 组播支持以及对流支持增强；</div>
+    <div>4. 更高的安全性；</div>
+    <div>5. 对自动配置的支持；</div>
+
+    <div>IP端口号 PORT</div>
+    <div>一个IP对应的是一个服务，不同端口可以获取不同的业务。</div>
+    <div>IP地址是上海迪士尼的地址的话，端口号就是乐园中不同的项目。</div>
+    <div>范围：0 – 65535</div>
+    <div>默认端口：http协议80 https协议443 FTP协议 20、21</div>
+
+    <div>TCP：Transmission Control Protocol 传输控制协议</div>
+    <div>特点：面向连接（收发数据前，必须建立可靠的连接，数据必须准确无误的收发）</div>
+    <div>建立连接基础：三次握手</div>
+    <div>应用场景：HTTP请求、FTP文件传输、邮件收发</div>
+    <div>优点：稳定、重传机制、拥塞控制机制、断开连接</div>
+    <div>缺点：速度慢、效率低、占用资源、容易被攻击（三次握手->DOS、DDOS攻击）</div>
+    <div>TCP/IP协议组：提供点对点的连接机制，制定了数据封装、定址、传输、路由、数据接收的标准。</div>
+
+    <div>UDP：User Data Protocol 用户数据报协议</div>
+    <div>特点：无连接（不可靠的协议，无状态传输机制）,无需确保通讯质量且要求速度快、无需确保信息完整</div>
+    <div>应用场景：消息收发、语音通话、直播、QQ</div>
+    <div>优点：安全、快速、漏洞少</div>
+    <div>缺点：不可靠、不稳定、容易丢包、遭受UDP flood攻击</div>
+    <div>总结：只要目的源地址、端口号、地址、端口号确定，则可以直接发送信息报文，但不能保证一定能收到或收到完整的数据。</div>
+
+    <div>HTTP: HyperText Transfer Protocol 超文本传输协议</div>
+    <div>定义：客户端和服务器端请求和应答的标准，用于从WEB服务器传输超文本到本地浏览器的传输协议</div>
+    <div>HTTP请求：按照协议规则先向WEB服务器发送的将超文本传输到本地浏览器的请求</div>
+    <div>HTTPS: HyperText Transfer Protocol Secure 超文本传输安全协议</div>
+    <div>定义：HTTP的安全版，安全基础是SSL/TLS。</div>
+    <div>SSL：Secure Sockets Layer  安全套接层</div>
+    <div>TLS：Transport Layer Security 传输层安全</div>
+    <div>为网络通信提供安全及数据完整性的一种安全协议，对网络连接进行加密</div>
+    <div>区别</div>
+    <div>1. HTTP是不安全的，可以通过监听或中间人等攻击手段，获取网站的账户信息和敏感信息，而且HTTPS是密文传输，可防止被攻击</div>
+    <div>2. HTTP协议的传输内容都是明文，直接在TCP连接上运行，客户端和服务器都无法验证对方身份</div>
+    <div>3. HTTPS协议的传输内容都被SSL/TLS加密，且运行在SSL/TLS上，SSL/TLS运行在TCP连接上，所以数据传输是安全的。</div>
+
+    <div>建立TCP连接</div>
+    <div>标志位：数据包。</div>
+    <div>SYN：Synchronize Sequence Numbers 同步序列编号</div>
+    <div>ACK：Acknowledgement 确认字符</div>
+
+    <div>状态：</div>
+    <div>LISTEN：服务端侦听TCP端口的连接请求</div>
+    <div>SYN-SENT：在发送连接请求后等待匹配的连接请求</div>
+    <div>SYN-RECEIVED：在收到和发送一个连接请求后等待对连接请求的确认</div>
+    <div>ESTABLISHED：代表一个打开的连接，数据可以传送给用户</div>
+
+    <div>建立TCP三次握手</div>
+    <div>第一次握手：客户端向服务器发送连接请求，发送标志位SYNJ和序号200，进入SYN_SENT状态等待服务器确认</div>
+    <div>第二次握手：服务器确认该数据包已收到，并且向客户端发送标志位ACK J + 1、标志位SYNK、序号500和确认序号201，进入SYN_REVD状态等待客户端确认</div>
+    <div>第三次握手：客户端建立连接进入ESTABLISHED状态，向服务器发送标志位ACK K+1和发送序列201、确认序列501，确认客户端已收到建立连接确认，服务器收到ACK
+        K+1后，服务器建立连接，进入ESTABLISHED。</div>
+
+    <div>C/S架构与B/S架构</div>
+    <div>C/S Client/Server</div>
+    <div>将应用程序安装在客户端电脑中，由服务端提供客户端程序所需要的数据，例如QQ、微信等应用程序</div>
+    <div>优点：界面与操作丰富、安全性高、响应速度快。</div>
+    <div>缺点：通常用于局域网、需安装特定应用程序或使用特定硬件、维护成本高。</div>
+
+    <div>B/S Browser/Server</div>
+    <div>利用WEB浏览器呈现客户端程序界面，由服务端提供客户端程序所需要的数据</div>
+    <div>优点：无需安装客户端程序与特定硬件、多客户访问、交互性强、无需升级客户端</div>
+    <div>缺点：跨浏览器兼容性差、功能性相对较弱、设计成本高、安全性弱、功能性弱</div>
+
+    <div>服务器</div>
+    <div>购买(租赁)服务器</div>
+    <div>1. 实体服务器</div>
+    <div>自己购买的服务器以及托管在别人服务器上</div>
+    <div>2. 云服务器（Elastic Compute Service）</div>
+    <div>无需提前采购硬件设备，而是根据业务需要，随时创建所需数量的云服务器ECS实例（展示）、扩容磁盘、增加带宽</div>
+
+    <div>域名 Domain Name</div>
+    <div>优点</div>
+    <div>1. 相当于访问互联网某一户人家的地址</div>
+    <div>2. 域名与服务器对应的IP是映射关系</div>
+    <div>3. 域名更方便记忆</div>
+    <div>4. IP可以对应多个域名</div>
+
+    <div>域名购买及备案</div>
+    <div>购买：万网</div>
+    <div>备案：阿里云备案</div>
+    <div>解析域名：解析就是将域名与服务器Ip映射的过程，由DNS服务器来完成</div>
+    <div>A记录：Address 域名与Ip对应的记录，将域名指向到服务器上</div>
+    <div>CNAME记录：别名记录，将多个名字映射到另一个域名，适用于第三方提供的域名，例如七牛云</div>
+
+    <div>域名分类</div>
+    <div>1. 通用类域名</div>
+    <div>.com 工商金融等企业</div>
+    <div>.com.cn 公司</div>
+    <div>.gov 政府机构</div>
+    <div>.net 提供互联网网络服务机构</div>
+    <div>.org 各类组织机构</div>
+    <div>.ac 科研机构</div>
+    <div>.edu 教育机构</div>
+    <div>2. 国家地区类</div>
+    <div>cn 中国</div>
+    <div>hk 中国香港地区</div>
+    <div>tw 中国台湾地区</div>
+    <div>ca 加拿大</div>
+    <div>uk 英国</div>
+    <div>jp 日本</div>
+    <div>kr 韩国</div>
+
+    <div>域名级别</div>
+    <div>顶级域名（一级域名）jsplusplus.com</div>
+    <div>二级域名：www.jsplusplus.com study.jsplusplus.com</div>
+    <div>三级域名：qianduan.study.jsplusplus.com</div>
+
+
+    <div>http报文</div>
+    <div>又称报文流</div>
+
+</body>
+
+</html>
