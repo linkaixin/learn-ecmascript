@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    main
+    <iframe src="iframe.html" width="500" height="500px"></iframe>
+</body>
+<script>
+    var myName = 'main';
+    var iframe = document.getElementsByTagName('iframe')[0];
+    iframe.onload = function () {
+        // 获取下一层的名称
+        console.log(iframe.contentWindow);
+    }
+    iframe.contentWindow.location = 'http://www.jd.com'
+
+</script>
+
+</html>

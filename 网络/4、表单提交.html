@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>阻止默认提交</div>
+    <div>1. 使用 onsubmit="return false"</div>
+    <form action="#" method="post" onsubmit="return formSubmit()">
+        <input type="text" name="username" id=""><br />
+        <input type="password" name="password" id=""><br />
+        <button>登录</button>
+    </form>
+    <script>
+        function formSubmit() {
+            console.log(1);
+            return false;
+        }
+    </script>
+    <div>2. 使用阻止默认事件</div>
+    <form action="#" method="post">
+        <input type="text" name="username" id=""><br />
+        <input type="password" name="password" id=""><br />
+        <button onclick="submit1(event)">登录</button>
+    </form>
+    <script src="../utils/utils.js"></script>
+    <script>
+        function submit1(e) {
+            utils.preventDefault(e);
+            console.log(2);
+        }
+    </script>
+</body>
+
+</html>

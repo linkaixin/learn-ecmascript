@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>原生文件上传</div>
+    <div>enctype类型</div>
+    <div>1. application/x-www-form-urlencoded默认值</div>
+    <div>将表单转换成a=1&b=2上传</div>
+    <div>2. multipart/form-data 上传文件</div>
+    <form action="#" method="post" enctype="multipart/form-data">
+        <input type="text" name="filename">
+        <input type="file" name="file">
+        <input type="submit" value="上传">
+    </form>
+
+    <div>多文件上传</div>
+    <form action="#" method="post" enctype="multipart/form-data">
+        <input type="text" name="filename">
+        <input type="file" name="file[]" multiple>
+        <input type="submit" value="上传">
+    </form>
+
+    <div>new formData</div>
+    <input type="text" id="username">
+    <input type="text" id="password">
+    <input type="submit" value="提交" id="submit">
+    <script>
+        var oUsername = document.getElementById('username'),
+            oPassword = document.getElementById('password'),
+            oSubmit = document.getElementById('submit'),
+            fd = new FormData();
+
+        oSubmit.onclick = function () {
+            fd.append('username', oUsername.value);
+            fd.append('password', oPassword.value);
+
+            console.log('username:' + fd.get('username'));
+            console.log('password:' + fd.get('password'));
+
+            fd.set('username', '张三');
+            console.log('username:' + fd.get('username'));
+
+            console.log(fd.get('password'));
+
+            fd.delete('username');
+            console.log('username:' + fd.get('username'));
+        }
+    </script>
+
+    <div>3. 使用new formData异步上传图片</div>
+    <input type="file" id="file" multiple>
+    <input type="submit" id="upload">
+    <div id="progress-box" style="width: 200px;margin-top: 10px;position: relative;">
+    </div>
+
+    <script src="../utils/ajax.js"></script>
+    <script>
+        var oFile = document.getElementById('file'),
+            oUpload = document.getElementById('upload'),
+            oProgress = document.getElementById('progress-box');
+
+        oUpload.onclick = function () {
+            console.log(oFile.files);
+            var files = oFile.files,
+                len = files.length,
+                item,
+                fileName = '',
+                type = 'gif|jpg|jpeg|png',
+                reg = new RegExp(`\.(${type})$`),
+                size = 1024 * 1024,
+                count = 3,
+                fd = null,
+                list = '';
+
+            if (len > count) {
+                console.log('仅能同时上传3张图片');
+                return;
+            }
+
+            for (let i = 0; i < len; i++) {
+                item = files[i];
+                fileName = item.name.toLowerCase();
+                fileSize = item.size;
+                if (fileSize > size) {
+                    console.log('图片大小不能超过1M');
+                    return;
+                }
+
+                if (!reg.test(fileName)) {
+                    console.log('仅能上传' + type + '格式图片,' + fileName + '不符合');
+                    continue;
+                }
+
+                fd = new FormData();
+                fd.append('file', item);
+                // 发送请求
+                var o = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+
+                o.open('post', 'https://www.fastmock.site/mock/983fe9c26d504fbc02d76aa20d055411/api/postData');
+
+                // 进度条控制
+                list += `${fileName}. <div class="progress" style="height: 30px;border: 1px solid #424242;position: relative;margin-bottom:8px;">
+            <div style="background-color: pink;width: 0%;height: 100%;"></div>
+        </div>`;
+
+                oProgress.innerHTML = list;
+
+                o.upload.onprogress = function (e) {
+                    var e = e || window.event,
+                        progress = e.loaded / e.total * 100 + '%',
+                        thisProgress = document.getElementsByClassName('progress')[i].getElementsByTagName('div')[0];
+                    thisProgress.style.width = progress;
+                }
+
+                o.send(fd);
+            }
+        }
+    </script>
+</body>
+
+</html>
