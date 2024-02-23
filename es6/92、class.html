@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function Person(name, age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        Person.prototype.sayHello = function () {
+            console.log('你好，我是' + this.name + '，今年' + this.age + '岁。');
+        }
+
+        var person = new Person('张三', 20);
+
+        console.log(Object.getPrototypeOf(person));
+        console.log(Person.prototype);
+        console.log(person.__proto__);
+        console.log(Person);
+        console.log(Object.getPrototypeOf(person).constructor === Person);
+        console.log(Object.keys(person.__proto__));
+    </script>
+
+    <div>class类</div>
+    <script>
+        class PersonClass {
+            // 私有属性
+            constructor(name, age) {
+                this.name = name;
+                this.age = age;
+            }
+            // 公有方法
+            sayHello() {
+                console.log('你好，我是' + this.name + '，今年' + this.age + '岁。');
+            }
+            eat() {
+                console.log(this.name + "在吃东西");
+            }
+        }
+
+        var personClass = new PersonClass('张三', 20);
+        personClass.sayHello();
+        personClass.eat();
+    </script>
+    <div>class变种写法</div>
+    <script>
+        var personClass1 = new class {
+            constructor(name, age) {
+                this.name = name;
+                this.age = age;
+            }
+            sayHello() {
+                console.log('你好，我是' + this.name + '，今年' + this.age + '岁。');
+            }
+            eat() {
+                console.log(this.name + "在吃东西");
+            }
+        }('李四', 25);
+        personClass1.sayHello();
+    </script>
+    <div>静态属性和静态方法</div>
+    <div>仅能通过class直接访问，new之后的实例访问不了</div>
+    <script>
+        class Class1 {
+            static a = 1;
+            static fn() {
+                console.log(111);
+            }
+        }
+        console.log(Class1.a, 22);
+        Class1.fn();
+    </script>
+    <script>
+        class Class2 {
+            get a() {
+                console.log(1);
+            }
+            set b(val) {
+                console.log(2);
+            }
+        }
+        var class2 = new Class2();
+        class2.a;
+        class2.b = 1;
+    </script>
+
+    <div>extends 继承</div>
+    <script>
+        class Parent {
+            constructor(name = '张三') {
+                this.name = name;
+            }
+            sayHello() {
+                console.log('你好，我是' + this.name + '。');
+            }
+            static a() {
+                console.log('static aa');
+            }
+        }
+
+        class Child extends Parent {
+            constructor(age = 25, name = '李四') {
+                super(name);
+                this.age = age;
+            }
+        }
+
+        Child.a();
+        console.log(new Child());
+    </script>
+</body>
+
+</html>

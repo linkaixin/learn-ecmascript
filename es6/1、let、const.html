@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>kiss原则 keep it simple stupid</div>
+    <div>防止作用域污染</div>
+
+    <div>块级作用域</div>
+    <script>
+        if (1) {
+
+        }
+
+        for (; 1;) {
+            break;
+        }
+
+        { }
+    </script>
+    <div>1. 块级作用域没有返回值</div>
+    <div>2. 不建议在块级作用域中使用函数声明的方式声明函数，建议使用函数表达式的形式</div>
+    <script>
+        // 不建议
+        {
+            function test() {
+
+            }
+        }
+        // 建议
+        {
+            var test1 = function () { }
+        }
+    </script>
+
+    <div>let</div>
+    <div>特性</div>
+    <div>1. 在同一作用域下不可重复声明</div>
+    <script>
+        // 报错
+        let a = 1;
+        let a = 1;
+    </script>
+
+    <script>
+        // 报错
+        function test(a) {
+            let a = 10;
+            console.log(a);
+        }
+        test();
+    </script>
+    <script>
+        // 不报错
+        function test(a) {
+            var a = 10;
+            console.log(a);
+        }
+        test();
+
+        // 不报错
+        function test1(a) {
+            {
+                let a = 10;
+                console.log(a); // 10
+            }
+            console.log(a); // undefined
+        }
+        test1();
+    </script>
+    <div>2. let不会提升，会产生暂时性死区</div>
+    <script>
+        // 报错
+        console.log(b);
+        let b = 1;
+    </script>
+    <script>
+        // 不报错
+        var c = c;
+        console.log(c); // undefined
+        // 报错
+        let d = d;
+        console.log(d); // 报错 Cannot access 'd' before initialization
+    </script>
+    <script>
+        // 报错
+        function test2(x = y, y = 2) {
+            console.log(x, y);  // Cannot access 'y' before initialization
+        }
+        test2()
+    </script>
+    <script>
+        console.log(typeof f);  // undefined
+
+        console.log(typeof e);  // 报错 Cannot access 'e' before initialization
+        let e;
+    </script>
+    <div>3. 只在当前的作用域内生效</div>
+    <script>
+        {
+            let a = 1;
+        }
+        console.log(a); // 报错 a is not defined
+    </script>
+    <script>
+        for (var i = 0; i < 5; i++) {
+            i = 'a';
+            console.log(i); // a
+        }
+    </script>
+    <script>
+        for (let i = 0; i < 5; i++) {
+            var i = 'a';
+            console.log(i); // 报错 Identifier 'i' has already been declared
+        }
+
+        // 相当于
+        {
+            let i = 0;
+            {
+                var i = 'a';    // 这里i会变量提升，let i不允许重复定义，所以会报错
+                console.log(i);
+            }
+        }
+    </script>
+    <script>
+        for (let i = 0; i < 5; i++) {
+            let i = 'a';
+            console.log(i); // a a a a a
+        }
+        // 相当于
+        {
+            let i = 0;
+            {
+                let i = 'a';
+                console.log(i); // a
+            }
+            console.log(i);
+        }
+    </script>
+    <script>
+        for (let i = 0; i < 5; i++) {
+            i = 'a';
+            console.log(i); // a
+        }
+        // 相当于
+        {
+            let i = 0;
+            {
+                i = 10;
+                console.log(i); // 10
+            }
+            console.log(i);
+        }
+    </script>
+    <script>
+        let g = 1;
+        function test(g = g) {
+            console.log(g, 11); // 报错 Identifier 'g' has already been declared
+        }
+        test();
+    </script>
+
+    <div>const 声明常量</div>
+    <script>
+        const PI = 3.1415926;
+        console.log(PI);
+    </script>
+    <div>1. 常量基础值是不可更改的</div>
+    <script>
+        const aa = 1;
+        aa = 1;
+        console.log(aa);    // 报错 Assignment to constant variable.
+    </script>
+    <div>2. 存在暂时性死区</div>
+    <script>
+        console.log(ca);    // 报错 Cannot access 'ca' before initialization
+        const ca = 2;
+    </script>
+    <div>3. 常量引用值会被更改，所以需要使用冻结freeze不让其更改</div>
+    <script>
+        const cb = {};
+        // Object.freeze(cb);
+        cb.name = 'cb';
+        console.log(cb);
+
+        const cd = {
+            obj: {
+                obj1: {
+                    a: 'a'
+                }
+            }
+        }
+        myFreeze(cd);
+        cd['obj2'] = { b: 'b' };
+        cd['obj']['obj1']['b'] = 'bbb';
+        console.log(cd);
+
+        function myFreeze(obj) {
+            Object.freeze(obj);
+            console.log(Object.entries(obj));
+            Object.entries(obj).forEach(([key, value]) => {
+                if (value && typeof value === 'object' && !Object.isFrozen(value)) {
+                    myFreeze(value);
+                }
+            });
+        }
+    </script>
+
+    <script>
+        let x = 1;
+        {
+            let x = x;
+            console.log(x); // 报错 Cannot access 'x' before initialization
+        }
+    </script>
+</body>
+
+</html>

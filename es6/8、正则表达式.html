@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>修饰符</div>
+    <div>g global 全局匹配</div>
+    <div>i ignore case 忽略大小写</div>
+    <div>m multi-line 多行匹配</div>
+    <script>
+        var reg = new RegExp('^Test', 'gim'); // 对象实例化
+        var str = 'test is a str test';
+        console.log(str.match(reg)); // ['test']
+        reg = /test/gim; // 对象字面量 对象直接量 直接声明对象
+        console.log(str.match(reg)); // ['test', 'test']
+    </script>
+
+    <div>元字符</div>
+    <div>\w === [0-z_] \W === [^\w]</div>
+    <div>\d === [0-9] \D === [^\d]</div>
+    <div>\s === [\r\n\t\v\f] \S === [^\s]</div>
+    <div>\b === 单词边界 \B === 非单词边界</div>
+    <div>. !== \n \r U2028 U2029
+    </div>
+    <script>
+        str = '123abcABC___\r\n\t\v\f';
+        reg = /\w/gim;
+        console.log(str.match(reg)); // ['1', '2', '3', 'a', 'b', 'c', 'A', 'B', 'C', '_', '_', '_']
+
+        reg = /./gim;
+        console.log(str.match(reg));
+    </script>
+
+    <div>ES6 正则扩充</div>
+    <div>1. 声明正则变化方式</div>
+    <script>
+        var reg = /test/gim; match
+        var reg = new RegExp('test', 'gim');
+        var reg = new RegExp(/test/gim);
+    </script>
+    <div>2. 字符串上的正则方法进行了调整</div>
+    <script>
+        console.log(RegExp.prototype[Symbol.match]);
+        console.log(RegExp.prototype[Symbol.replace]);
+        console.log(RegExp.prototype[Symbol.search]);
+        console.log(RegExp.prototype[Symbol.split]);
+        console.log(String.prototype);
+    </script>
+    <div>3. 新增的修饰符</div>
+    <div>3.1. y sticky 粘连</div>
+    <script>
+        var reg1 = /a+/g;
+        var reg2 = /a+/y;
+        var str = 'aaaa_aaa_aa_a';
+        console.log(str.match(reg1)); // ['aaaa', 'aaa', 'aa', 'a']
+        console.log(str.match(reg2)); // ['aaaa', index: 0, input: 'aaaa_aaa_aa_a', groups: undefined]
+        console.log(reg2.sticky);
+    </script>
+    <div>source 正则主体 flags 正则修饰符</div>
+    <script>
+        var reg = new RegExp('test', 'gim');
+        console.log(reg.source);    // test
+        console.log(reg.flags); // gim
+    </script>
+
+    <div>3.2 u 用于识别UTF-16（JavaScrip字符串解析的编码格式）码点U+0000 - U+FFFF 区间内不能使用2个字节表示的</div>
+    <script>
+        // \uD842是处于U+D800区间，\uD842\uDFB7这一整个4个字节是属于一个字符
+        console.log('\u20bb7');    // ₻7
+        console.log('\u{20bb7}');    // 𠮷
+        console.log('\uD842\uDFB7');    // 𠮷
+        console.log('\uD842');    // �
+        console.log('\uDFB7');    // �
+
+        console.log(/^\uD83D/.test('\uD83D\uDC4D'));    // true
+        console.log(/^\uD83D/u.test('\uD83D\uDC4D'));   // false
+        console.log(/^.$/.test('\uD842\uDFB7'));    // false
+        console.log(/^.$/u.test('\uD842\uDFB7'));   // true
+        console.log(/\u{20bb7}/.test('𠮷')); // false
+        console.log(/\u{20bb7}/u.test('𠮷')); // true
+    </script>
+
+    <div>s dotAll 为了让.可以匹配一切字符</div>
+    <script>
+        str = '123abcABC___\r\n\t\v\f';
+        reg = /.+/g;
+        console.log(str.match(reg));    // ['123abcABC___', '\t\v\f']
+
+        reg = /.+/gs;
+        console.log(str.match(reg));    // ['123abcABC___\r\n\t\v\f']
+    </script>
+</body>
+
+</html>

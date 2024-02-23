@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function fn7() { }
+        console.log(fn7.name);  // fn7
+        // console.log(new Function.name); // 报错 Function.name is not a constructor
+        console.log(new Function().name);   // anonymous
+        console.log((new Function).name);   // anonymous
+        console.log(fn7.bind().name);   // bound fn7
+    </script>
+
+    <div>fn.length</div>
+    <script>
+        function test(a, b, c) {
+
+        }
+        console.log(test.length); // 3
+
+        // 当形参有默认值时候，fn.length为默认值所在的下标
+        function test1(a, b, c = 1) {
+
+        }
+        console.log(test1.length); // 2
+
+        function test2(a = 1, b = 2, c) {
+
+        }
+        console.log(test2.length); // 0
+    </script>
+    <div>arguments</div>
+    <div>形参存在默认值后，arguments就无法更改形参的值，映射关系不存在</div>
+    <script>
+        function fn(a, b, c) {
+            a = 4;
+            arguments[1] = 5;
+            console.log(arguments); // [4, 5, 3]
+            console.log(a, b, c);   // 4 5 3
+        }
+        fn(1, 2, 3);
+
+        function fn1(a, b, c = 6) {
+            a = 4;
+            arguments[1] = 5;
+            console.log(arguments); // [1, 5, 3]
+            console.log(a, b, c);   // 4 2 3
+        }
+        fn1(1, 2, 3);
+
+        function fn2(a = 7, b = 8, c) {
+            a = 4;
+            arguments[1] = 5;
+            console.log(arguments); // [1, 5, 3]
+            console.log(a, b, c);   // 4 2 3
+        }
+        fn2(1, 2, 3);
+    </script>
+
+    <script>
+        // 2 3 1
+        var x = 1;
+        function foo(x, y = function () { x = 2; console.log(x); }) {
+            var x = 3;
+            y();
+            console.log(x);
+        }
+        foo();
+        console.log(x);  
+    </script>
+    <script>
+        // 2 2 1
+        var x = 1;
+        function foo(x, y = function () { x = 2; console.log(x); }) {
+            x = 3;
+            y();
+            console.log(x);
+        }
+        foo();
+        console.log(x);  
+    </script>
+
+    <div>this指向</div>
+    <div>1. 默认绑定，指向window</div>
+    <script>
+        function fn() {
+            console.log(this);
+        }
+        fn();
+    </script>
+    <div>2. 隐式绑定，谁调用指向谁</div>
+    <script>
+        function fn2() {
+            console.log(this);  // window
+        }
+
+        var obj = {
+            fn: fn2
+        }
+        obj.fn();   // obj
+        fn2();  // window
+    </script>
+    <div>3. 显示绑定，call/apply/bind</div>
+    <div>4. new</div>
+
+    <div>箭头函数</div>
+    <script>
+        var fn = (a) => {
+            return a
+        }
+        console.log(fn(1));
+    </script>
+    <div>当函数的参数只有一个时，可以省略()</div>
+    <script>
+        var fn = a => {
+            return a
+        }
+        console.log(fn(1));
+    </script>
+    <div>当函数的函数体只有一个返回体，可以省略{}和return</div>
+    <script>
+        var fn = a => a
+        console.log(fn(1));
+    </script>
+
+    <div>箭头函数没有arguments</div>
+    <script>
+        var fn = (a, b) => {
+            console.log(arguments); // arguments is not defined
+        }
+        fn(1, 2)
+    </script>
+
+    <div>... reset运算符，用于展开或收集</div>
+    <div>收集到的数据是数组形式</div>
+    <script>
+        var fn = (a, b) => {
+            console.log(a, b);  // 4 5
+        }
+
+        fn(...[4, 5, 6])
+
+        var fn = (...args) => {
+            console.log(args);  // [1, 2]
+        }
+        fn(1, 2);
+
+        var arr = [1, 2, 3];
+        var arr1 = [0, ...arr, 4];
+        console.log(arr1);  // [0, 1, 2, 3, 4]
+
+        // 收集 仅能放在形参最后一位
+        var fn1 = (a, b, ...c) => {
+            console.log(c); // [3, 4, 5, 6, 7, 8]
+        }
+        fn1(1, 2, 3, 4, 5, 6, 7, 8);
+    </script>
+
+    <div>1. 箭头函数的this指向由外部的作用域决定</div>
+    <script>
+        function foo() {
+            console.log(this);
+            return a => {
+                console.log(this.a);
+            }
+        }
+
+        var obj1 = { a: 2 },
+            obj2 = { a: 3 },
+            bar = foo.call(obj1);
+        bar.call(obj2); // 2
+
+        const person = {
+            eat() {
+                console.log(this);
+            },
+            drink: () => {
+                console.log(this);
+            }
+        }
+        person.eat();   // person
+        person.drink(); // window
+    </script>
+    <div>2. 箭头函数不能作为构造函数使用</div>
+    <div>3. 没有argunments对象，使用reset扩张运算符代替</div>
+</body>
+
+</html>

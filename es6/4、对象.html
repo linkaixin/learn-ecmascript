@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>对象属性字符串拼接</div>
+    <script>
+        var a = 'hello',
+            b = 'world';
+        var obj = {
+            [a + b]: 123
+        }
+        console.log(obj);
+
+        var myObject = {};
+        myObject[true] = 'foo';
+        myObject[3] = 'bar';
+        myObject[myObject] = 'baz';
+
+        console.log(myObject['true']);  // foo
+        console.log(myObject['3']);     // bar
+        console.log(myObject['myObject']);  // undefined
+        console.log(myObject['[object Object]']); // baz
+
+        var a = { a: 1 };
+        var b = { b: 2 };
+        var obj = {
+            [a]: 'valueA',
+            [b]: 'valueB'
+        }
+        console.log(obj);   // {[object Object]: 'valueB'}
+    </script>
+
+    <div>getOwnPropertyDescriptor 属性描述符</div>
+    <div>configurable 可配置的</div>
+    <div>enumerable 可遍历的</div>
+    <div>value 值</div>
+    <div>writable 可写的</div>
+    <script>
+        var obj = { a: 1 }
+        console.log(Object.getOwnPropertyDescriptor(obj, 'a'));
+    </script>
+
+    <div>getOwnPropertyDescriptors 获取对象中所有属性的描述符</div>
+    <script>
+        var obj = { a: 1, b: 2 }
+        console.log(Object.getOwnPropertyDescriptors(obj));
+    </script>
+
+    <div>defineProperty 修改一个已有属性或添加一个新属性</div>
+    <script>
+        Object.defineProperty(obj, 'b', {
+            configurable: true,
+            enumerable: true,
+            writable: true,
+            value: 2
+        })
+        console.log(obj);
+    </script>
+
+    <script>
+        var obj6 = { a: 2 };
+        console.log(Object.getOwnPropertyDescriptor(obj6, 'a'));    // {value: 2, writable: true, enumerable: true, configurable: true}
+
+        Object.defineProperty(obj6, 'b', {
+            value: 4
+        })
+        console.log(Object.getOwnPropertyDescriptor(obj6, 'b'));    // {value: 4, writable: false, enumerable: false, configurable: false}
+    </script>
+
+    <div>defineProperties 设置多个属性</div>
+    <script>
+        Object.defineProperties(obj, {
+            a: {
+                value: 1,
+                writable: true
+            },
+            b: {
+                value: 'hello',
+                writable: false
+            }
+        })
+        console.log(obj);   // {a: 1, b: 'hello'}
+    </script>
+    <script>
+        // 浅拷贝
+        var obj = { a: { b: 2 }, b: 2 };
+        const clone = Object.create(Object.getPrototypeOf(obj), Object.getOwnPropertyDescriptors(obj));
+        clone.a.b = 4;
+        console.log(clone, obj, 33); 
+    </script>
+
+    <div>getter</div>
+    <div>[[GET]]操作会覆盖value的值</div>
+    <script>
+        var obj1 = {
+            log: ['a', 'b', 'c'],
+            get lastes() {
+                if (this.log.length == 0) {
+                    return undefined
+                }
+                return this.log[this.log.length - 1];
+            }
+        }
+        console.log(obj1.lastes);
+
+        var obj2 = {
+            get a() {
+                return 1;
+            }
+        }
+        console.log(obj2.a);    // 1
+
+        Object.defineProperty(obj2, 'b', {
+            get() {
+                return this.a * 3;
+            },
+            enumerable: true,
+            value: 7 // get 不能与value存在
+        })
+        console.log(obj2.b);    // 3 
+    </script>
+
+    <div>setter</div>
+    <script>
+        var obj3 = {
+            log: [],
+            set add(value) {
+                this.log.push(value);
+            }
+        }
+
+        obj3.add = 1;
+        obj3.add = 2;
+        obj3.add = 3;
+        console.log(obj3.log);
+
+        var obj4 = {
+            get a() {
+                return this._a;
+            },
+            set a(value) {
+                this._a = value * 2;
+            }
+        }
+        obj4.a = 2;
+        console.log(obj4.a);    // 4
+
+        var descriptor = Object.getOwnPropertyDescriptor(obj4, 'a');
+        console.log(descriptor);
+        console.log(descriptor.get.name);   // get a
+        console.log(descriptor.set.name);   // set a
+    </script>
+
+    <div>preventExtensions 禁止拓展，可修改、可删除</div>
+    <div>isExtensible 是否可扩展</div>
+    <script>
+        var obj5 = { a: 1 }
+        Object.preventExtensions(obj5);
+        obj5.b = 2;
+        obj5.a = 3;
+        console.log(obj5, 11);  // {a: 3}
+        console.log(Object.isExtensible(obj5));
+    </script>
+
+    <div>seal 密封对象，不可删除和添加，可修改</div>
+    <div>isSealed 是否密封</div>
+    <script>
+        var obj = { a: 1 };
+        Object.seal(obj);
+        obj.a = 2;
+        delete obj.a;
+        console.log(obj, 444444);
+        console.log(Object.isSealed(obj));  // true
+        console.log(Object.getOwnPropertyDescriptor(obj, 'a')); // {value: 2, writable: true, enumerable: true, configurable: false}
+    </script>
+
+    <div>=== is</div>
+    <div>除了NAN与+0 -0其他的都相同</div>
+    <script>
+        console.log(NaN === NaN);   // false 调用的是底层的sameValue算法
+        console.log(+0 === -0); // true
+        console.log(false == 0);    // true
+        console.log(false === 0);   // false
+
+        console.log(Object.is(NaN, NaN));   // true
+        console.log(Object.is(+0, -0));   // false
+        console.log(Object.is(false, 0));   // false
+    </script>
+
+    <div>Object.assign 合并对象</div>
+    <script>
+        var tar = { a: 1, b: 2 },
+            tar1 = { b: 3, c: 4 },
+            tar2 = { c: 5, d: 6 };
+        Object.assign(tar, tar1, tar2);
+        console.log(tar);   // {a: 1, b: 3, c: 5, d: 6}
+    </script>
+    <script>
+        // undefined null 没有包装类
+        console.log(Object.assign(undefined, { a: 1 }));    // 报错
+        console.log(Object.assign(null, { a: 1 }));    // 报错
+    </script>
+    <script>
+        console.log(Object.assign('', { a: 1 }));   // String {'', a: 1}
+        console.log(Object.assign(1, { a: 1 }));    // Number {1, a: 1}
+        console.log(Object.assign(true, { a: 1 })); // Boolean {true, a: 1}
+    </script>
+    <script>
+        console.log(Object.assign({ a: 1 }, undefined));    // {a: 1}
+        console.log(Object.assign({ a: 1 }, null));    // {a: 1}
+        console.log(Object.assign({ a: 1 }, 1));    // {a: 1}
+        console.log(Object.assign({ a: 1 }, true));    // {a: 1}
+        // 当转为包装类的可枚举属性，就可以合并
+        console.log(Object.assign({ a: 1 }, '345'));    // {0: '3', 1: '4', 2: '5', a: 1}
+        console.log(Object.assign({ a: { b: 2, c: 3 } }, { a: { b: 3 } })); // {a: {b: 3}}
+
+        var obj = Object.create({ foo: 1 }, {
+            bar: {
+                value: 2,
+            },
+            baz: {
+                value: 3,
+                enumerable: true
+            }
+        })
+        console.log(obj);
+        console.log(Object.assign({ a: 1 }, obj));  // {a: 1, baz: 3}
+
+        console.log(Object.assign({ a: 1 }, { c: 3 })); // {a: 1, c: 3}
+        console.log(Object.assign({ a: 1 }, { [Symbol('c')]: 3 })); // {a: 1, Symbol(c): 3}
+
+    </script>
+    <script>
+        var obj = { a: { b: 2 } };
+        var objCopy = Object.assign(obj, { b: 3 }); // 浅拷贝
+        obj.a.b = 4;
+        console.log(objCopy);
+    </script>
+    <script>
+        // 添加方法
+        function Person() { }
+        Object.assign(Person.prototype, {
+            eat() {
+                console.log('eat');
+            },
+            age: 1
+        })
+        console.log(Person.prototype);  // {age: 1, eat: ƒ, constructor: ƒ}
+    </script>
+    <script>
+        var obj = {
+            get foo() {
+                return 1
+            },
+            set foo(value) {
+                this._foo = value;
+            }
+        }
+        console.log(Object.assign({}, obj)); // { foo: 1 }
+
+        var tar = Object.defineProperties({}, Object.getOwnPropertyDescriptors(obj));
+        console.log(Object.getOwnPropertyDescriptors(tar)); // {foo: {enumerable: true, configurable: true, get: ƒ, set: ƒ}}
+    </script>
+
+    <div>setPrototypeOf 设置对象的原型</div>
+    <div>getPrototypeOf 获取对象的原型</div>
+    <script>
+        var proto = {
+            y: 2
+        }
+        var obj = { x: 1 };
+        Object.setPrototypeOf(obj, proto);
+        console.log(obj.y); // 2
+        console.log(Object.getPrototypeOf(obj));    // {y: 2}
+        console.log(Object.getPrototypeOf(obj) === Object.prototype);   // false
+
+        var num = Object.setPrototypeOf(1, { a: 1, b: 2 });
+        console.log(num);   // 1
+        console.log(Object.getPrototypeOf(num) === Number.prototype);   // true
+
+        var str = Object.setPrototypeOf('123', { a: 1, b: 2 })
+        console.log(str);   // 123
+        console.log(Object.getPrototypeOf(str) === String.prototype);   // true
+    </script>
+
+    <div>Object.keys() 获取对象自身所有可枚举的键名</div>
+    <div>Object.values() 获取对象自身所有可枚举的键值</div>
+    <div>Object.entries() 获取对象自身所有可枚举的键值对，以数组的格式</div>
+    <script>
+        var obj = {
+            a: 1,
+            b: 2,
+            c: 3
+        }
+
+        Object.defineProperties(obj, {
+            d: {
+                value: 4,
+                enumerable: true
+            },
+            e: {
+                value: 5,
+                enumerable: false
+            },
+            f: {
+                value: 6,
+            }
+        })
+
+        Object.setPrototypeOf(obj, {
+            g: 7,
+            h: 8
+        })
+
+        console.log(obj);
+        console.log(Object.keys(obj));  // ['a', 'b', 'c', 'd']
+        console.log(Object.values(obj));    // [1, 2, 3, 4]
+        console.log(Object.entries(obj));   // [Array(2), Array(2), Array(2), Array(2)]
+    </script>
+
+
+    <div>super 指向对象的原型，仅能在对象简写函数中使用</div>
+    <script>
+        var Person = {
+            a: 1,
+            b: 2,
+            test() {
+                console.log('test');
+            }
+        }
+        var obj = {
+            c: 3,
+            foo() {
+                console.log(super.a);
+                super.test();
+            }
+        }
+        Object.setPrototypeOf(obj, Person);
+        obj.foo();
+    </script>
+
+
+</body>
+
+</html>

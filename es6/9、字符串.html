@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>unicode的表示方式</div>
+    <script>
+        console.log('\u0061');  // a
+        console.log('\u{61}');  // a
+        console.log('\u{20BB7}');   // 𠮷
+        console.log('\uD842\uDFB7');    // 𠮷
+    </script>
+
+    <div>2个字节表示一个长度</div>
+    <div>charAt 返回对应的字符，超出BMP平面的4个字节，无法使用charAt表示，会乱码</div>
+    <div>charCodeAt 返回对应的字符串十进制编码</div>
+    <div>codePointAt 返回对应的字符串十进制编码，与charCodeAt不同的是可以正确的解析出4字节的第一个码点</div>
+    <script>
+        var s = '\u0061';
+        console.log(s.length);  // 1
+        console.log(s.charAt(0));  // a
+        console.log(s.charCodeAt(0));  // 97
+        console.log(Number.prototype.toString.call(s.charCodeAt(0), 16));   // 61
+
+        // \uD842\uDFB7
+        var s = '\u{20BB7}';
+        console.log(s.length);  // 2
+        console.log(s.charAt(0));  // �
+        console.log(s.charAt(1));  // �
+        console.log(s.charCodeAt(0));  // 55362
+        console.log(s.charCodeAt(1));  // 57271
+        console.log(Number.prototype.toString.call(s.charCodeAt(0), 16));   // d842
+        console.log(Number.prototype.toString.call(s.charCodeAt(1), 16));   // dfb7
+
+        var s = '𠮷a';
+        console.log(s.length);  // 3
+        console.log(s.charCodeAt(0));   // 55362
+        console.log(s.charCodeAt(1));   // 57271
+        console.log(s.charCodeAt(2));   // 97
+        console.log(s.codePointAt(0));  // 134071
+        console.log(s.codePointAt(1));  // 57271
+        console.log(s.codePointAt(2));  // 97
+        console.log(Number.prototype.toString.call(134071, 16));   // 20bb7
+    </script>
+
+    <div>fromCharCode ES5的方法，返回对应code的文字，超出BMP的code会舍弃最高位</div>
+    <div>fromCodePoint 弥补fromCharCode高位code的缺陷</div>
+    <script>
+        console.log(String.fromCharCode(0X20BB7));  // ஷ
+        console.log(String.fromCharCode(0X20BB7) === String.fromCharCode(0X0BB7));  // true
+        console.log(String.fromCodePoint(0X20BB7));  // 𠮷
+    </script>
+
+    <div>for of</div>
+    <script>
+        var s = '𠮷';
+        for (let i = 0; i < s.length; i++) {
+            console.log(s[i]);  // � �
+        }
+
+        for (const iterator of s) {
+            console.log(iterator);  // 𠮷
+        }
+    </script>
+
+    <div>startsWith 以什么开始</div>
+    <div>endsWith 以什么结束</div>
+    <div>includes 是否包含</div>
+    <script>
+        var s = 'hello world';
+        console.log(s.startsWith('hello'));  // true
+        console.log(s.endsWith('world'));  // true
+        console.log(s.includes('o'));   // true
+    </script>
+
+    <div>repeat 重复</div>
+    <script>
+        console.log('x'.repeat(3)); // xxx
+        console.log('x'.repeat(2.9));   // xx
+        console.log('x'.repeat(0));     // 
+        console.log('x'.repeat(NaN));   //
+        console.log('x'.repeat('3'));   // xxx
+        console.log('x'.repeat(-1));    // 报错 Invalid count value: -1 at String.repeat 
+    </script>
+
+    <div>padStart 在字符串前面填充指定字符，共多少位</div>
+    <div>padEnd 在字符串末尾填充指定字符，共多少位</div>
+    <script>
+        console.log('x'.padStart(5, 'ab')); // ababx
+        console.log('x'.padEnd(5, 'ab'));   // xabab
+    </script>
+
+    <div>模版字符串</div>
+    <script>
+        var name = '张三',
+            age = 18;
+        console.log(`姓名：${name}，年龄：${age}`);
+
+        var x = 5,
+            y = 6;
+        console.log(`${x} + ${y} = ${x + y}`);
+
+        var obj = { x: 1, y: 2 };
+        console.log(`${obj.x + obj.y}`);
+
+        function fn() {
+            return 'Hello World';
+        }
+        console.log(`${fn}`);
+        console.log(`${fn()}`);
+    </script>
+
+    <div>你在模板字符串中使用一个数组时，它会自动调用数组的 toString 方法，将数组转换为字符串，并在数组的元素之间添加逗号。</div>
+    <script>
+        var arr = [{
+            name: '张三',
+            age: 18
+        }, {
+            name: '李四',
+            age: 20
+        }]
+
+        var fn = arr => `
+            ${arr.map(item => `
+                    <div>姓名：${item.name}，年龄：${item.age}</div>
+                `).join('')
+            }
+        `
+        console.log(fn(arr));
+    </script>
+    <div>标签模版 控制输出模版字符串的变量</div>
+    <script>
+        var x = 1, y = 2;
+        tag`hello ${x} wrold ${y}`;
+        function tag() {
+            console.log(arguments); // ['hello ', ' wrold ', '', raw: Array(3)], 1, 2
+        }
+    </script>
+</body>
+
+</html>

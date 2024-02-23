@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>解构赋值</div>
+    <script>
+        var [a, b, c] = [1, 2, 3];
+        console.log(a, b, c);// 1 2 2
+        var { a: a, b: b } = { a: 1, b: 2 };
+        console.log(a, b);  // 1 2
+        var { a, b } = { a: 1, b: 2 };
+        console.log(a, b);  // 1 2
+        var { b, a } = { a: 1, b: 2 };
+        console.log(a, b);  // 1 2
+    </script>
+    <div>解构失败，变量比值多</div>
+    <script>
+        var [a, b, c, d] = [1, 2, 3];
+        console.log(a, b, c, d);    // 1 2 3 undefined
+        var { a, b, c, d } = { a: 1, b: 2 };
+        console.log(a, b, c, d);  // 1 2 undefined undefined
+    </script>
+    <div>不完全解构，值比变量多</div>
+    <script>
+        var [a, [b], [[c]]] = [1, [2], [[3]], 4];
+        console.log(a, b, c);   // 1 2 3
+        var { a, b } = { a: 1, b: 2, c: 3, d: 4 };
+        console.log(a, b);   // 1 2
+    </script>
+    <div>默认值</div>
+    <script>
+        var [a = 1] = [];
+        console.log(a); // 1
+        var [a = 1] = [2];
+        console.log(2);
+        function test() {
+            console.log(22);
+        }
+        var [a = test()] = [3];
+        console.log(a); // 3
+        var [a = test()] = [];
+        console.log(a); // 22 undefined
+        // let [x = y, y = 1] = [];
+        // console.log(x, y);  // Uncaught ReferenceError: Cannot access 'y' before initialization
+        let [x1 = y, y1 = 1] = [1];
+        console.log(x1, y1);    // 1 1
+
+        var { a: a = 1, b } = { b: 4 };
+        console.log(a, b);  // 1 4
+
+        // 获取wangwu
+        var family = {
+            name: 'zhangsan',
+            son: {
+                name: 'lisi',
+                son: {
+                    name: 'wangwu'
+                }
+            }
+        }
+        var { son: { son: son1 } } = family;
+        console.log(son1);
+
+        // 交换值
+        var a = 10,
+            b = 20;
+        [a, b] = [b, a];
+        console.log(a, b);   // 20 10
+    </script>
+    <script>
+        var x = 200,
+            y = 300,
+            z = 100;
+        var obj1 = {
+            x: {
+                y: 42,
+            },
+            z: {
+                y: z
+            }
+        };
+
+        ({ y: x = { y: y } } = obj1);   // x = {y: 300}
+        ({ z: y = { y: z } } = obj1);   // y = {y: 100}
+        ({ x: z = { y: x } } = obj1);   // z = {y: 42}
+
+        console.log(x.y, y.y, z.y); // 300 100 42
+    </script>
+    <script>
+        function foo({ x = 10 } = {}, { y } = { y: 10 }) {
+            console.log(x, y);
+        }
+        foo({ x: 2 }, { y: 3 });
+    </script>
+
+
+    <div>先声明，再解构，是对象的话需要使用()转为表达式，不然会认为是块级作用域</div>
+    <script>
+        var { a } = { a: 1 };
+        console.log(a); // 1
+        var b;
+        ({ b } = { b: 2 });
+        console.log(b); // 2 
+    </script>
+    <div>变量的解构本质是变量的赋值</div>
+    <script>
+        // let { a: x, a: y } = { a: 1 };
+        // console.log(x, y);  // 1 1
+
+        // // 重复赋值
+        // let { a: n, b: n } = { a: 1, b: 2 };  //报错
+    </script>
+
+    <div>隐式类型转换</div>
+    <script>
+        // 转换成类数组
+        var [a, b, c, d, f] = 'hello';
+        console.log(a, b, c, d, f); // h e l l o
+        var { length: len } = 'hello';
+        console.log(len);   // 5
+
+        // 转换成包装类
+        var { toString: s } = 123;
+        console.log(s === Number.prototype.toString);  //true
+    </script>
+    <script>
+        // undefined null没有包装类，所以报错
+        var { toString: s } = undefined;
+        console.log(s); // Cannot destructure property 'toString' of 'undefined' as it is undefined.
+    </script>
+</body>
+
+</html>

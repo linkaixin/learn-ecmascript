@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>Set() 是构造函数，成员是唯一的"数组"</div>
+    <script>
+        var set = new Set([1, 2, 3, 4, 4]);
+        console.log(set);   // Set(4) {1, 2, 3, 4}
+        set.add(5);
+        console.log(set);   // Set(5) {1, 2, 3, 4, 5}
+        var set = new Set([undefined, undefined, null, null, 5, '5', true, 1, NaN, NaN, {}, {}, [], []]);
+        console.log(set);
+
+        var x = { id: 1 },
+            y = { id: 2 };
+
+        var set = new Set();
+
+        set.add(x).add(y);
+        console.log(set);
+        console.log(set.size);  // 2
+        console.log(set.has(x));    // true
+        set.delete(x);
+        console.log(set);
+        set.clear();
+        console.log(set);
+    </script>
+    <div>Set中不存在键名</div>
+    <script>
+        var set = new Set(['a', 'b', 'c', 'd']);
+        for (const iterator of set.keys()) {
+            console.log(iterator);  // a b c d
+        }
+        for (const iterator of set.values()) {
+            console.log(iterator);  // a b c d
+        }
+        for (const iterator of set.entries()) {
+            console.log(iterator);  // ['a', 'a'] ['b', 'b']
+        }
+        for (const iterator of set) {
+            console.log(iterator);  // a b c d
+        }
+
+        console.log(Set.prototype[Symbol.iterator] === Set.prototype.values);   // true
+    </script>
+    <script>
+        // 去重      
+        var arr = [1, 1, 1, 1, 2, 3, 34, 4, 3, 3, 4, 4, 4, 5];
+        var set = new Set(arr);
+        console.log([...set]);
+    </script>
+    <script>
+        var arr = [1, 2, 3, 4];
+        var set = new Set([...[...arr].map(parseInt)]);
+        console.log(set);   // Set(2) {1, NaN}
+    </script>
+    <div>交集 并集 差集</div>
+    <script>
+        var arr1 = [1, 2, 3],
+            arr2 = [3, 4, 5];
+        var union = new Set([...arr1, ...arr2]);
+        console.log(union);  // Set(5) {1, 2, 3, 4, 5}
+
+        var intersect = new Set([...arr1].filter(x => new Set(arr2).has(x)));
+        console.log(intersect)  // Set(1) {3}
+
+        var diff = new Set([...arr1].filter(x => !(new Set(arr2).has(x))));
+        console.log(diff);  // Set(2) {1, 2}
+    </script>
+
+    <div>Map() 键值一一对应</div>
+    <script>
+        var obj = {};
+        var x = { id: 1 },
+            y = { id: 2 };
+        obj[x] = 'foo';
+        obj[y] = 'bar';
+
+        console.log(obj);   // {[object Object]: 'bar'}
+        console.log(obj[x]);    // bar
+        console.log(obj[y]);    // bar
+    </script>
+    <script>
+        var obj = new Map();
+        var x = { id: 1 },
+            y = { id: 2 };
+        obj.set(x, 'foo');
+        obj.set(y, 'bar');
+
+        console.log(obj);   // Map(2) {{…} => 'foo', {…} => 'bar'}}
+        console.log(obj.get(x));    // foo
+        console.log(obj.get(y));    // bar
+    </script>
+    <div>设置值</div>
+    <script>
+        var map = new Map([
+            ['a', '1'],
+            ['b', '2'],
+        ])
+        console.log(map);   // Map(2) {'a' => '1', 'b' => '2'}
+
+        var map = new Map();
+        map.set('a', '1');
+        map.set('b', '2');
+        console.log(map);   // Map(2) {'a' => '1', 'b' => '2'}
+
+        var map = new Map();
+        map.set([5], 5555);
+        console.log(map);
+        console.log(map.get([5]));  // undefined
+
+        map.set('true', 1);
+        map.set(true, 2);
+        console.log(map.get('true'));   // 1
+        console.log(map.get(true));   // 2
+
+        map.set(undefined, 1);
+        map.set(null, 2);
+        console.log(map.get(undefined));    // 1
+        console.log(map.get(null)); // 2
+
+        map.set(NaN, 1);
+        console.log(map.get(NaN));  // 1
+    </script>
+    <script>
+        var map = new Map();
+        map.set('a', 1).set('b', 2);
+        console.log(map);   // Map(2) {'a' => 1, 'b' => 2}
+        console.log(map.size);  // 2
+        console.log(map.has('a'));  // true
+        map.delete('a');
+        console.log(map);   // Map(1) {'b' => 2}
+        map.clear();
+        console.log(map);   // Map(0) {size: 0}
+
+        var map = new Map([
+            ['a', '1'],
+            ['b', '2'],
+            ['c', '3']
+        ]);
+        for (const iterator of map.keys()) {
+            console.log(iterator);  // a b c
+        }
+        for (const iterator of map.values()) {
+            console.log(iterator);  // 1 2 3
+        }
+        for (const iterator of map.entries()) {
+            console.log(iterator);  // ['a', '1'] ['b', '2'] ['c', '3']
+        }
+        for (const iterator of map) {
+            console.log(iterator);  // ['a', '1'] ['b', '2'] ['c', '3']
+        }
+        console.log(Map.prototype[Symbol.iterator] === map.entries);    // true
+    </script>
+
+    <div>Map转数组</div>
+    <script>
+        var map = new Map();
+        map.set('a', '1');
+        map.set('b', '2');
+        console.log([...map]);  //  [['a', '1'], ['b', '2']]
+    </script>
+
+    <div>数组转Map</div>
+    <script>
+        var map = new Map([['a', '1'], ['b', '2']]);
+        console.log(map);   // Map(2) {'a' => '1', 'b' => '2'}
+    </script>
+
+    <div>Map转对象</div>
+    <script>
+        var map = new Map();
+        map.set('a', '1');
+        map.set('b', '2');
+
+        function mapToObj(map) {
+            let obj = {};
+            for (let [key, val] of map) {
+                obj[key] = val;
+            }
+            return obj;
+        }
+        console.log(mapToObj(map)); // {a: '1', b: '2'}
+    </script>
+
+    <div>对象转Map</div>
+    <script>
+        function ObjToMap(obj) {
+            let map = new Map();
+            for (const key in obj) {
+                if (Object.hasOwnProperty.call(obj, key)) {
+                    map.set(key, obj[key]);
+                }
+            }
+            return map;
+        }
+        console.log(ObjToMap({ a: '1', b: '2' }));  // Map(2) {'a' => '1', 'b' => '2'}
+    </script>
+
+    <div>Array与Map</div>
+    <script>
+        var map = new Map();
+        var arr = []
+        // 增
+        map.set('a', '1');
+        arr.push({ 'a': 1 });
+        console.log(map, arr);
+        // 查
+        var flag = map.has('a');
+        var item = arr.find(item => item.a);
+        console.log(flag, item);
+        // 改
+        map.set('a', '2');
+        arr.forEach(item => item.a = 2);
+        console.log(map, arr);
+        // 删
+        map.delete('a');
+        arr.splice(arr.findIndex(item => item.a), 1);
+        console.log(map, arr);
+    </script>
+
+    <div>Array与Set</div>
+    <script>
+        var set = new Set();
+        var arr = [];
+        // 增
+        set.add('a');
+        arr.push('a');
+        console.log(set, arr);
+        // 查
+        var flag = set.has('a');
+        var item = arr.find(item => item === 'a');
+        console.log(flag, item);
+        // 改
+        set.forEach(key => {
+            if (key === 'a') {
+                set.delete('a');
+                set.add('b');
+            }
+        });
+        arr[arr.findIndex(item => item === 'a')] = 'b'
+        console.log(set, arr);
+        // 删
+        set.delete('a');
+        arr.splice(arr.findIndex(item => item === 'a'), 1);
+        console.log(set, arr);
+    </script>
+
+    <div>WeakSet() WeakMap()</div>
+    <div>1. 没有遍历属性Symbol.iterator</div>
+    <div>2. 属于弱引用，垃圾回收的时候不考虑引用</div>
+    <script>
+        console.log(new WeakSet());
+        console.log(new WeakMap());
+    </script>
+
+    <div>WeakSet()</div>
+    <div>不能在 WeakSet 中添加原始值</div>
+    <script>
+        let weakSet = new WeakSet();
+
+        let obj = {};
+
+        // 添加对象到 WeakSet
+        weakSet.add(obj);
+
+        // 检查对象是否在 WeakSet 中
+        console.log(weakSet.has(obj)); // 输出 true
+
+        // 从 WeakSet 中删除对象
+        weakSet.delete(obj);
+
+        // 再次检查对象是否在 WeakSet 中
+        console.log(weakSet.has(obj)); // 输出 false
+    </script>
+
+    <div>WeakMap()</div>
+    <div>WeakMap 中的键必须是对象，不能是原始值（如字符串或数字）</div>
+    <script>
+        let weakMap = new WeakMap();
+
+        let obj = {};
+
+        // 设置键值对
+        weakMap.set(obj, 'some value');
+
+        // 获取值
+        console.log(weakMap.get(obj)); // 输出 'some value'
+
+        // 检查是否包含键
+        console.log(weakMap.has(obj)); // 输出 true
+
+        // 删除键值对
+        weakMap.delete(obj);
+
+        // 再次检查是否包含键
+        console.log(weakMap.has(obj)); // 输出 false
+    </script>
+
+    <div>proxy 代理</div>
+    <script>
+        var obj = {
+            name: '张三',
+            age: 20,
+            ipone: '1388888888'
+        }
+
+        var proxy = new Proxy(obj, {
+            get: function (target, key) {
+                if (key == 'ipone') {
+                    throw new Error('不告诉你');
+                }
+
+                return target[key];
+            },
+            set: function (target, key, value) {
+                if (key == 'age') {
+                    if (value < 0) {
+                        throw new Error('年龄不能为负数');
+                    }
+                }
+
+                target[key] = value;
+            },
+            has: function (target, key) {
+                console.log(key, 11);
+                if (key == 'ipone') {
+                    return false;
+                } else {
+                    return target[key];
+                }
+            }
+        })
+
+        console.log(proxy.name);
+        // console.log(proxy.ipone);
+        // proxy.age = -1;
+        proxy.ipone = '123';
+        proxy.sex = '男';
+        console.log(obj);
+        console.log('name' in proxy);   // true
+        console.log('ipone' in proxy);  // false 
+    </script>
+    <div>Reflect 对象操作映射</div>
+    <script>
+        var obj = {};
+        Reflect.set(obj, 'name', '张三');
+        console.log(obj);
+        console.log(Reflect.get(obj, 'name'));
+        Reflect.has(obj, 'name');
+        console.log(obj);
+        Reflect.deleteProperty(obj, 'name');
+        console.log(obj);
+    </script>
+</body>
+
+</html>

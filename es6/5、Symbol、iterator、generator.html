@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>Symbol() 独一无二的值，原始值类型</div>
+    <script>
+        var s1 = Symbol(),
+            s2 = Symbol();
+        console.log(s1, s2, s1 === s2); // Symbol() Symbol() false
+
+        var s1 = Symbol('foo');
+        console.log(s1);    // Symbol(foo);
+
+        console.log(String(s1));    // Symbol(foo)
+        console.log(s1.toString()); // Symbol(foo)
+        console.log(Boolean(s1));   // true
+        console.log(!s1);   // false
+        console.log(Number(s1));    // 报错 Cannot convert a Symbol value to a number
+    </script>
+    <script>
+        // 获取Symbol的prototype
+        var s1 = Symbol('foo');
+        console.log(Object.getPrototypeOf(s1)); // Symbol
+    </script>
+
+    <script>
+        var a = Symbol();
+        var fn = Symbol();
+        var person = {
+            [a]: 'Hello!',
+            a: 'a',
+            [fn]() {
+                console.log(this[a]);
+            }
+        }
+        console.log(person);
+        console.log(person[a]); // 输出：Hello!
+        console.log(person.a);  // 'a'
+        person[fn]();   // Hello
+    </script>
+
+    <div>Symbol.for() 创建两个相同的Symbol值</div>
+    <script>
+        var s1 = Symbol.for(),
+            s2 = Symbol.for();
+        console.log(s1 === s2); // true
+
+        var s1 = Symbol.for('foo'),
+            s2 = Symbol.for('foo1');
+        console.log(s1 === s2); // false
+    </script>
+    <div>Symbol.keyFor() 获取Symbol.for(key)定义的key</div>
+    <script>
+        var s1 = Symbol();
+        console.log(Symbol.keyFor(s1)); // undefined
+        var s1 = Symbol('foo');
+        console.log(Symbol.keyFor(s1)); // undefined
+        var s1 = Symbol.for();
+        console.log(Symbol.keyFor(s1)); // undefined
+        var s1 = Symbol.for('foo');
+        console.log(Symbol.keyFor(s1)); // foo
+    </script>
+    <script>
+        // 不能使用for in遍历
+        var a = Symbol('a'),
+            b = Symbol('b');
+        var obj = {
+            [a]: 'hello',
+            [b]: 'world',
+            name: '!!!'
+        }
+        for (const key in obj) {
+            console.log(key, 1);
+        }
+    </script>
+
+    <div>Object.getOwnPropertySymbols 遍历自身对象中Symbol的key（不包含原型上且不管是否可枚举）</div>
+    <script>
+        var a = Symbol('a'),
+            b = Symbol('b'),
+            _a = Symbol('_a');
+        var obj = {
+            [a]: 'hello',
+            [b]: 'world',
+            name: '!!!'
+        }
+
+        Object.defineProperties(obj, {
+            [_a]: {
+                value: 'hello world',
+                enumerable: false
+            }
+        })
+
+        var arr = Object.getOwnPropertySymbols(obj);
+        console.log(arr);   // [Symbol(a), Symbol(b), Symbol(_a)]
+
+        console.log(Object.keys(obj));  // ['name']
+    </script>
+
+    <div>for in 遍历自身与原型可枚举的key，不包含Symbol</div>
+    <div>Object.keys 遍历自身可枚举的key，不包含Symbol</div>
+
+
+    <div>迭代器 iterator</div>
+    <div>对数据结构的读取的一种方式，基于拉取的一种消耗数据的组织方式；</div>
+    <div>Array Map Set weakMap weakSet arguments nodeList TypedArray 部署了iterator接口的数据结构</div>
+    <script>
+        var arr = [1, 2, 3, 4];
+        var itar = arr[Symbol.iterator]();
+        console.log(itar);
+
+        console.log(itar.next());   // {value: 1, done: false}
+        console.log(itar.next());   // {value: 2, done: false}
+        console.log(itar.next());   // {value: 3, done: false}
+        console.log(itar.next());   // {value: 4, done: false}
+        console.log(itar.next());   // {value: undefined, done: true}
+
+        function myIterator(arr) {
+            var index = 0,
+                len = arr.length;
+            return {
+                next: function () {
+                    if (index < len) {
+                        return { value: arr[index++], done: false }
+                    } else {
+                        return { value: undefined, done: true }
+                    }
+                }
+            }
+        }
+
+        var itar = myIterator(arr);
+        console.log(itar.next());   // {value: 1, done: false}
+        console.log(itar.next());   // {value: 2, done: false}
+        console.log(itar.next());   // {value: 3, done: false}
+        console.log(itar.next());   // {value: 4, done: false}
+        console.log(itar.next());   // {value: undefined, done: true}
+    </script>
+
+
+    <script>
+        var tArr = new Int8Array();
+        console.log(tArr.__proto__);    // TypedArray
+        console.log(TypedArray);    // TypedArray is not defined
+    </script>
+
+    <script>
+        // Object没有部署iterator接口
+        var obj = {
+            strat: [1, 2, 3, 4, 5],
+            end: [6, 7, 8, 9, 10]
+        }
+
+        var arr = [...obj]; // obj is not iterable
+
+        for (const iterator of obj) {
+            console.log(iterator);  // obj is not iterable
+        }
+
+    </script>
+    <script>
+        // object部署iterator接口
+        var obj = {
+            strat: [1, 2, 3, 4, 5],
+            end: [6, 7, 8, 9, 10],
+            [Symbol.iterator]() {
+                var index = 0,
+                    arr = [...this.strat, ...this.end],
+                    len = arr.length;
+                return {
+                    next() {
+                        if (index < len) {
+                            return {
+                                value: arr[index++],
+                                done: false
+                            }
+                        } else {
+                            return {
+                                value: undefined,
+                                done: true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // 只有对象部署了iterator接口，才能使用扩展运算符
+        var arr = [...obj];
+        console.log(arr, 55);   // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+        for (const iterator of obj) {
+            console.log(iterator);
+        }
+    </script>
+
+    <script>
+        // 使用for of遍历object
+        var obj = {
+            a: 1,
+            b: 2,
+            c: 3,
+            [Symbol.iterator]() {
+                var index = 0,
+                    map = new Map(),
+                    len;
+                for (const [key, value] of Object.entries(this)) {
+                    map.set(key, value);
+                }
+                len = map.size;
+                map = [...map];
+                return {
+                    next() {
+                        if (index < len) {
+                            return {
+                                value: map[index++],
+                                done: false
+                            }
+                        } else {
+                            return {
+                                value: undefined,
+                                done: true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        for (const iterator of obj) {
+            console.log(iterator);
+        }
+    </script>
+
+    <div>使用任何阻止for of循环，都在经过[Symbol.iterator].return</div>
+    <script>
+        var obj = {
+            a: 1,
+            b: 2,
+            c: 3,
+            [Symbol.iterator]() {
+                var index = 0,
+                    map = new Map(),
+                    len;
+                for (const [key, value] of Object.entries(this)) {
+                    map.set(key, value);
+                }
+                len = map.size;
+                map = [...map];
+                return {
+                    next() {
+                        if (index < len) {
+                            return {
+                                value: map[index++],
+                                done: false
+                            }
+                        } else {
+                            return {
+                                value: undefined,
+                                done: true
+                            }
+                        }
+                    },
+                    return() {
+                        console.log('阻止循环');
+                        return {
+                            value: 0,
+                            done: false
+                        }
+                    }
+                }
+            }
+        }
+        for (const iterator of obj) {
+            console.log(iterator);
+            break;
+        }
+    </script>
+
+    <div>generator生成器</div>
+    <div>返回值是一个迭代对象;</div>
+    <div>yield产出不同的内部值，并可暂停函数运行，返回值为next()中的值，是一个单独的表达式</div>
+    <script>
+        function* gen() {
+            yield 'a';
+            console.log(1);
+            yield 'b';
+            yield 'c';
+            return 'd';
+        }
+
+        var g = gen();
+        console.log(g); // gen {<suspended>}
+        console.log(g.next());  // {value: 'a', done: false}
+        console.log(g.next());  // 1 {value: 'b', done: false}
+        console.log(g.next());  // {value: 'c', done: false}
+        console.log(g.next());  // {value: 'd', done: true}
+        console.log(g.next());  // {value: undefined, done: true}
+    </script>
+
+    <script>
+        // 报错
+        function* gen() {
+            console.log('hello' + yield);
+        }
+    </script>
+
+    <script>
+        function* gen() {
+            var a = yield 'a';
+            console.log(a, 11); // undefined
+        }
+
+        var g = gen();
+        console.log(g.next(), 111);
+        console.log(g.next(), 1111);
+    </script>
+
+    <script>
+        // for of循环产出yield的值
+        function* gen() {
+            yield 1;
+            yield 2;
+            yield 3;
+            return 4;
+        }
+
+        for (const iterator of gen()) {
+            console.log(iterator);  // 1 2 3
+        }
+    </script>
+
+    <script>
+        function* gen() {
+            var value1 = yield 1;
+            console.log(value1);    // two
+            var value2 = yield 2;
+            console.log(value2);    // three
+            var value3 = yield 3;
+            console.log(value3);    // four
+        }
+
+        var g = gen();
+        console.log(g.next('one'));  // {value: 1, done: false}
+        console.log(g.next('two'));  // {value: 2, done: false}
+        console.log(g.next('three'));  // {value: 3, done: false}
+        console.log(g.next('four'));  // {value: undefined, done: true}
+    </script>
+
+    <div>generator.return() 终止生成器</div>
+    <script>
+        function* gen() {
+            yield 1;
+            yield 2;
+            yield 3;
+        }
+        var g = gen();
+        console.log(g.next());  // {value: 1, done: false}
+        console.log(g.return());    // {value: undefined, done: true}
+        console.log(g.next());  // {value: undefined, done: true}
+        console.log(g.next());  // {value: undefined, done: true}
+    </script>
+    <script>
+        function* gen() {
+            yield 1;
+            yield 2;
+            yield 3;
+        }
+        var g = gen();
+        console.log(g.next());  // {value: 1, done: false}
+        console.log(g.return(10));    // {value: 10, done: true}
+        console.log(g.next());  // {value: undefined, done: true}
+        console.log(g.next());  // {value: undefined, done: true}
+    </script>
+
+    <div>generator.throw() 抛出错误，且在yield之后，也能产出与next一样的值</div>
+    <script>
+        function* gen() {
+            try {
+                yield 1;
+            } catch (error) {
+                console.log(error, 111111); // a
+            }
+            yield 2;
+        }
+
+        var g = gen();
+        console.log(g.next());  // {value: 1, done: false}
+        console.log(g.throw('a'));  // {value: 2, done: false}
+        console.log(g.next());  // {value: undefined, done: true}
+    </script>
+
+    <div>使用generator部署object的[Symbol.iterator]接口</div>
+    <script>
+        var obj = {
+            start: [1, 2, 3],
+            end: [6, 7],
+            [Symbol.iterator]: function* () {
+                var arr = [...this.start, ...this.end],
+                    len = arr.length,
+                    index = 0;
+                while (index < len) {
+                    yield arr[index++]
+                }
+            }
+        }
+
+
+        for (const iterator of obj) {
+            console.log(iterator);  // 1 2 3 6 7
+        }
+    </script>
+    <script>
+        var obj = {
+            a: 1,
+            b: 2,
+            c: 3,
+            [Symbol.iterator]: function* () {
+                var index = 0,
+                    map = new Map(),
+                    len;
+                for (const [key, value] of Object.entries(this)) {
+                    map.set(key, value);
+                }
+                len = map.size;
+                map = [...map];
+                while (index < len) {
+                    yield map[index++];
+                }
+            }
+        }
+        for (const iterator of obj) {
+            console.log(iterator);
+        }
+    </script>
+</body>
+
+</html>

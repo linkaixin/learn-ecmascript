@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>promise的历史</div>
+    <div>从JQ中的callbacks->Defered->promise</div>
+
+    <div>Promise()对象</div>
+    <script>
+        console.log(new Promise(function (resolve, reject) { }));
+    </script>
+
+    <div>特点</div>
+    <div>1. 异步调用的三种状态，pending(进行中)、fufilled(已成功resolve)、reject(已失效)，Promise对象不受外部影响</div>
+    <div>2. 状态不可逆；promise状态固化之后，再对promise对象进行回调，会直接拿到结果</div>
+
+    <script>
+        var promise = new Promise(function (resolve, reject) {
+            setInterval(() => {
+                Math.random() > 0.5 ? resolve('成功') : reject('失败')
+            }, 30)
+        })
+
+        promise.then((res) => {
+            console.log(res);
+            return 1;
+        }, (err) => {
+            console.log(err);
+            return 2;
+        }).then((res) => {
+            console.log('then:' + res);
+        }, (err) => {
+            console.log('then:' + err);
+        })
+    </script>
+
+    <div> Promise捕获错误</div>
+    <script>
+        var promise = new Promise(function (resolve, reject) {
+            resolve(a)
+        })
+
+        promise.then((res) => {
+
+        }, (err) => {
+            console.log('reject:' + err);
+        })
+
+        promise.catch((err) => {
+            console.log('reject1:' + err);
+        })
+
+        promise.then((res) => {
+
+        }).catch((err) => {
+            console.log('reject2:' + err);
+        })
+    </script>
+    <div>Promise状态固化后，catch无法捕获</div>
+    <script>
+        var promise = new Promise(function (resolve, reject) {
+            resolve('1');
+            console.log(a);
+        })
+        promise.then((res) => {
+            console.log(res, 11);
+        }).catch((err) => {
+            console.log('reject:' + err);
+        })
+    </script>
+
+    <div>JS异步代码中，任务分两种：宏任务、微任务</div>
+    <div>微任务：promise/process.nextTick()</div>
+    <div>宏任务：除了微任务之外的任务</div>
+    <div>当主线任务都完成之后，先执行微任务，再执行宏任务</div>
+
+    <script>
+        // p1 s1 p2 s2
+        Promise.resolve().then(() => {
+            console.log('p1');
+            setTimeout(() => {
+                console.log('s2');
+            }, 0)
+        })
+
+        setTimeout(() => {
+            console.log('s1');
+            Promise.resolve().then(() => {
+                console.log('p2');
+            })
+        })
+    </script>
+
+    <div>状态依赖，p2的状态由p1决定</div>
+    <script>
+        var p1 = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                // reject(new Error('no'))
+                resolve(1)
+            }, 3000);
+        })
+
+        var p2 = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(p1)
+            }, 1000);
+        })
+        console.log(p2, 33);
+    </script>
+
+    <div>Promise.all([])</div>
+    <div>1. 全部调用成功输出，输出数组</div>
+    <div>2. 一个失败，输出失败的值</div>
+    <script>
+        var p1 = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve('1')
+            }, 1000)
+        })
+        var p2 = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                reject('2')
+            }, 2000)
+        })
+        var p3 = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                reject('3')
+            }, 3000)
+        })
+
+        var p = Promise.all([p1, p2, p3]);
+        p.then(res => {
+            console.log('resolve:' + res);
+        }).catch(err => {
+            console.log('reject:' + err);
+        })
+        console.log(p, 77);
+    </script>
+
+    <div>Promise.race([])</div>
+    <div>输出最先回完成的promise回调，无论是正确的还是报错</div>
+    <script>
+        var p1 = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                reject('1')
+            }, 1000)
+        })
+        var p2 = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve('2')
+            }, 2000)
+        })
+        var p3 = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve('3')
+            }, 3000)
+        })
+
+        var p = Promise.race([p1, p2, p3]);
+        console.log(p, 66);
+        p.then(res => {
+            console.log('resolve:' + res, 11);
+        }).catch(err => {
+            console.log('reject:' + err, 22);
+        })
+    </script>
+
+
+</body>
+
+</html>
