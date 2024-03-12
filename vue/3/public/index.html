@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 插值表达式 -->
+        <div>{{title}}</div>
+        <p>{{author}}</p>
+        <!-- v-bind 绑定属性 -->
+        <p v-bind:title="dateTime">{{content}}</p>
+        <p :title="dateTime">{{content}}</p>
+        <div>
+            {{like}}
+            <!-- v-on 绑定事件处理函数 -->
+            <button v-on:click="addLike">addLike</button>
+            <button @click="addLike">addLike</button>
+        </div>
+        <p>
+            评论{{comment}}
+        <div>
+            <!-- v-model 实现数据双向绑定 -->
+            <input type="text" v-model="comment">
+            <button @click="addComment">评论</button>
+        </div>
+        </p>
+        <!-- v-if v-show 控制显示与隐藏 -->
+        <p>
+            <button v-if="commentFlag" @click="changeFlag">隐藏评论</button>
+            <button v-else @click="changeFlag">显示评论</button>
+        </p>
+        <div v-show="commentFlag">
+            评论列表
+            <ul>
+                <!-- 对象 item in obj -->
+                <!-- 数组 item of arr -->
+                <!-- 数组也可以使用 item in arr -->
+                <li v-for="(item,index) in commentList" :key="item.id">
+                    <p>{{item.content}}</p>
+                    <p>{{item.time}}</p>
+                </li>
+            </ul>
+        </div>
+        <div style="margin-top: 30px;">
+            <h1>todoList</h1>
+            <todo-from @add-todo="addTodoList"></todo-from>
+            <todo-list :list="todoList" @change-complate="changeComplate" @del-todo-list="delTodoList"></todo-list>
+        </div>
+    </div>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.1.2/dist/vue.global.js"></script>
+</body>
+
+</html>
