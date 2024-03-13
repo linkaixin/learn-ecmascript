@@ -1,0 +1,24 @@
+.box{
+    width: 100px;
+    height: 100px;
+    background-color: #000;
+    color: #fff;
+    .t-box,.b-box{
+        height: 50px
+    }
+
+    &.top{
+        .t-box{
+            background-color: pink;
+        }
+    }
+    &.bottom{
+        .b-box{
+            background-color: orange;
+        }
+    }
+}
+
+.c-blue{
+    color: blue;
+}
