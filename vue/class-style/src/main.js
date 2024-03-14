@@ -16,7 +16,13 @@ const MyBox = {
                 'bottom': true
             },
             showTop: 'top',
-            showBottom: 'bottom'
+            showBottom: 'bottom',
+            fontStyle: {
+                color: '#fff'
+            },
+            bgStyle: {
+                backgroundColor: 'red'
+            }
         }
     },
     computed: {
@@ -47,17 +53,38 @@ const MyBox = {
         <!--<div
             :class="['box', showTop, showBottom]"
         >-->
-        <div
+        <!--<div
             :class = "[
                 'box',
                 isTop ? 'top' : '',
                 isTop && isBottom ? 'bottom' : ''
             ]"
-        >
+        >-->
+        <!--<div :class="[
+            $attrs.class
+        ]">-->
+        <!--<div 
+            :style="{
+                color: '#fff',
+                // backgroundColor: 'red'
+                'background-color': 'red'
+            }"
+        >-->
+        <!--<div :style="bgStyle">-->
+        <!--<div :style="[fontStyle, bgStyle]">-->
+        <div :style="{
+            display: ['-webkit-box','-webkit-flex','flex'],
+            '-webkit-transition':'all .3s'
+        }">
             <div class="t-box">top box</div>
             <div class="b-box">bottom box</div>
         </div>
-    `
+        <div></div>
+    `,
+    mounted() {
+        // $attrs($attributes) -> 父组件通过调用组件时传递的属性集合
+        console.log(this);
+    }
 }
 
 const App = {
