@@ -1,112 +1,81 @@
-import { reactive } from "../modules/vue/reactive";
-import { isObject } from "../modules/vue/utils";
-import { compileAttr } from "../modules/vue/compile";
-import './main.scss'
+/**
+ * v-for 列表渲染
+ * v-for="指令表达式"
+ * (item, index) in/of list
+ * index是可选项
+ * 
+ * for(item, index) in -> 对象属性的枚举
+ * for(value, key, index) of -> 可迭代对象的遍历
+ * 
+ * :key 
+ * v-for 建议搭配key，key属性必须是唯一的值
+ * 方便vue的就地更新策略的实施
+ */
 
-class Vue {
-    constructor(options) {
-        const { el, data, template } = options;
-        this.$data = data();
-        this.$el = document.querySelector(el);
-        this.$stylePool = new Map();
-
-        this.init(this, template);
-    }
-
-    init(vm, template) {
-        this.initData(vm)
-        this.render(vm, template);
-
-        console.log(this.$stylePool, 111);
-    }
-
-    initData(vm) {
-        const _data = vm.$data;
-
-        if (isObject(_data)) {
-            reactive(vm, _data)
-        }
-    }
-
-    render(vm, template) {
-        const container = document.createElement('div');
-        container.innerHTML = template;
-        this.compileAttrs(vm, container);
-        this.$el.appendChild(container);
-    }
-
-    compileAttrs(vm, container) {
-        const allNodes = [...container.getElementsByTagName('*')];
-
-        allNodes.forEach(el => {
-            const attrs = [...el.attributes];
-
-            attrs.forEach(attr => {
-                const { name, value } = attr;
-                compileAttr(vm, el, name, value);
-            })
-
-            el.removeAttribute(':class');
-            el.removeAttribute(':style');
-        })
-    }
-}
-
-const vm = new Vue({
-    el: '#app',
+const App = {
     data() {
         return {
-            isShow: true,
-            hasError: false,
-            titleStyle: {
-                color: '#fff',
-                fontSize: '20px'
+            list: [{
+                id: 1,
+                name: '张三',
+                score: 90
             },
-            titleShow: true,
-            isContentBig: true,
-            subTitleColor: 'orange'
+            {
+                id: 2,
+                name: '李四',
+                score: 30
+            },
+            {
+                id: 3,
+                name: '王五',
+                score: 60
+            }],
+            info: {
+                name: '张三',
+                age: 18,
+                hobbies: ['篮球', '足球', '乒乓球']
+            }
         }
     },
     template: `
-        <div
-            :class="[
-                'box',
-                isShow ? 'show' : '',
-                hasError ? 'danger' : ''
-            ]"
-        >
-        <h1
-            :style="[
-                titleStyle,
-                {
-                    display: titleShow ? 'block' : 'none'
-                }
-            ]"
-        >
-            This is Title
-        </h1>
-        <h2
-            :style="{
-                display: titleShow ? 'block' : 'none',
-                color: subTitleColor,
-                fontSize: '20px'
-            }"
-        >
-            This is Sub Title
-        </h2>
-        <p
-            :class="{
-                danger: hasError,
-                big: isContentBig
-            }"
-        >
-            This is CONTENT
-        </p>
-        </div>
-    `
-})
+        <ul>
+            <li v-for="item of list" :key="item.id">
+                <span>No.{{ item.id }}</span>
+                <span>Name:{{ item.name }}</span>
+            </li>
+        </ul>
+        <ul>
+            <li v-for="(value,key,index) of info" :key="index">
+                <template v-if="key == 'hobbies'">
+                    <ul>
+                        <li v-for="(item, i) of value" :key="i">
+                            <span>No.{{ i + 1 }}</span>
+                            <span>:{{ item }}</span>
+                        </li>
+                    </ul>
+                </template>
+                <template v-else>
+                    {{ key }}:{{ value }}
+                </template>
+            </li>
+        </ul>
 
-console.log(vm);
+        <ul>
+            <li v-for="item of computedList" :key="item.id">
+                <span>No.{{ item.id }}</span>
+                <span>Name:{{ item.name }}</span>
+                <span :style="{ color: item.pass ? 'green' : 'red' }">Pass:{{ item.pass ? 'true' : 'false' }}</span>
+            </li>
+        </ul>
+    `,
+    computed: {
+        computedList() {
+            return this.list.map(item => {
+                item.pass = item.score >= 60
+                return item
+            })
+        }
+    }
+}
 
-vm.hasError = true;
-vm.subTitleColor = 'purple'
+Vue.createApp(App).mount('#app')
