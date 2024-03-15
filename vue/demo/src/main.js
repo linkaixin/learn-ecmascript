@@ -1,27 +1,28 @@
-import Vue from 'vue';
+/**
+ * v-for与v-if
+ * 不推荐在一个元素上同时使用
+ */
 
-let vm = new Vue({
-    el: '#app',
+const App = Vue.createApp({
     data() {
         return {
-            title: '学生列表',
-            classNum: 1,
-            total: 2,
-            teacher: ['张三', '李四'],
-            info: {
-                a: {
-                    b: 1
-                }
-            },
-            students: [{
-                id: 1,
-                name: '小红'
-            }, {
-                id: 2,
-                name: '小明'
-            }]
+            list: [
+                { id: 1, name: '张三', show: true },
+                { id: 2, name: '李四', show: false },
+                { id: 3, name: '王五', show: true },
+            ]
+        }
+    },
+    template: `
+        <ul>
+           <li v-for="item in filteredList" :key="item.id">{{ item.name }}</li>
+        </ul>
+    `,
+    computed: {
+        filteredList() {
+            return this.list.filter(item => item.show);
         }
     }
 })
 
-console.log(vm.title);
+App.mount('#app')
