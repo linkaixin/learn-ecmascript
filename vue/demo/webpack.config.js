@@ -1,8 +1,9 @@
-const { resolve } = require('path');
+// const { resolve } = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 // const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const { VueLoaderPlugin } = require('vue-loader');
 const autoprefixer = require('autoprefixer');
+const path = require('path');
 
 /**
  * 1. webpack各种依赖之间版本兼容问题很大
@@ -22,13 +23,17 @@ module.exports = {
     mode: 'development',
     entry: './src/main.js',
     output: {
-        path: resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'dist'),
         filename: 'main.js'
     },
-    externals: {
-        'vue': 'Vue'
-    },
+    // externals: {
+    //     'vue': 'Vue'
+    // },
     devtool: 'source-map',
+    // 先从根目录下寻找vue
+    resolve: {
+        modules: [path.resolve(__dirname, ''), path.resolve(__dirname, 'node_modules')],
+    },
     module: {
         rules: [{
             test: /\.vue$/,
@@ -58,10 +63,11 @@ module.exports = {
             ]
         }]
     },
+
     plugins: [
         new VueLoaderPlugin(),
         new HtmlWebpackPlugin({
-            template: resolve(__dirname, 'public/index.html')
+            template: path.resolve(__dirname, 'public/index.html')
         })
     ]
 }
