@@ -1,5 +1,5 @@
 {
-	"name": "vite-cdn",
+	"name": "vite-cdn-vue3",
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
@@ -10,7 +10,6 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"vite": "^5.0.0",
-		"vue": "^2.6.14"
+		"vite": "^5.0.0"
 	}
 }
