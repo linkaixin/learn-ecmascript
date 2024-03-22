@@ -1,27 +1,58 @@
-/**
- * 数据双向绑定 v-model="数据来源data" 语法糖
- * 适用元素：input textarea select checkbox radio
- * v-model / 会忽略value|chencked|selected
- */
+const MyNav = {
+    props: ['navData'],
+    template: `
+        <ul>
+            <li v-for="item in navData" :key="item.id">{{ item.name }}</li>
+        </ul>
+    `
+}
+
+const MyHeader = {
+    props: ['navData'],
+    components: {
+        MyNav
+    },
+    template: `
+        <header>
+            <my-nav :nav-data="navData"></my-nav>
+            <my-search></my-search>
+        </header>
+    `
+}
 
 const App = {
+    // 局部注册
     data() {
         return {
-            str1: '',
-            str2: ''
+            navData: [{
+                id: 1,
+                name: '首页'
+            }, {
+                id: 2,
+                name: '产品'
+            }]
+        }
+    },
+    components: {
+        MyHeader
+    },
+    template: `
+        <div>
+            <my-header :nav-data="navData"></my-header>
+        </div>
+    `
+}
+
+const app = Vue.createApp(App)
+app.component('my-search', {
+    data() {
+        return {
+            value: ''
         }
     },
     template: `
-    <p>
-        {{str1.length}}
-        {{str2.length}}
-        <input type="text" v-model="str1">
-        <input type="text" v-model.trim="str2">
-    </p>
-  `,
-    methods: {
+        <input v-model="value" />    
+    `
+})
 
-    }
-}
-
-Vue.createApp(App).mount('#app')
+app.mount('#app')
