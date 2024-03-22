@@ -8,76 +8,22 @@
 </head>
 
 <body>
+    <button onclick="get()">get</button>
     <script>
-        Object.prototype.d = 5;
         var obj = {
-            a: '1',
-            b: '2',
-            c: {
-                name1: '1',
-                name2: '2',
-                name3: '3'
-            },
-            j: function () {
-                console.log('1');
-            },
-            h: null
+            tag: '',
+            childer: {}
         }
+        let root,
+            curr;
+        root = obj;
+        curr = obj;
+        console.log(root);
 
-        // function deepClone(obj, tar) {
-        //     var tar = tar || {},
-        //         toStr = Object.prototype.toString,
-        //         item;
-
-        //     for (const key in obj) {
-        //         if (Object.hasOwnProperty.call(obj, key)) {
-        //             item = obj[key];
-        //             if (typeof item === 'object' && item !== null) {
-        //                 tar[key] = toStr.call(item) === '[object Object]' ? {} : [];
-        //                 deepClone(item, tar[key]);
-        //             } else {
-        //                 tar[key] = item;
-        //             }
-        //         }
-        //     }
-        //     return tar;
-        // }
-
-        function deepClone(origin, hashMap = new WeakMap()) {
-            if (origin == undefined || typeof origin != 'object') return origin;
-            if (origin instanceof Date) return new Date(origin);
-            if (origin instanceof RegExp) return new RegExp(origin);
-
-            const hashKey = hashMap.get(origin);
-
-            if (hashKey) return hashKey;
-
-            const target = new origin.constructor();
-            hashMap.set(origin, target);
-            for (const key in origin) {
-                if (Object.hasOwnProperty.call(origin, key)) {
-                    target[key] = deepClone(origin[key], hashMap);
-                }
-            }
-
-            return target;
+        function get() {
+            curr.childer.tag = '123';
+            console.log(root);
         }
-
-        // var objCopy = deepClone(obj);
-        // obj.c.name3 = '33'
-        // console.log(obj);
-        // console.log(objCopy);
-
-        var test1 = {};
-        var test2 = {};
-        test1.test2 = test2;
-        test2.test1 = test1;
-        console.log(test1, test2);
-
-    </script>
-
-    <div>WeakMap 弱引用</div>
-    <script>
 
     </script>
 </body>
