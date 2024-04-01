@@ -6,26 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+<style>
+    .box {
+        width: 300px;
+        height: 300px;
+        background-color: #E66D69;
+    }
+</style>
 
 <body>
-    <button onclick="get()">get</button>
-    <script>
-        var obj = {
-            tag: '',
-            childer: {}
-        }
-        let root,
-            curr;
-        root = obj;
-        curr = obj;
-        console.log(root);
-
-        function get() {
-            curr.childer.tag = '123';
-            console.log(root);
-        }
-
-    </script>
+    <div class="box"></div>
 </body>
 
 </html>
