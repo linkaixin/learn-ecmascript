@@ -40,8 +40,15 @@ module.exports = {
     },
     module: {
         rules: [{
-            test: /\.tpl$/,
-            loader: 'tpl-loader'
+            test: /\.(png|jpg)$/i,
+            use: [
+                {
+                    loader: 'file-loader',
+                    options: {
+                        esModule: false
+                    }
+                }
+            ]
         }, {
             test: /\.vue$/,
             loader: 'vue-loader'

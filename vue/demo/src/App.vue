@@ -1,89 +1,75 @@
 <template>
   <div class="box">
-    <div v-for="item of data" :key="item.id">
-      <menu-item v-if="!item.childer">{{ item.title }}</menu-item>
-      <re-sub-menu-item v-else :data="item"></re-sub-menu-item>
+    <div class="head">
+      <div
+        v-for="(item,index) of list"
+        :class="['h-item', {'artive': index === curIndex}]"
+        :key="item"
+        @click="curIndex = index"
+      >{{ item }}</div>
+    </div>
+    <div class="content">
+      <component :is="componentName"></component>
     </div>
   </div>
 </template>
 
 <script>
-import MenuItem from "./components/MenuItem"
-import SubMenuItem from "./components/SubMenuItem"
-import ReSubMenuItem from "./components/ReSubMenuItem"
+import { Intro, Article, List } from "./component.js"
 export default {
-  name: "App",
   components: {
-    MenuItem,
-    SubMenuItem,
-    ReSubMenuItem,
+    Intro,
+    Article,
+    List,
   },
   data() {
     return {
-      data: [
-        {
-          id: 1,
-          title: "菜单1",
-        },
-        {
-          id: 2,
-          title: "菜单2",
-        },
-        {
-          id: 3,
-          title: "菜单3",
-          childer: [
-            {
-              id: 3 - 1,
-              title: "菜单3-1",
-            },
-            {
-              id: 3 - 2,
-              title: "菜单3-2",
-              childer: [
-                {
-                  id: 3 - 2 - 1,
-                  title: "菜单3-2-1",
-                  childer: [
-                    {
-                      id: 3 - 2 - 1 - 1,
-                      title: "菜单3-2-1-1",
-                    },
-                  ],
-                },
-                {
-                  id: 3 - 2 - 2,
-                  title: "菜单3-2-2",
-                },
-                {
-                  id: 3 - 2 - 3,
-                  title: "菜单3-2-3",
-                },
-              ],
-            },
-            {
-              id: 3 - 3,
-              title: "菜单3-3",
-            },
-          ],
-        },
-        {
-          id: 4,
-          title: "菜单4",
-        },
-        {
-          id: 5,
-          title: "菜单5",
-        },
-      ],
+      curIndex: 0,
+      list: ["intro", "article", "list"],
     }
+  },
+  computed: {
+    componentName() {
+      let name = this.list[this.curIndex]
+      switch (name) {
+        case "intro":
+          return Intro
+        case "article":
+          return Article
+        case "list":
+          return List
+        default:
+          break
+      }
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
 .box {
-  background: #000;
-  width: 200px;
+  width: 500px;
+  height: 500px;
+  margin: 0 auto;
+  border: 1px solid #000;
+  .head {
+    height: 50px;
+    display: flex;
+    border-bottom: 1px solid #000;
+    .h-item {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      &.artive {
+        background: #000;
+        color: #fff;
+      }
+    }
+  }
+  .content {
+    padding: 30px;
+  }
 }
 </style>
