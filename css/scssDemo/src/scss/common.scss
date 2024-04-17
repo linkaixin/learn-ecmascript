@@ -1,0 +1,16 @@
+// scss混入
+@mixin flex($justify: center,$align: center){
+    display: flex;
+    justify-content: $justify;
+    align-items: $align;
+    flex-shrink: 0;
+}
+
+// scss继承
+.btn{
+    border: none;
+    outline: none;
+    width: 80px;
+    height: 30px;
+    cursor: pointer;
+}
