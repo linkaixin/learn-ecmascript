@@ -1,75 +1,40 @@
 <template>
-  <div class="box">
-    <div class="head">
-      <div
-        v-for="(item,index) of list"
-        :class="['h-item', {'artive': index === curIndex}]"
-        :key="item"
-        @click="curIndex = index"
-      >{{ item }}</div>
-    </div>
-    <div class="content">
-      <component :is="componentName"></component>
-    </div>
+  <div>
+    <test></test>
   </div>
 </template>
 
 <script>
-import { Intro, Article, List } from "./component.js"
+import test from "./components/test"
 export default {
-  components: {
-    Intro,
-    Article,
-    List,
-  },
   data() {
-    return {
-      curIndex: 0,
-      list: ["intro", "article", "list"],
-    }
+    return {}
   },
-  computed: {
-    componentName() {
-      let name = this.list[this.curIndex]
-      switch (name) {
-        case "intro":
-          return Intro
-        case "article":
-          return Article
-        case "list":
-          return List
-        default:
-          break
-      }
-    },
+  components: {
+    test,
   },
+  methods: {},
 }
 </script>
 
-<style lang="scss" scoped>
-.box {
-  width: 500px;
-  height: 500px;
-  margin: 0 auto;
+<style lang="scss">
+.tab {
+  height: 50px;
+  width: 300px;
   border: 1px solid #000;
-  .head {
-    height: 50px;
+  display: flex;
+  align-items: center;
+  .tab-item {
+    flex: 1;
+    height: 100%;
     display: flex;
-    border-bottom: 1px solid #000;
-    .h-item {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      &.artive {
-        background: #000;
-        color: #fff;
-      }
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    &.active {
+      background: #000;
+      color: #fff;
     }
-  }
-  .content {
-    padding: 30px;
   }
 }
 </style>
