@@ -1,21 +1,19 @@
 <template>
-  <div>
-    <h1 class="color">{{ title }}</h1>
-    <p>{{ date }}</p>
-    <p>{{ content }}</p>
-  </div>
+  <div></div>
 </template>
 
 <script>
-const { h } = Vue
+import { getCurrentInstance } from "vue"
 export default {
   name: "test",
-  data() {
-    return {
-      title: "this is a title",
-      date: "2024-04-17",
-      content: "this is content",
-    }
+  props: ["utils"],
+  mounted() {
+    console.log(this, this.msg, this.a, 22)
+  },
+  setup() {
+    const instance = getCurrentInstance()
+    const { utils } = instance.appContext.config.globalProperties
+    console.log(instance)
   },
 }
 </script>

@@ -1,4 +1,4 @@
-# vue-vue-cli
+# demo-vue-cli-v3
 
 ## Project setup
 ```

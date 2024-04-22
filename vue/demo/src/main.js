@@ -1,26 +1,9 @@
 import App from './App.vue'
-import VModel from './components/VModel.vue'
-const { createApp, h } = Vue
-const app = createApp({
-    components: {
-        VModel
-    },
-    data() {
-        return {
-            username: "",
-            password: ""
-        }
-    },
-    render() {
-        return h(VModel, {
-            username: this.username,
-            password: this.password,
-            'onUpdate:username': (value) => this.username = value,
-            'onChangePassword': (value) => this.password = value,
-            'onSubmit': () => {
-                console.log(this.username, this.password);
-            }
-        })
-    }
-})
+import utils from './utils/index.js';
+const app = Vue.createApp(App)
+console.log(app.config, 11);
+// vue3 实例定义全局变量globalProperties
+app.config.globalProperties.utils = utils
+app.config.globalProperties.a = 1
+app.config.globalProperties.msg = 'hello'
 app.mount('#app')
