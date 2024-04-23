@@ -1,19 +1,22 @@
 <template>
-  <div></div>
+  <div>
+    <h1>{{ title }}</h1>
+    <p>{{ author }}</p>
+    <p>{{ content }}</p>
+  </div>
 </template>
 
 <script>
-import { getCurrentInstance } from "vue"
+const { toRefs, toRef, getCurrentInstance } = Vue
 export default {
-  name: "test",
-  props: ["utils"],
-  mounted() {
-    console.log(this, this.msg, this.a, 22)
+  name: "Test",
+  props: {
+    title: String,
+    author: String,
+    content: String,
   },
-  setup() {
-    const instance = getCurrentInstance()
-    const { utils } = instance.appContext.config.globalProperties
-    console.log(instance)
+  setup(props, ctx) {
+    console.log("setup")
   },
 }
 </script>
