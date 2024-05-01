@@ -1,14 +1,9 @@
 <template>
-  <div>
-    <cal></cal>
-  </div>
+    <div>
+        <TodoList></TodoList>
+    </div>
 </template>
 
-<script>
-import Cal from "@/components/cal/index.vue"
-export default {
-  components: {
-    Cal,
-  },
-}
+<script setup>
+import TodoList from '@/components/TodoList/index.vue'
 </script>
