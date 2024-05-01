@@ -19,6 +19,7 @@ import CalResult from "./result"
 import CalInput from "./input"
 import CalButton from "./button"
 import dispatches from "@/dispatches/cal.js"
+import { provide } from "vue"
 
 export default {
   components: {
@@ -38,6 +39,9 @@ export default {
     dispatches(type, ...args) {
       dispatches(this)(type, ...args)
     },
+  },
+  setup() {
+    provide("aa", 222)
   },
 }
 </script>
