@@ -1,0 +1,19 @@
+{
+	"name": "vite",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"bin": {
+		"vite": "./bin/www"
+	},
+	"scripts": {},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"es-module-lexer": "^1.5.2",
+		"koa": "^2.15.3",
+		"koa-static": "^5.0.0",
+		"magic-string": "^0.30.10"
+	}
+}

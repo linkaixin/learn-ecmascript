@@ -1,5 +1,5 @@
 {
-	"name": "vite-demo",
+	"name": "my-vue",
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
@@ -10,6 +10,6 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"vite": "^2.5.8"
+		"vue": "^3.4.26"
 	}
 }
