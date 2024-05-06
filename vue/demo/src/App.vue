@@ -1,45 +1,18 @@
 <template>
   <div>
-    <h1>{{ title }}</h1>
-    <h1>{{ content }}</h1>
-    <h2>{{ subData.title }}</h2>
-    <h2>{{ subData.content }}</h2>
-    <button @click="changeTitle">修改标题</button>
+    <Child1 :count="count" @add="add"></Child1>
   </div>
 </template>
 
-<script>
-const { ref, watch, reactive, toRefs } = Vue
-export default {
-  setup() {
-    const state = reactive({
-      title: "this is title",
-      content: "this is content",
-      subData: {
-        title: "this is sub title",
-        content: "this is sub content",
-      },
-    })
+<script setup>
+const { ref } = Vue
+import Child1 from "./components/Child1.vue"
+let count = ref(0)
 
-    const changeTitle = () => {
-      state.title = "这是标题"
-    }
-
-    const stop = watch(
-      () => state.title,
-      (newVal, oldVal) => {
-        console.log(newVal, oldVal)
-      }
-    )
-
-    stop()
-
-    return {
-      ...toRefs(state),
-      changeTitle,
-    }
-  },
+const add = () => {
+  count.value++
 }
+const emit = defineEmits(["change", "delete"])
 </script>
 
 <style>

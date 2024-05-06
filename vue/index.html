@@ -8,45 +8,21 @@
 </head>
 
 <body>
-    <my-article>
-        <div slot="title">THIS IS MY TITLE</div>
-        <span slot="author">cxy</span>
-        <span slot="dateTime">17:08</span>
-        <p slot="content">THIS IS CONTENT</p>
-    </my-article>
-
-    <template id="my-article-template">
-        <style>
-            h1 {
-                color: orange;
-            }
-        </style>
-        <div class="my-article">
-            <h1 class="my-article-title">
-                <slot name="title"></slot>
-                <slot name="author"></slot>
-                <slot name="dateTime"></slot>
-            </h1>
-            <p>
-                <slot name="content"></slot>
-            </p>
-        </div>
-    </template>
-
     <script>
-        class MyArticle extends HTMLElement {
-            constructor() {
-                super();
-
-                var _tpl = document.getElementById('my-article-template').content;
-                var shadowDOM = this.attachShadow({ mode: 'open' });
-                shadowDOM.appendChild(_tpl.cloneNode(true));
-            }
+        let obj1 = {
+            a: 1
         }
 
-        window.customElements.define('my-article', MyArticle);
-    </script>
+        let obj2 = obj1
+        let m = new WeakMap()
+        m.set(obj1, 1)
 
+        obj1 = null;
+        obj2 = null;
+        t = setTimeout(() => {
+            console.log(m);
+        }, 10000)
+    </script>
 </body>
 
 </html>
