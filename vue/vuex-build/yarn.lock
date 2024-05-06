@@ -3642,10 +3642,10 @@
     "klona" "^2.0.4"
     "neo-async" "^2.6.2"
 
-"sass@^1.3.0", "sass@^1.32.7":
-  "integrity" "sha512-ShMYi3WkrDWxExyxSZPst4/okE9ts46xZmJDSawJQrnte7M1V9fScVB+uNXOVKRBt0PggHOwoZcn8mYX4trnBw=="
-  "resolved" "https://registry.npmmirror.com/sass/-/sass-1.75.0.tgz"
-  "version" "1.75.0"
+"sass@^1.3.0", "sass@^1.76.0":
+  "integrity" "sha512-nc3LeqvF2FNW5xGF1zxZifdW3ffIz5aBb7I7tSvOoNu7z1RQ6pFt9MBuiPtjgaI62YWrM/txjWlOCFiGtf2xpw=="
+  "resolved" "https://registry.npmjs.org/sass/-/sass-1.76.0.tgz"
+  "version" "1.76.0"
   dependencies:
     "chokidar" ">=3.0.0 <4.0.0"
     "immutable" "^4.0.0"
@@ -4258,7 +4258,7 @@
   "resolved" "https://registry.npmmirror.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz"
   "version" "1.9.1"
 
-"vue@^3.2.0", "vue@^3.2.13", "vue@3.4.23":
+"vue@^3.0.2", "vue@^3.2.0", "vue@^3.2.13", "vue@3.4.23":
   "integrity" "sha512-X1y6yyGJ28LMUBJ0k/qIeKHstGd+BlWQEOT40x3auJFTmpIhpbKLgN7EFsqalnJXq1Km5ybDEsp6BhuWKciUDg=="
   "resolved" "https://registry.npmmirror.com/vue/-/vue-3.4.23.tgz"
   "version" "3.4.23"
@@ -4269,10 +4269,10 @@
     "@vue/server-renderer" "3.4.23"
     "@vue/shared" "3.4.23"
 
-"vuex@^4.0.0":
-  "integrity" "sha512-hmV6UerDrPcgbSy9ORAtNXDr9M4wlNP4pEFKye4ujJF8oqgFFuxDCdOLS3eNoRTtq5O3hoBDh9Doj1bQMYHRbQ=="
-  "resolved" "https://registry.npmmirror.com/vuex/-/vuex-4.1.0.tgz"
-  "version" "4.1.0"
+"vuex@^4.0.2":
+  "integrity" "sha512-M6r8uxELjZIK8kTKDGgZTYX/ahzblnzC4isU1tpmEuOIIKmV+TRdc+H4s8ds2NuZ7wpUTdGRzJRtoj+lI+pc0Q=="
+  "resolved" "https://registry.npmjs.org/vuex/-/vuex-4.0.2.tgz"
+  "version" "4.0.2"
   dependencies:
     "@vue/devtools-api" "^6.0.0-beta.11"
 
