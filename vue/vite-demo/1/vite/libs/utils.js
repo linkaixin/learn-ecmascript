@@ -16,7 +16,6 @@ const readBodyStream = async (bodyStream) => {
 
 const rewriteImports = async (source) => {
     const imports = esModuleParse(source)[0];
-    console.log("🚀 ~ rewriteImports ~ imports:", imports)
     const magicString = new MagicString(source);
 
     if (imports.length > 0) {
@@ -25,7 +24,7 @@ const rewriteImports = async (source) => {
             let importId = source.slice(s, e);
             // 如果不是以ESMODULE认识的./或/开头，则需要修改路径
             if (/^[^\.\/]/.test(importId)) {
-                importId = vueNodeModulePath('compiler-dom', moduleMapping(importId))
+                importId = vueNodeModulePath('runtime-dom', moduleMapping(importId))
                 magicString.overwrite(s, e, importId);
             }
         })
@@ -36,7 +35,7 @@ const rewriteImports = async (source) => {
 const moduleMapping = (importId) => {
     switch (importId) {
         case 'vue':
-            return 'compiler-dom.esm-browser.js';
+            return 'runtime-dom.esm-browser.js';
         default:
             break;
     }
@@ -49,5 +48,6 @@ const vueNodeModulePath = (package, filename) => {
 
 module.exports = {
     readBodyStream,
-    rewriteImports
+    rewriteImports,
+    vueNodeModulePath
 }
