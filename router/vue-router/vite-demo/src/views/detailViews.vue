@@ -3,9 +3,21 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router';
+import { onBeforeRouteLeave, useRoute, onBeforeRouteUpdate } from 'vue-router';
 const route = useRoute();
-console.log(route.query.id);
+
+// 独享守卫 
+// 监听参数的变化
+onBeforeRouteUpdate(() => {
+    console.log('update');
+    console.log(route.query.id);
+    console.log(route.params.id);
+})
+
+// 监听页面离开
+onBeforeRouteLeave((to, from) => {
+    console.log('leave');
+})
 </script>
 
 <style></style>
