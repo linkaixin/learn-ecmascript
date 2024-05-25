@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <html>
+    <h1>heading 标题标签</h1>
+    <p>特点： 1. 独占一行 2. 粗体 3. 字体大小不同</p>
+    <p>h1标签的字体默认大小是2em</p>
+    <p>em：通常代表该元素继承的字体大小或浏览器的默认字体大小</p>
+    <h1>H1</h1>
+    <h2>H2</h2>
+    <h3>H3</h3>
+    <h4>H4</h4>
+    <h5>H5</h5>
+    <h6>H6</h6>
+
+    <h1>Paragraph 段落标签</h1>
+    <p>1. 独占一行 2. 默认间距为1em</p>
+    <p>段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落</p>
+    <p>段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落</p>
+
+    <h1>strong标签与b标签</h1>
+    <strong>strong标签 表强烈，粗体，语义化标签</strong>
+    <b>b标签，粗体，物理标签</b>
+
+    <h1>em标签与i标签</h1>
+    <em>emphasize标签 表强调，斜体，语义化标签</em>
+    <i>i标签，斜体，物理标签</i>
+
+    <h1>del标签</h1>
+    <del>delete标签，中横线</del>
+
+    <h1>ins标签</h1>
+    <ins>insert标签，下划线标签</ins>
+
+    <h1>address标签</h1>
+    <address>地址，默认斜体，语义化标签</address>
+
+    <h1>div标签</h1>
+    <div>division标签，容器</div>
+    <div style="width: 300px; height: 300px; border: 1px solid #000">
+      i am aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa;
+    </div>
+    <i>这里a会超出盒子且不换行，是因为浏览器认识英文，浏览器认为这是一个单词</i>
+
+    <h1>br 换行标签</h1>
+  <br />
+
+  <h1>hr 分割线</h1>
+  <hr />
+
+    <h1>实体字符：https://www.runoob.com/html/html-entities.html</h1>
+
+    <h1>img标签</h1>
+    <img src="" alt="" title="">
+    <p>src: source 资源，可以使用网络路径、相对路径、绝对路径</p>
+    <p>alt：当资源加载失败时，显示的文字内容</p>
+    <p>title: 鼠标悬浮时显示的文字</p>
+
+    <h1>a标签 锚点标签 超链接标签</h1>
+    <a href="#">anchor标签</a>
+    <p>href: hypertext reference 超文本引用</p>
+    <p>target: 打开方式: </p>
+    <p>1. _self：默认值，在当前窗口中打开链接</p>
+    <p>2. _blank：在新窗口中打开链接</p>
+    <p>3. _parent：在父框架中打开链接。</p>
+    <p>4. _top：在整个窗口中打开链接，忽略所有框架</p>
+    <p>1. 超链接 <a href="https://www.baidu.com">百度</a></p>
+    <p>2. 打电话 <a href="tel:+1234567890">打电话</a></p>
+    <p>3. 发短信 <a href="sms:+1234567890">发短信</a></p>
+    <p>4. 邮件 <a href="mailto:+1234567890">发邮件</a></p>
+    <p>5. 锚点定位 <a href="#id"></a></p>
+    <p>6. 协议限定符 <a href="javascript:;"></a></p>
+
+    <h1>sup superscripted上角标</h1>
+    <p>10<sup>5</sup></p>
+    <h1>sub subscripted下角标</h1>
+    <p>H<sub>2</sub>O</p>
+    
+
+    <h1>元素：标签+内容</h1>
+    <p>1. 内联元素 inline element:不独占一行、无法定义宽高</p>
+    <p>2. 块级元素 block element:独占一行、可以定义宽高</p>
+    <p>3. 行内块级元素 inline-block element:不独占一行、可以定义宽高</p>
+
+    <p>总结：</p>
+    <p>1. 内联元素可以嵌套内联元素</p>
+    <p>2. 块级元素可以嵌套任何元素</p>
+    <p>3. p标签不能嵌套div</p>
+    <p>4. a标签不可以嵌套a标签</p>
+
+    <p><div>123</div></p>
+    <a href=""><a href="">1</a></a>
+    
+    <h1>span标签</h1>
+    <p>没有任何样式，用于区分文字内的重点</p>
+    <span>123</span>
+
+    <h1>ol order list有序列表</h1>
+    <ol type="1"  start="3" reversed>
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+      <li>4</li>
+      <li>5</li>
+    </ol>
+    <p>type：选择序号的类型，例如1、a、A、i、I</p>
+    <p>start：从什么开始，为数字时有效</p>
+    <p>reversed：倒序</p>
+
+    <h1>ul unorder list无序列表</h1>
+    <ul>
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+    </ul>
+
+    <h1>dl definition list 定义列表</h1>
+    <dl>
+      <dt>definition term</dt>
+      <dd>definition description</dd>
+    </dl>
+
+    <h1>table 表格标签</h1>
+    <p>thead 表格页眉</p>
+    <p>tbody 表格主体</p>
+    <p>tfoot 表格页脚</p>
+    <p>1. thead tbody tfoot 需要同时出现</p>
+    <p>2. 不添加这三个需要等表格内的内容都加载出来了才显示</p>
+    <p>3. 添加thead tbody tfoot，表格的内容就不根据在页面上的位置排列了</p>
+    <table border="1" cellspacing="0" cellpadding="10">
+      <caption>表格标题</caption>
+      <thead>
+        <tr>
+          <th>tr table row 表格行标签</th>
+          <th>th table header cell 表头标签</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>td table data cell 单元格标签</td>
+          <td>boder 边框</td>
+        </tr>
+        <tr>
+          <td>cellpadding 单元格内边距</td>
+          <td>cellspacing 单元格间距</td>
+        </tr>
+        <tr>
+          <td colspan="2">colspan 列合并</td>
+        </tr>
+        <tr>
+          <td>rowspan</td>
+          <td rowspan="2">行合并</td>
+        </tr>
+        <tr>
+          <td>rowspan</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="2">页脚</td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <h1>iframe 内联框架</h1>
+    <iframe src="http://www.baidu.com" width="300" height="300" frameborder="0"></iframe>
+  
+    <h1>
+      form 表单标签
+    </h1>
+    <p>没有样式</p>
+    <p>method：get|post</p>
+    <p>action: 后端提交的地址</p>
+    <form action="#" method="get">
+      <input type="text" name="username" maxlength="" placeholder="" id="" />
+      <input type="password" name="password" id="" />
+      <input type="color">
+      <input type="url">
+      <p>
+        单选标签 name需要相同
+        <input type="radio" name="sex" id="male" value="male" />
+        <label for="male">男</label>
+        <input type="radio" name="sex" id="female" value="female" />
+        <label for="female">女</label>
+      </p>
+      <p>
+        多选标签
+        <input type="checkbox" name="hobby" id="hobby1" value="hobby1" />
+        <label for="hobby1">爱好1</label>
+        <input type="checkbox" name="hobby" id="hobby2" value="hobby2" />
+        <label for="hobby2">爱好2</label>
+      </p>
+      <p>
+        下拉框
+        <select name="city" id="city">
+          <option value="beijing">北京</option>
+          <option value="shanghai">上海</option>
+          <option value="guangzhou">广州</option>
+        </select>
+      </p>
+      <p>
+        多行文本框
+        <textarea name="" id="" cols="30" rows="10"></textarea>
+        <p>cols是可见宽度，大多数浏览器的计算是：8px * cols + 17px</p>
+        <p>rows是可见高度</p>
+        <p>textarea标签中间不能换号，不然会出现光标不在textarea的起始位置</p>
+      </p>
+      <fieldset>
+        <legend>表单分组</legend>
+      </fieldset>
+      <p>
+        <input type="submit" value="登录">
+      </p>
+    </form>
+    <p>name：用于提交数据的字段</p>
+    <p>value：提交的值，默认值</p>
+    <p>placeholder：提示文字</p>
+    <p>id：唯一值</p>
+    <p>type：是iuput的类型</p>
+    <p>maxlength：英文和中文字符一样长度</p>
+    <p>readonly：只读</p>
+    <p>disabled：禁用</p>
+    <p>readonly与disabled的区别：提交的时候，disabled数据不提交</p>
+    <script>
+      console.log(password1.value)  // 获取passworde的值
+    </script>
+
+    <h1>label</h1>
+    <p>label的for属性与input的id值绑定，点击label标签即可触发input</p>
+    <label for="username">用户名</label>
+    <input type="text" id="username">
+
+  </body>
+ 
+</html>
