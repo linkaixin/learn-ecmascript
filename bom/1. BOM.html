@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>BOM Browser Object Model 浏览器对象模型</h1>
+    <p>针对浏览器相关交互的方法和接口合集，js操作浏览器的方法</p>
+    <h1>BOM的核心是window对象</h1>
+    <p>1. window对象标识浏览器窗口</p>
+    <p>2. 所有JS全局对象、函数、变量都是window对象成员</p>
+    <h1>BOM的组成</h1>
+    <p>window：window对象上直接定义的属性与方法</p>
+    <p>Navigator：浏览器的信息</p>
+    <p>History：浏览器当前窗口访问的历史记录</p>
+    <p>Location：获取当前页面的地址信息、页面重定向等</p>
+    <p>Screen：浏览器屏幕相关信息</p>
+    <p>frames：框架相关的信息获取与操作</p>
+
+    <h1>window.open()/close()/closed</h1>
+    <h2>窗口<span id="isClosed">关闭</span>状态</h2>
+    <button id="open">打开窗口</button>
+    <button id="close">关闭窗口</button>
+    <script>
+      var oOpen = document.getElementById("open"),
+        oClose = document.getElementById("close"),
+        isClosed = document.getElementById("isClosed"),
+        win;
+
+      oOpen.addEventListener(
+        "click",
+        function () {
+          win = window.open(
+            "http://www.baidu.com",
+            "_blank",
+            "width=400,height=400,top=100,left=100"
+          );
+          checkStatus();
+        },
+        false
+      );
+
+      oClose.addEventListener(
+        "click",
+        function () {
+          win.close();
+          checkStatus();
+        },
+        false
+      );
+
+      function checkStatus() {
+        if (win.closed) {
+          isClosed.innerHTML = "关闭";
+        } else {
+          isClosed.innerHTML = "打开";
+        }
+      }
+    </script>
+
+    <h1>alert/confirm/prompt</h1>
+    <p>alert 会阻塞进程</p>
+    <p>prompt 返回的是字符串</p>
+    <button onclick="alert('hello')">alert</button>
+    <button onclick="openConfirm()">confirm</button>
+    <button onclick="openPrompt()">prompt</button>
+    <script>
+      function openConfirm() {
+        var result = window.confirm("你确定要删除吗？");
+        console.log(result);
+      }
+      function openPrompt() {
+        var result = Number(window.prompt("请输入一个数字"));
+        console.log(result);
+      }
+    </script>
+
+    <h1>resizeBy/resizeTo/moveBy/moveTo</h1>
+    <p>只能操作通过window.open打开的窗口</p>
+    <button onclick="openWin()">打开窗口</button>
+    <button onclick="resizeToWin()">resizeTo 调整窗口尺寸</button>
+    <button onclick="resizeByWin()">resizeBy 每次调整窗口尺寸</button>
+    <button onclick="moveByWin()">moveBy 每次移动窗口位置</button>
+    <button onclick="moveToWin()">moveTo 移动窗口位置</button>
+    <script>
+      var win;
+      function openWin() {
+        win = window.open(
+          "",
+          "_blank",
+          "width=400,height=400,top=100,left=100"
+        );
+      }
+
+      function resizeToWin() {
+        win.resizeTo(500, 500);
+      }
+
+      function resizeByWin() {
+        win.resizeBy(100, 100);
+      }
+
+      function moveByWin() {
+        win.moveBy(100, 100);
+      }
+
+      function moveToWin() {
+        win.moveTo(100, 100);
+      }
+    </script>
+
+    <h1>window.print() 打印</h1>
+    <button onclick="printWin()">print 打印</button>
+    <script>
+      function printWin() {
+        window.print();
+      }
+    </script>
+  </body>
+</html>
