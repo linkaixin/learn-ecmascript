@@ -76,9 +76,7 @@ class MyPromise {
     }
 
     then(onFulfilled, onRejected) {
-        onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : value => {
-            return value
-        };
+        onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : value => value;
         onRejected = typeof onRejected === 'function' ? onRejected : reason => { throw reason };
 
         let promise2 = new MyPromise((resolve, reject) => {
@@ -133,7 +131,17 @@ class MyPromise {
     }
 
     catch(errorCallback) {
-        this.then(null, errorCallback);
+        return this.then(null, errorCallback);
+    }
+
+    finally(finallyCallback) {
+        return this.then((value) => {
+            return MyPromise.resolve(finallyCallback()).then(() => value)
+        }, (reason) => {
+            return MyPromise.resolve(finallyCallback()).then(() => {
+                throw reason;
+            })
+        })
     }
 
     static resolve(value) {
@@ -147,6 +155,106 @@ class MyPromise {
             reject(reason)
         })
     }
+
+    static all(promiseArr) {
+        let arr = [],
+            idx = 0,
+            len = promiseArr.length;
+
+        return new MyPromise((resolve, reject) => {
+            promiseArr.forEach((promise, index) => {
+                // 判断是普通值还是Promise
+                if (isPromise(promise)) {
+                    promise.then(value => {
+                        formatResArr(value, index, resolve);
+                    }, reject)
+                } else {
+                    formatResArr(promise, index, resolve);
+                }
+            })
+        })
+
+        function formatResArr(value, index, resolve) {
+            arr[index] = value;
+
+            if (++idx === len) {
+                resolve(arr);
+            }
+        }
+    }
+
+    static allSettled(promiseArr) {
+        let arr = [],
+            idx = 0;
+
+        return new MyPromise((resolve, reject) => {
+            // 判断promiseArr是否可迭代
+            if (!isIterable(promiseArr)) {
+                return reject(new TypeError(`${promiseArr} is not iterable (cannot read property Symbol(Symbol.iterator))`))
+            }
+
+            promiseArr.forEach((promise, index) => {
+                if (isPromise(promise)) {
+                    promise.then(value => {
+                        formatResArr('fulfilled', value, index, resolve)
+                    }, reason => {
+                        formatResArr('rejected', reason, index, resolve)
+                    })
+                } else {
+                    formatResArr('fulfilled', promise, index, resolve)
+                }
+            })
+        })
+
+        function formatResArr(status, value, index, resolve) {
+            switch (status) {
+                case 'fulfilled':
+                    arr[index] = { status, value };
+                    break;
+                case 'rejected':
+                    arr[index] = { status, reason: value };
+                    break;
+                default:
+                    break;
+            }
+
+            if (++idx === promiseArr.length) {
+                resolve(arr);
+            }
+        }
+    }
+
+    static race(promiseArr) {
+        return new MyPromise((resolve, reject) => {
+            if (!isIterable(promiseArr)) {
+                return reject(new TypeError(`${promiseArr} is not iterable (cannot read property Symbol(Symbol.iterator))`))
+            }
+
+            promiseArr.forEach(promise => {
+                if (isPromise(promise)) {
+                    promise.then(resolve, reject);
+                } else {
+                    resolve(promise)
+                }
+            })
+        })
+    }
+}
+
+function isPromise(x) {
+    if ((typeof x === 'object' && x !== null) || typeof x === 'function') {
+        let then = x.then;
+
+        return typeof then === 'function';
+    }
+    return false
+}
+
+function isIterable(x) {
+    if (x == null || x == undefined || typeof (x[Symbol.iterator]) !== 'function') {
+        return false;
+    }
+    return true;
 }
 
 MyPromise.defer = MyPromise.deferred = function () {
